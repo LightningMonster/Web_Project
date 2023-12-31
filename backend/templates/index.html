@@ -1,0 +1,142 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebook Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color:white;
+            color:black;
+             }  
+
+        header, nav, section, footer
+          {
+            background-color:black;
+            color:white;
+            padding: 10px 0;
+            text-align: center;
+          }
+
+        header h1, nav a 
+         {
+            color:white;
+            text-decoration: none;
+          }
+
+        nav a {
+            margin: 0 15px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .featured-books {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .book {
+            background-color:white;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color:grey;
+            color:white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color:black;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Welcome to Ebook Store</h1>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="#">Home</a>
+            <a href="#">Browse</a>
+            <a href="#">Categories</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </nav>
+
+    <section>
+        <div class="container">
+            <h2>Featured Books</h2>
+            <div class="featured-books">
+                <div class="book">
+                    <img src="book1.jpg" alt="Book 1">
+                    <h3>Book Title 1</h3>
+                    <p>Author: Author Name</p>
+                    <p>Description of the book.</p>
+                    <button>Read More</button>
+                </div>
+
+                <div class="book">
+                    <img src="book2.jpg" alt="Book 2">
+                    <h3>Book Title 2</h3>
+                    <p>Author: Author Name</p>
+                    <p>Description of the book.</p>
+                    <button>Read More</button>
+                </div>
+
+                <div class="book">
+                    <img src="book3.jpg" alt="Book 3">
+                    <h3>Book Title 3</h3>
+                    <p>Author: Author Name</p>
+                    <p>Description of the book.</p>
+                    <button>Read More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Your Ebook Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
