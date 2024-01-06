@@ -8,11 +8,11 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-
+    
         if user is not None:
             login(request, user)
             # Redirect to the home page or any other desired page upon successful login
-            return redirect('home')
+            return redirect('')
 
     return render(request, 'login.html')
 
@@ -33,6 +33,11 @@ def signup(request):
             email = request.POST['email']
             password = request.POST['password']
             confirmPassword = request.POST['confirmPassword']
+
+            # passwords should match
+            if password != confirmPassword:
+                 messages.error(request, "Password do not match.")
+                 return render(request, 'signup.html')
         
             myuser = User.objects.create_user(username, email, password)
             myuser.first_name = firstName
