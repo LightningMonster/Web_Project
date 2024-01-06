@@ -86,24 +86,37 @@
 </head>
 <body>
 
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <span class="navbar-toggler-icon"></span>
+        
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+                
+                <a class="nav-link" href="">Home</a>
+                <a class="nav-link" href="contact">Contact Us</a>
+                <a class="nav-link" href="signup">Sign Up</a>
+                <a class="nav-link" href="login">Log In</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
     <header>
         <div class="container">
             <h1>Welcome to Ebook Store</h1>
         </div>
     </header>
 
-    <nav>
-        <div class="container">
-            <a href="#">Home</a>
-            <a href="#">Browse</a>
-            <a href="#">Categories</a>
-            <a href="/contact">Contact Us</a>
-            <a href="/signup">Sign up</a>
-            <a href="/login">Log in</a>
+    <!-- home.html or any template where you display the navigation bar -->
+    {% if user.is_authenticated %}
+    <div id="userGreeting">
+        Hello, {{ user.username }}!
+    </div>
+    {% endif %}
 
-        </div>
-    </nav>
-
+    
     <section>
         <div class="container">
             <h2>Featured Books</h2>
