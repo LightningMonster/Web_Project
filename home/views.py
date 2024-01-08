@@ -16,7 +16,7 @@ def login_view(request):
 
     return render(request, 'Login_Page.html')
 
-def home(request):
+def index(request):
     return render(request, 'index.html')
 
 def login(request):
