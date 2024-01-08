@@ -8,21 +8,29 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
+            margin: 10px;
+            padding: 5px;
             align-items: center;
             justify-content: center;
             height: 100vh;
         }
-
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+        div{
+            margin-bottom:5px;
+            padding:10px;
         }
+        section{
+            display:block;
+            margin: auto;
+            width:30%;
+            height:650px;;
+            display:flex;
+            justify-content: center;
+            border-style: groove;
+            border-color: aquamarine;
+        
+        }
+
+       
 
         label {
             display: block;
@@ -54,9 +62,13 @@
     </style>
 </head>
 <body>
-
-    <form action="/signup" method="post">
-        {% csrf_token %}
+    <div>
+        <img src="./home/resources/logo.jpeg" width="200px" alt="Logo image">
+        &nbsp; &nbsp;
+    </div><hr><br><br>
+    <section>
+    <form action="" method="post">
+    <big><h1>Please Enter Your Credentials</h1></big>
     <label for="firstName">First Name:</label>
     <input type="text" id="firstName" name="firstName" required>
 
@@ -73,10 +85,11 @@
     <input type="password" id="password" name="password" required>
 
     <label for="confirmPassword">Confirm Password:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" required>
+    <input type="password" id="confirmPassword" name="confirmPassword" required minlength="8">
 
     <button type="submit">Sign Up</button>
+    
 </form>
-
+</section>
 </body>
 </html>
