@@ -14,13 +14,13 @@ def login_view(request):
             # Redirect to the home page or any other desired page upon successful login
             return redirect('')
 
-    return render(request, 'login.html')
+    return render(request, 'Login_Page.html')
 
 def home(request):
     return render(request, 'index.html')
 
 def login(request):
-    return render(request, 'login.html')
+    return render(request, 'Login_Page.html')
 
 def contact(request):
     return render(request, 'contactpage.html')
