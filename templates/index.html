@@ -1,5 +1,13 @@
 <html>
 <head>
+
+    <!--Added for testing -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- end test -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ebook Store</title>
@@ -35,6 +43,11 @@
             margin: 0 auto;
         }
 
+        .custom-container {
+            max-width: auto;
+            margin: 0 ;
+        }
+        
         .featured-books {
             display: flex;
             flex-wrap: wrap;
@@ -86,21 +99,42 @@
 </head>
 <body>
 
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="custom-container">
+            <span class="navbar-toggler-icon"></span>
+        
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                
+                    <a class="nav-link" href="">Home</a>
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                    <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                    <a class="nav-link" href="login">Log In</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--Navbar end-->
+
+    <div class="custom-container alert alert-success" role="alert">
+        A simple success alert—check it out!
+    </div>
+
     <header>
         <div class="container">
             <h1>Welcome to Ebook Store</h1>
         </div>
     </header>
 
-    <nav>
-        <div class="container">
-            <a href="#">Home</a>
-            <a href="#">Browse</a>
-            <a href="#">Categories</a>
-            <a href="#">Contact Us</a>
-        </div>
-    </nav>
+    <!-- home.html or any template where you display the navigation bar -->
+    {% if user.is_authenticated %}
+    <div id="userGreeting">
+        Hello, {{ user.username }}!
+    </div>
+    {% endif %}
 
+    
     <section>
         <div class="container">
             <h2>Featured Books</h2>

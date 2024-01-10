@@ -53,6 +53,7 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD:backend/templates/login.html
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <h2>Login</h2>
@@ -66,3 +67,30 @@
     </form>
 </body>
 </html>
+=======
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" action="{% url 'login' %}">{% csrf_token %}<br><br><br>
+        <label for="login_type">Login using:</label><br>
+        <input type="radio" id="email" name="login_type" value="email" checked>
+        <label for="email">Email</label>
+        <input type="radio" id="username" name="login_type" value="username">
+        <label for="username">Username</label><br><br>
+    
+        <label for="identifier">Email-id or Username</label><br><br>
+        <input type="text" name="identifier" placeholder="Enter email or username" required><br><hr><br>
+    
+        <label for="password"> Password</label>
+        <input type="password" name="password" placeholder="password" minlength="8" required><br><br><hr><br>
+    
+        <button type="submit" name="submit" value="SUBMIT"><b>LOGIN</b></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'signup' %}"><button name="signup" value="signup"><b>SIGNUP</b></button></a>
+    </form>
+</body>
+</html>
+>>>>>>> 6bae58b0f5dfed4bdc6eb73c4fecb926bc96e4fc:templates/login.html
