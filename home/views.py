@@ -24,8 +24,8 @@ def login_view(request):
         else:
             # Authentication failed
             messages.error(request, 'Invalid credentials. Please try again.')
-
-    return render(request, 'Login_Page.html')
+    return render(request, 'Login_Page.html')        
+    
 
 def index(request):
     return render(request, 'index.html')
