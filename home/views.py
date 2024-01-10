@@ -5,14 +5,25 @@ from django.contrib import messages
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        login_type = request.POST.get('login_type')  
+        identifier = request.POST.get('identifier')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-    
+
+        # Validate login type and authenticate
+        user = None
+        if login_type == 'email':
+            user = authenticate(request, email=identifier, password=password)
+        elif login_type == 'username':
+            user = authenticate(request, username=identifier, password=password)
+
         if user is not None:
-            login(request, user)
-            # Redirect to the home page or any other desired page upon successful login
-            return redirect('')
+            login(request, user)  
+            messages.success(request, 'Successfully logged in!')
+            
+            return redirect('home')  
+        else:
+            # Authentication failed
+            messages.error(request, 'Invalid credentials. Please try again.')
 
     return render(request, 'Login_Page.html')
 
