@@ -53,6 +53,21 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD:backend/templates/login.html
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <h2>Login</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
+=======
     {% if messages %}
         <div>
             {% for message in messages %}
@@ -78,3 +93,4 @@
     </form>
 </body>
 </html>
+>>>>>>> 6bae58b0f5dfed4bdc6eb73c4fecb926bc96e4fc:templates/login.html
