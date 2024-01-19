@@ -95,36 +95,27 @@
         footer p {
             font-size: 14px;
         }
-        div{
-            width:parent;
-            height:wrap-content;
-            background-color:black;
-
-        }
-        img{
-            width:150px;
-            justify:logo;
-        }
-        section{
-            padding:5dp;
-
-        }
     </style>
 </head>
 <body>
 
-    
-
-    <div>
-        <img src="{% load static %}{% static 'resources/logo.jpeg' %}" alt="logo image">
-        <section><big>HOME</big></section>
-        <section>
-        <big>SIGN-UP</big>
-        </section>
-
-
-    </div>
-
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="custom-container">
+            <span class="navbar-toggler-icon"></span>
+        
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                
+                    <a class="nav-link" href="">Home</a>
+                    <a class="nav-link" href="{% url 'contact'%}">Contact Us</a>
+                    <a class="nav-link" href="{% url 'signup'%}">Sign Up</a>
+                    <a class="nav-link" href="{% url 'login'%}">Log In</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--Navbar end-->
 
     <div class="custom-container alert alert-success" role="alert">
         A simple success alert—check it out!

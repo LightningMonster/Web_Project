@@ -7,14 +7,14 @@ def login_view(request):
     if request.method == 'POST':
         login_type = request.POST.get('login_type')  
         identifier = request.POST.get('identifier')
-        password = request.POST.get('password')
+        loginpassword = request.POST.get('loginpassword')
 
         # Validate login type and authenticate
         user = None
         if login_type == 'email':
-            user = authenticate(request, email=identifier, password=password)
+            user = authenticate(request, email=identifier, password=loginpassword)
         elif login_type == 'username':
-            user = authenticate(request, username=identifier, password=password)
+            user = authenticate(request, username=identifier, password=loginpassword)
 
         if user is not None:
             login(request, user)  
