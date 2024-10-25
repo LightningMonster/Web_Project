@@ -1,3 +1,4 @@
-echo "Build start"
-python3.9 manage.py collectstatic --noinput --clear
-echo "Build END"
+#!/bin/bash
+pip install -r requirements.txt
+python manage.py collectstatic
+python manage.py migrate
