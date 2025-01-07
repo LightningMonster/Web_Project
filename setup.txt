@@ -1,0 +1,15 @@
+$ sudo apt install python3-django
+
+#Installing postgreSql
+
+$ sudo apt install postgresql postgresql-contrib
+
+$ sudo systemctl start postgresql
+$ sudo systemctl enable postgresql
+
+$ pip install psycopg2-binary
+
+*if error in installing package use virtual environment
+    python3 -m venv myenv
+    source myenv/bin/activate
+
