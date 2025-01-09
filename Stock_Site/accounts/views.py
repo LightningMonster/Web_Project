@@ -134,3 +134,71 @@ def home1(request):
 
 def calculators(request):
     return render(request, 'pages/calculator.html')
+
+def nse_stocks(request):
+    # Get the most recent entry for each stock symbol ending with '.NS'
+    stocks = StockData.objects.filter(stock_symbol__endswith='.NS').values('stock_symbol').annotate(latest_date=Max('date'))
+    
+    # Get the last price for each stock based on the latest date
+    stock_info = []
+    
+    for stock in stocks:
+        latest_stock = StockData.objects.filter(
+            stock_symbol=stock['stock_symbol'], 
+            date=stock['latest_date']
+        ).first()
+        
+        # Calculate price change (for simplicity, assume previous price is from the last entry)
+        previous_stock = StockData.objects.filter(
+            stock_symbol=stock['stock_symbol']
+        ).exclude(date=stock['latest_date']).order_by('-date').first()
+
+        if previous_stock:
+            price_change = latest_stock.close - previous_stock.close
+            price_change_percent = (price_change / previous_stock.close) * 100 if previous_stock.close != 0 else 0
+        else:
+            price_change = 0
+            price_change_percent = 0
+        
+        stock_info.append({
+            'symbol': latest_stock.stock_symbol,
+            'last_price': latest_stock.close,
+            'price_change': price_change,
+            'price_change_percent': price_change_percent,
+        })
+    
+    return render(request, 'pages/nse_stocks.html', {'stock_info': stock_info})
+
+def bse_stocks(request):
+    # Get the most recent entry for each stock symbol ending with '.BS'
+    stocks = StockData.objects.filter(stock_symbol__endswith='.BS').values('stock_symbol').annotate(latest_date=Max('date'))
+
+    # Get the last price for each stock based on the latest date
+    stock_info = []
+    
+    for stock in stocks:
+        latest_stock = StockData.objects.filter(
+            stock_symbol=stock['stock_symbol'], 
+            date=stock['latest_date']
+        ).first()
+        
+        # Calculate price change (for simplicity, assume previous price is from the last entry)
+        previous_stock = StockData.objects.filter(
+            stock_symbol=stock['stock_symbol']
+        ).exclude(date=stock['latest_date']).order_by('-date').first()
+
+        if previous_stock:
+            price_change = latest_stock.close - previous_stock.close
+            price_change_percent = (price_change / previous_stock.close) * 100 if previous_stock.close != 0 else 0
+        else:
+            price_change = 0
+            price_change_percent = 0
+        
+        stock_info.append({
+            'symbol': latest_stock.stock_symbol,
+            'last_price': latest_stock.close,
+            'price_change': price_change,
+            'price_change_percent': price_change_percent,
+        })
+    
+    return render(request, 'pages/bse_stocks.html', {'stock_info': stock_info})
