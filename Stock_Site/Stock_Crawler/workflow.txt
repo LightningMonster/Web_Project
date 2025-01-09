@@ -1,3 +1,0 @@
-1. getting BSE Code and Security ID of stocks
-2. Symbol to Ticker
-3. Data collection from yfinance (Historical Data) & BSE (Latest data)

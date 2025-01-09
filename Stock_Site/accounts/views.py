@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from accounts.models import StockData
 
 def register(request):
     if request.method == 'POST':
@@ -63,9 +64,19 @@ def logout_user(request):
     messages.success(request, 'Logged out successfully')
     return redirect('login')
 
-def home1(request):
-    return render(request, 'pages/home1.html')
-
 @login_required
 def home2(request):
     return render(request, 'pages/home2.html')
+
+
+def home1(request):
+    # Fetch the last 5 entries for each of the 5 stock symbols
+    stock_symbols = StockData.objects.values_list('stock_symbol', flat=True).distinct()[:5]
+    stock_data = {}
+    for symbol in stock_symbols:
+        stock_data[symbol] = StockData.objects.filter(stock_symbol=symbol).order_by('-date')[:5]
+    
+    context = {
+        'stock_data': stock_data,
+    }
+    return render(request, 'pages/home1.html', context)

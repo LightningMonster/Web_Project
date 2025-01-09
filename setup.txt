@@ -25,3 +25,5 @@ $ sudo -u postgres psql -d stock_analysis (switch to newly created database)
 stock_analysis=# GRANT CREATE ON schema public TO yash;
 stock_analysis=# SELECT nspname FROM pg_namespace WHERE nspname = 'public';
 stock_analysis=# ALTER SCHEMA public OWNER TO yash;
+
+stock_analysis=# psql -U yash -d stock_analysis

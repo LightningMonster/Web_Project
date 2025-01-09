@@ -3,44 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Stock Homepage</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
         }
-
-        .container {
-            margin-top: 20%;
-        }
-
-        .btn {
-            display: inline-block;
-            margin: 10px;
+        .navbar {
+            background-color: #333;
+            color: white;
             padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        .btn:hover {
-            background-color: #0056b3;
+        .navbar .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 15px;
+            background-color: #555;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #777;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <h1>Stock Data Homepage</h1>
+        <div class="buttons">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </div>
     <div class="container">
-        <h1>Welcome to Stock Site</h1>
-        <p>Click below to Login or Register</p>
-        <a href="{% url 'login' %}" class="btn">Login</a>
-        <a href="{% url 'register' %}" class="btn">Register</a>
+        {% for symbol, data in stock_data.items %}
+            <h2>{{ symbol }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Open</th>
+                        <th>High</th>
+                        <th>Low</th>
+                        <th>Close</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in data %}
+                        <tr>
+                            <td>{{ entry.date }}</td>
+                            <td>{{ entry.open }}</td>
+                            <td>{{ entry.high }}</td>
+                            <td>{{ entry.low }}</td>
+                            <td>{{ entry.close }}</td>
+                            <td>{{ entry.volume }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
     </div>
 </body>
 </html>
