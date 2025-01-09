@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
         }
         .navbar {
             background-color: #333;
@@ -27,34 +28,68 @@
             color: white;
             padding: 8px 15px;
             background-color: #555;
-            border-radius: 5px; 
+            border-radius: 5px;
             font-size: 14px;
             transition: background-color 0.3s;
         }
         .navbar a:hover {
             background-color: #777;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
         .container {
             width: 90%;
-            margin: auto;
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        h2 {
-            text-align: center;
+        .stock-box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: calc(20% - 15px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .stock-box:hover {
+            transform: scale(1.05);
+        }
+        .stock-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .stock-price {
+            font-size: 16px;
+            color: #333;
+        }
+        .stock-change {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .stock-change.increase {
+            color: green;
+        }
+        .stock-change.decrease {
+            color: red;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .notification.error {
+            background-color: #dc3545;
         }
     </style>
 </head>
@@ -66,34 +101,47 @@
             <a href="/register">Register</a>
         </div>
     </div>
-    <div class="container">
-        {% for symbol, data in stock_data.items %}
-            <h2>{{ symbol }}</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Open</th>
-                        <th>High</th>
-                        <th>Low</th>
-                        <th>Close</th>
-                        <th>Volume</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in data %}
-                        <tr>
-                            <td>{{ entry.date }}</td>
-                            <td>{{ entry.open }}</td>
-                            <td>{{ entry.high }}</td>
-                            <td>{{ entry.low }}</td>
-                            <td>{{ entry.close }}</td>
-                            <td>{{ entry.volume }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+
+    {% if messages %}
+    <div class="notification" id="notification">
+        {% for message in messages %}
+        {{ message }}
         {% endfor %}
     </div>
+    <script>
+        // Display notification and auto-hide after 3 seconds
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+    {% endif %}
+
+    <div class="container">
+        {% for stock in stock_data %}
+            <div class="stock-box" onclick="showLoginMessage()">
+                <div class="stock-name">{{ stock.symbol }}</div>
+                <div class="stock-price">₹{{ stock.last_price }}</div>
+                <div class="stock-change {% if stock.price_change >= 0 %}increase{% else %}decrease{% endif %}">
+                    {{ stock.price_change|floatformat:2 }}%
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="notification error" id="login-message">Please login for using more features!</div>
+
+    <script>
+        function showLoginMessage() {
+            const message = document.getElementById('login-message');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000); // Hide after 3 seconds
+        }
+    </script>
 </body>
 </html>

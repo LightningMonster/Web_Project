@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.models import StockData
+from decimal import Decimal
+from django.db.models import Max, F
+from django.db.models import Subquery, OuterRef
 
 def register(request):
     if request.method == 'POST':
@@ -66,17 +69,68 @@ def logout_user(request):
 
 @login_required
 def home2(request):
-    return render(request, 'pages/home2.html')
+    # Define the stock symbols you're interested in
+    stock_symbols = ['SHILPAMED.BO', 'LAURUSLABS.NS', 'INFOSYS', 'ADANI', 'LT']
+
+    # Fetch the latest date for each stock symbol
+    latest_dates = StockData.objects.filter(
+        stock_symbol__in=stock_symbols
+    ).values('stock_symbol').annotate(latest_date=Max('date'))
+
+    # Prepare a list to hold the latest stock data for each stock symbol
+    stock_data = []
+
+    # Fetch the latest stock entry for each symbol
+    for latest in latest_dates:
+        # Fetch the stock entry for the latest date of the stock_symbol
+        stock = StockData.objects.filter(
+            stock_symbol=latest['stock_symbol'],
+            date=latest['latest_date']
+        ).first()  # We only need the latest entry
+
+        if stock:
+            # Calculate the percentage change
+            change = ((stock.close - stock.open) / stock.open) * 100 if stock.open else 0
+            stock_data.append({
+                'symbol': stock.stock_symbol,
+                'last_price': stock.close,
+                'change': round(change, 2)
+            })
+
+    return render(request, 'pages/home2.html', {'stock_data': stock_data})
 
 
 def home1(request):
-    # Fetch the last 5 entries for each of the 5 stock symbols
-    stock_symbols = StockData.objects.values_list('stock_symbol', flat=True).distinct()[:5]
-    stock_data = {}
-    for symbol in stock_symbols:
-        stock_data[symbol] = StockData.objects.filter(stock_symbol=symbol).order_by('-date')[:5]
-    
-    context = {
-        'stock_data': stock_data,
-    }
-    return render(request, 'pages/home1.html', context)
+    # Fetch the latest 20 unique stocks by date
+    stocks = (
+        StockData.objects.order_by('stock_symbol', '-date')
+        .distinct('stock_symbol')[:20]
+    )
+
+    stock_data = []
+    for stock in stocks:
+        # Fetch the previous day's data for the same stock symbol
+        prev_day = (
+            StockData.objects.filter(
+                stock_symbol=stock.stock_symbol, date__lt=stock.date
+            )
+            .order_by('-date')
+            .first()
+        )
+
+        # Calculate price change
+        if prev_day:
+            price_change = ((stock.close - prev_day.close) / prev_day.close) * Decimal(100)
+        else:
+            price_change = Decimal(0)
+
+        stock_data.append({
+            'symbol': stock.stock_symbol,
+            'last_price': stock.close,
+            'price_change': price_change,
+        })
+
+    return render(request, 'pages/home1.html', {'stock_data': stock_data})
+
+def calculators(request):
+    return render(request, 'pages/calculator.html')
