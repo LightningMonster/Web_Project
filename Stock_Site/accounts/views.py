@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def register(request):
     if request.method == 'POST':
@@ -35,15 +36,26 @@ def register(request):
 
 def login_user(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        email = request.POST['email']  # Get email from form
+        password = request.POST['password']  # Get password from form
 
+        # Get the username associated with the email
+        try:
+            user = User.objects.get(email=email)  # Check if email exists
+            username = user.username  # Retrieve the username
+        except User.DoesNotExist:
+            messages.error(request, 'Invalid email or password')
+            return render(request, 'accounts/login.html')
+
+        # Authenticate using the retrieved username and provided password
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             messages.success(request, 'Login successful')
+            return redirect('home2')  # Redirect to Home 2 page
         else:
-            messages.error(request, 'Invalid credentials')
+            messages.error(request, 'Invalid email or password')
+
     return render(request, 'accounts/login.html')
 
 def logout_user(request):
@@ -53,3 +65,7 @@ def logout_user(request):
 
 def home1(request):
     return render(request, 'pages/home1.html')
+
+@login_required
+def home2(request):
+    return render(request, 'pages/home2.html')

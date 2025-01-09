@@ -1,0 +1,2 @@
+# Indian Stocks Names and Symbols file: https://docs.google.com/spreadsheets/d/10TeoWLi9F-Y2Tf9T2OccYdBbSOcZRoHc/edit?gid=1560943854#gid=1560943854
+# Historical Data: Yahoo Finance API, BSE API
