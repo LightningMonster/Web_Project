@@ -62,7 +62,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.success(request, 'Logged out successfully')
-    return redirect('login')
+    return redirect('/')
 
 @login_required
 def home2(request):
