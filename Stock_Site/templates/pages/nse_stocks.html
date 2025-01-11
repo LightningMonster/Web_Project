@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSE Stocks</title>
+    <title>BSE Stocks - Indian Stock Analysis</title>
     <style>
         /* General Styles */
         body {
@@ -111,7 +111,16 @@
             margin-bottom: 20px;
         }
 
-        /* Stocks Grid */
+        /* Stocks Section */
+        .stocks-section {
+            padding: 40px 0;
+        }
+
+        .stocks-section h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         .stock-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -168,34 +177,49 @@
                 align-items: center;
             }
         }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .notification.error {
+            background-color: #dc3545;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>NSE Stocks</h1>
+            <h1>Indian Stock Analysis</h1>
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
                     <li><a href="#">NSE</a></li>
-                    <li><a href="#">BSE</a></li>
+                    <li><a href="{% url 'bse' %}">BSE</a></li>
                     <li><a href="{% url 'calculators' %}">Calculators</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropbtn">
                             {% if user.is_authenticated %}
-                            Hi, {{ user.first_name }} {{ user.last_name }}!  <!-- Display logged-in user's username -->
+                            Hi, {{ user.first_name }} {{ user.last_name }}!
                             {% else %}
-                                Guest  <!-- Display 'Guest' if not logged in -->
+                            Guest
                             {% endif %}
                         </a>
                         <div class="dropdown-content">
                             <a href="#">Dashboard</a>
                             <a href="#">Tools</a>
                             {% if user.is_authenticated %}
-                                <!-- Logout link for logged-in users -->
-                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                                <a href="{% url 'logout' %}">Logout</a>
                             {% else %}
-                                <!-- Login link for users who are not logged in -->
                                 <a href="{% url 'login' %}">Login</a>
                             {% endif %}
                         </div>
@@ -205,27 +229,16 @@
         </div>
     </header>
 
-    <section class="hero">
+    <section class="stocks-section">
         <div class="container">
-            <h2>Latest NSE Stocks</h2>
-            <p>Stay updated with the latest stock trends in the NSE market.</p>
-        </div>
-    </section>
-
-    <section class="trending-stocks">
-        <div class="container">
-            <h3>Trending NSE Stocks</h3>
+            <h3>BSE Stocks</h3>
             <div class="stock-grid">
                 {% for stock in stock_info %}
                 <div class="stock-card">
                     <h4>{{ stock.symbol }}</h4>
                     <p>₹{{ stock.last_price }}</p>
                     <span class="change {% if stock.price_change > 0 %}positive{% else %}negative{% endif %}">
-                        {% if stock.price_change > 0 %}
-                            +{{ stock.price_change_percent|floatformat:2 }}%
-                        {% else %}
-                            {{ stock.price_change_percent|floatformat:2 }}%
-                        {% endif %}
+                        {{ stock.price_change }} ({{ stock.price_change_percent }}%)
                     </span>
                 </div>
                 {% endfor %}
@@ -238,5 +251,6 @@
             <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
         </div>
     </footer>
+
 </body>
 </html>
