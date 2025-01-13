@@ -1,7 +1,7 @@
 from django.db import models
 
 class StockData(models.Model):
-    stock_symbol = models.CharField(max_length=10)
+    stock_symbol = models.CharField(max_length=20)
     date = models.DateField()
     open = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     high = models.DecimalField(max_digits=10, decimal_places=2, null=True)
