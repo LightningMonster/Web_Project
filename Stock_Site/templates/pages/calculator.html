@@ -278,7 +278,66 @@
     </footer>
 
     <script>
-        // JavaScript functions remain the same
+        
+    function calculateProfitLoss() {
+        const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+        const sellPrice = parseFloat(document.getElementById('sellPrice').value);
+        const quantity = parseFloat(document.getElementById('quantity').value);
+
+        if (isNaN(buyPrice) || isNaN(sellPrice) || isNaN(quantity)) {
+            document.getElementById('profitLossResult').textContent = "Please fill all fields correctly.";
+            return;
+        }
+
+        const profitOrLoss = (sellPrice - buyPrice) * quantity;
+        document.getElementById('profitLossResult').textContent =
+            profitOrLoss >= 0
+                ? `Profit: ₹${profitOrLoss.toFixed(2)}`
+                : `Loss: ₹${Math.abs(profitOrLoss).toFixed(2)}`;
+    }
+
+    function calculateDividendYield() {
+        const dividendAmount = parseFloat(document.getElementById('dividendAmount').value);
+        const stockPrice = parseFloat(document.getElementById('stockPrice').value);
+
+        if (isNaN(dividendAmount) || isNaN(stockPrice)) {
+            document.getElementById('dividendYieldResult').textContent = "Please fill all fields correctly.";
+            return;
+        }
+
+        const dividendYield = (dividendAmount / stockPrice) * 100;
+        document.getElementById('dividendYieldResult').textContent =
+            `Dividend Yield: ${dividendYield.toFixed(2)}%`;
+    }
+
+    function calculateCAGR() {
+        const initialValue = parseFloat(document.getElementById('initialValue').value);
+        const finalValue = parseFloat(document.getElementById('finalValue').value);
+        const years = parseFloat(document.getElementById('years').value);
+
+        if (isNaN(initialValue) || isNaN(finalValue) || isNaN(years)) {
+            document.getElementById('cagrResult').textContent = "Please fill all fields correctly.";
+            return;
+        }
+
+        const cagr = Math.pow(finalValue / initialValue, 1 / years) - 1;
+        document.getElementById('cagrResult').textContent =
+            `CAGR: ${(cagr * 100).toFixed(2)}%`;
+    }
+
+    function calculatePERatio() {
+        const stockPricePE = parseFloat(document.getElementById('stockPricePE').value);
+        const eps = parseFloat(document.getElementById('eps').value);
+
+        if (isNaN(stockPricePE) || isNaN(eps)) {
+            document.getElementById('peRatioResult').textContent = "Please fill all fields correctly.";
+            return;
+        }
+
+        const peRatio = stockPricePE / eps;
+        document.getElementById('peRatioResult').textContent =
+            `P/E Ratio: ${peRatio.toFixed(2)}`;
+    }
     </script>
 </body>
 </html>
