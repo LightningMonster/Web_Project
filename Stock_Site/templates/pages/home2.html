@@ -293,7 +293,7 @@
                             {% endif %}
                         </a>
                         <div class="dropdown-content">
-                            <a href="#">Dashboard</a>
+                            <a href="{% url 'dashboard' %}">Dashboard</a>
                             <a href="#">Tools</a>
                             {% if user.is_authenticated %}
                                 <!-- Logout link for logged-in users -->

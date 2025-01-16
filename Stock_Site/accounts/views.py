@@ -205,3 +205,13 @@ def bse_stocks(request):
         })
     
     return render(request, 'pages/bse_stocks.html', {'stock_info': stock_info})
+
+def dashboard(request):
+    """
+    View function for the user dashboard.
+    """
+    # Add any context data you want to pass to the template
+    context = {
+        'username': request.user.username,  # Example: Pass the username to the template
+    }
+    return render(request, 'pages/dashboard.html', context)

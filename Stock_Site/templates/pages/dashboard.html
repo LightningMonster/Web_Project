@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Indian Stock Analysis{% endblock %}</title>
+    <title>Dashboard</title>
     <style>
         /* General Styles */
         body {
@@ -89,18 +89,12 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
-
-        /* Main Content */
-        .main-content {
-            padding: 20px;
-        }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <header>
         <div class="container">
-            <h1>Indian Stock Analysis</h1>
+            <h1>Dashboard</h1>
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
@@ -131,12 +125,5 @@
             </nav>
         </div>
     </header>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        {% block content %}
-        <!-- Content will be overridden by child templates -->
-        {% endblock %}
-    </div>
 </body>
 </html>

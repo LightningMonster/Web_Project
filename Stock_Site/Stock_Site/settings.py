@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stock_analysis',
-        'USER': 'omkar',
+        'USER': 'yash',
         'PASSWORD': '1234',
         'HOST': 'localhost',  # Use the IP if hosted remotely
         'PORT': '5432',       # Default PostgreSQL port

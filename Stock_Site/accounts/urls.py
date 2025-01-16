@@ -10,5 +10,6 @@ urlpatterns = [
     path('calculators/', views.calculators, name='calculators'),
     path('nse/', views.nse_stocks, name='nse'),
     path('bse/', views.bse_stocks, name='bse'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 
 ]
