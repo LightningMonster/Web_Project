@@ -1,3 +1,5 @@
+#BSE_Stocks_ID_Collector
+
 from bsedata.bse import BSE
 from bsedata.exceptions import InvalidStockException
 import csv

@@ -3,11 +3,14 @@ import yfinance as yf
 import os
 
 # Load the CSV file
-df = pd.read_csv("sources/indian_stocks_list.csv")
+# original input file
+# df = pd.read_csv("accounts/management/commands/Collectors/sources/indian_stocks_list.csv")
 
+# test input file
+df = pd.read_csv('accounts/management/commands/Collectors/sources/test_stocks_list.csv')
 # Create a directory to save historical data if it doesn't exist
-if not os.path.exists("historical_data"):
-    os.makedirs("historical_data")
+if not os.path.exists("accounts/management/commands/Collectors/historical_data"):
+    os.makedirs("accounts/management/commands/Collectors/historical_data")
 
 # Loop through each stock ticker
 for index, row in df.iterrows():
@@ -21,7 +24,7 @@ for index, row in df.iterrows():
 
         # Save the historical data to a CSV file (replacing previous content)
         if not historical_data.empty:
-            historical_data.to_csv(f'historical_data/{ticker}_historical_data.csv')
+            historical_data.to_csv(f'accounts/management/commands/Collectors/historical_data/{ticker}_historical_data.csv')
             print(f"Data for {ticker} saved successfully.")
         else:
             print(f"No data available for {ticker}.")
