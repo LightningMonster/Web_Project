@@ -1,5 +1,5 @@
 # accounts/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -9,6 +9,8 @@ from decimal import Decimal
 from django.db.models import Max, F
 from django.db.models import Subquery, OuterRef
 from django.core.paginator import Paginator
+from django.db.models import Max, Min
+from .models import StockData, Watchlist
 
 def register(request):
     if request.method == 'POST':
@@ -71,7 +73,7 @@ def logout_user(request):
 @login_required
 def home2(request):
     # Define the stock symbols you're interested in
-    stock_symbols = ['SHILPAMED.BO', 'LAURUSLABS.NS', 'INFOSYS', 'ADANI', 'LT']
+    stock_symbols = ['SHILPAMED.BO', 'LAURUSLABS.NS', 'ITC.BO', 'MARUTI.BO', 'LT.BO']
 
     # Fetch the latest date for each stock symbol
     latest_dates = StockData.objects.filter(
@@ -95,11 +97,10 @@ def home2(request):
             stock_data.append({
                 'symbol': stock.stock_symbol,
                 'last_price': stock.close,
-                'change': round(change, 2)
+                'change': round(change, 2)  # Round the change to 2 decimal places
             })
 
     return render(request, 'pages/home2.html', {'stock_data': stock_data})
-
 
 def home1(request):
     # Fetch the latest 20 unique stocks by date
@@ -207,11 +208,70 @@ def bse_stocks(request):
     return render(request, 'pages/bse_stocks.html', {'stock_info': stock_info})
 
 def dashboard(request):
-    """
-    View function for the user dashboard.
-    """
-    # Add any context data you want to pass to the template
+    if not request.user.is_authenticated:
+        return redirect('login/')  # Replace 'login' with your login page URL
+
+    try:
+        # Fetch the latest entry for each stock in the user's watchlist
+        watchlist = (
+            Watchlist.objects.filter(user=request.user)
+            .select_related('stock_data')
+            .values('stock_data__stock_symbol')
+            .annotate(
+                latest_date=Max('stock_data__date')
+            )
+            .order_by('stock_data__stock_symbol')
+        )
+
+        # Fetch the latest entry for all available stocks
+        available_stocks = (
+            StockData.objects.values('stock_symbol')
+            .annotate(latest_date=Max('date'))
+            .order_by('stock_symbol')
+        )
+    except Exception as e:
+        print(f"Error: {e}")
+        return render(request, 'error.html')  # Custom error page to handle the error gracefully
+
+    return render(request, 'pages/dashboard.html', {
+        'watchlist': watchlist,
+        'available_stocks': available_stocks,
+    })
+
+def add_to_watchlist(request):
+    if request.method == 'POST':
+        stock_symbol = request.POST.get('stock_symbol')
+        stock_data = StockData.objects.filter(stock_symbol=stock_symbol).first()
+        
+        if stock_data:
+            Watchlist.objects.get_or_create(user=request.user, stock_data=stock_data)
+        else:
+            messages.error(request, "Invalid stock symbol.")
+        
+        return redirect('dashboard')
+    return redirect('dashboard')
+
+def stock_detail(request, stock_symbol):
+    stock_data = StockData.objects.filter(stock_symbol=stock_symbol).order_by('-date')
+    if not stock_data.exists():
+        return render(request, 'error.html', {'message': f"No data found for stock symbol: {stock_symbol}"})
+
+    # Compute 52-week high/low
+    high_52week = stock_data.aggregate(Max('high'))['high__max']
+    low_52week = stock_data.aggregate(Min('low'))['low__min']
+    latest_data = stock_data.first()
+
+    # Paginate the historical data
+    paginator = Paginator(stock_data, 10)  # Show 10 records per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'username': request.user.username,  # Example: Pass the username to the template
+        'stock_symbol': stock_symbol,
+        'latest_data': latest_data,
+        'high_52week': high_52week,
+        'low_52week': low_52week,
+        'page_obj': page_obj,
     }
-    return render(request, 'pages/dashboard.html', context)
+
+    return render(request, 'pages/stock_detail.html', context)

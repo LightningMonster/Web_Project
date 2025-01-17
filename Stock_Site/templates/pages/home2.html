@@ -8,15 +8,16 @@
         /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
-            margin: 0;
+            margin: 0 auto; /* Center the layout dynamically */
             padding: 0;
             background-color: #000000;
             color: #0ef0d6;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
         .container {
-            width: 90%;
-            max-width: 1200px;
+            width: 95%; /* Use a wider percentage for better utilization */
+            max-width: 1600px; /* Increase the max width */
             margin: 0 auto;
         }
 
@@ -27,10 +28,9 @@
             padding: 15px 0; /* Reduced padding */
         }
 
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        header .container,
+        footer .container {
+            max-width: 1600px; /* Adjust header and footer width */
         }
 
         header h1 {
@@ -95,10 +95,9 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #040404, #0c0f11);
-            color: #08c0cd;
-            padding: 60px 20px;
+            padding: 80px 20px; /* Adjust padding for a better visual balance */
             text-align: center;
+            max-width: 100%; /* Extend the section to take full width */
         }
 
         .hero h2 {
@@ -152,9 +151,11 @@
 
         .stock-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Use wider min-width for stock cards */
+            gap: 30px; /* Increase gap for better readability */
+            justify-items: center; /* Center-align cards */
         }
+
 
         .stock-card {
             background: linear-gradient(135deg, #1c1e22, #25282c);
@@ -205,8 +206,8 @@
         }
 
         .news-grid {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust grid for better utilization */
             gap: 20px;
         }
 
@@ -281,7 +282,6 @@
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
                     <li><a href="{% url 'nse' %}">NSE</a></li>
-                    <li><a href="{% url 'nse' %}">NSE</a></li>
                     <li><a href="{% url 'bse' %}">BSE</a></li>
                     <li><a href="{% url 'calculators' %}">Calculators</a></li>
                     <li class="dropdown">
@@ -339,7 +339,7 @@
             <h3>Trending Indian Stocks</h3>
             <div class="stock-grid">
                 {% for stock in stock_data %}
-                <div class="stock-card">
+                <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                     <h4>{{ stock.symbol }}</h4>
                     <p>₹{{ stock.last_price }}</p>
                     <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
@@ -349,13 +349,13 @@
                             {{ stock.change }}%
                         {% endif %}
                     </span>
-                </div>
+                </a>
                 {% endfor %}
             </div>
         </div>
     </section>
 
-    <footer>
+    <footer>                                                                                                                
         <div class="container">
             <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSE Stocks - Indian Stock Analysis</title>
+    <title>NSE Stocks</title>
     <style>
         /* General Styles */
         body {
@@ -231,7 +231,7 @@
 
     <section class="stocks-section">
         <div class="container">
-            <h3>BSE Stocks</h3>
+            <h3>NSE Stocks</h3>
             <div class="stock-grid">
                 {% for stock in stock_info %}
                 <div class="stock-card">
@@ -243,6 +243,12 @@
                 </div>
                 {% endfor %}
             </div>
+    
+            {% if has_more %}
+            <div class="show-more">
+                <a href="?page={{ page|add:1 }}">Show More</a>
+            </div>
+            {% endif %}
         </div>
     </section>
 

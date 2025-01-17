@@ -2,5 +2,29 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    
+<h2>Your Watchlist</h2>
+<ul id="watchlist">
+    {% for item in watchlist %}
+        <li>
+            {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
+        </li>
+    {% empty %}
+        <li>No stocks in your watchlist.</li>
+    {% endfor %}
+</ul>
+
+<h3>Add a Stock to Watchlist</h3>
+<form method="post" action="{% url 'add_to_watchlist' %}">
+    {% csrf_token %}
+    <label for="stock_symbol">Stock Symbol:</label>
+    <input type="text" id="stock_symbol" name="stock_symbol" required>
+    <button type="submit">Add</button>
+</form>
+
+<h3>Available Stocks</h3>
+<ul>
+    {% for stock in available_stocks %}
+        <li>{{ stock.stock_symbol }}</li>
+    {% endfor %}
+</ul>
 {% endblock %}

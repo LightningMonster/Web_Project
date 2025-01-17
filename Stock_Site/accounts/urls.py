@@ -11,5 +11,6 @@ urlpatterns = [
     path('nse/', views.nse_stocks, name='nse'),
     path('bse/', views.bse_stocks, name='bse'),
     path('dashboard/', views.dashboard, name='dashboard'),
-
+    path('stocks/<str:stock_symbol>/', views.stock_detail, name='stock_detail'),
+    path('add_to_watchlist/', views.add_to_watchlist, name='add_to_watchlist'),
 ]

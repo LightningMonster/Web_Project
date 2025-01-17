@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details - {{ stock_symbol }}</title>
+</head>
+<body>
+    <h1>Stock Details for {{ stock_symbol }}</h1>
+    <p>Latest Price: ₹{{ latest_data.close }}</p>
+    <p>52-Week High: ₹{{ high_52week }}</p>
+    <p>52-Week Low: ₹{{ low_52week }}</p>
+
+    <h2>Historical Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+                <th>Volume</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in page_obj %}
+            <tr>
+                <td>{{ record.date }}</td>
+                <td>{{ record.open }}</td>
+                <td>{{ record.high }}</td>
+                <td>{{ record.low }}</td>
+                <td>{{ record.close }}</td>
+                <td>{{ record.volume }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    </div>
+</body>
+</html>
