@@ -1,7 +1,7 @@
 body {  
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     background-color: #f4f4f4;
 }
 .navbar {
@@ -33,12 +33,13 @@ body {
     margin: 20px auto;
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 20px;
+    padding : 10px 20px;
 }
 .stock-box {
     background-color: white;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 15px;
     width: calc(20% - 15px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -83,4 +84,32 @@ body {
 
 .notification.error {
     background-color: #dc3545;
+}
+
+.features-section {
+    background-color: #f4f4f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+.features-section h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.features-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.features-section li {
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.features-section li strong {
+    font-weight: bold;
+    color: #0073e6;
 }

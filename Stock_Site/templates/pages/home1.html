@@ -22,16 +22,7 @@
             {{ message }}
             {% endfor %}
         </div>
-        <script>
-            // Display notification and auto-hide after 3 seconds
-            const notification = document.getElementById('notification');
-            if (notification) {
-                notification.style.display = 'block';
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 3000);
-            }
-        </script>
+
         {% endif %}
 
         <div class="container">
@@ -48,14 +39,39 @@
 
         <div class="notification error" id="login-message">Please login for using more features!</div>
 
-        <script>
-            function showLoginMessage() {
-                const message = document.getElementById('login-message');
-                message.style.display = 'block';
-                setTimeout(() => {
-                    message.style.display = 'none';
-                }, 3000); // Hide after 3 seconds
-            }
-        </script>
+        <div class="container">
+    
+            <!-- Features List Section -->
+            <div class="features-section">
+                <h3>Available Features After Login</h3>
+                <ul>
+                    <li>
+                        <strong>Real-time Stock Charts</strong> - View interactive line and candlestick charts for stock price trends.
+                    </li>
+                    <li>
+                        <strong>Comprehensive Stock Information</strong> - Get detailed information about stocks, including market cap, P/E ratio, dividend yield, and more.
+                    </li>
+                    <li>
+                        <strong>Buy/Sell Stock</strong> - Engage in trading with real-time stock prices (mock trading or real trading based on your platform's setup).
+                    </li>
+                    <li>
+                        <strong>Portfolio Management</strong> - Track your stock portfolio’s performance, including profit/loss calculations and current value.
+                    </li>
+                    <li>
+                        <strong>Net Worth Summary</strong> - Get an overview of the total value of your stocks, including any profit/loss.
+                    </li>
+                    <li>
+                        <strong>Stock Calculators</strong> - Use calculators to help with your stock trading, such as profit/loss calculators and dividend yield estimators.
+                    </li>
+                    <li>
+                        <strong>Watchlist</strong> - Add stocks to your watchlist and track their performance over time.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    
+
+        {% load static %}
+        <script src="{% static 'js/home1.js' %}"></script>
     </body>
     </html>
