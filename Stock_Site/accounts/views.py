@@ -82,8 +82,9 @@ def home2(request):
 
     # Prepare a list to hold the latest stock data for each stock symbol
     stock_data = []
+    historical_data = {}  # To store historical data for each stock
 
-    # Fetch the latest stock entry for each symbol
+    # Fetch the latest stock entry for each symbol and historical data
     for latest in latest_dates:
         # Fetch the stock entry for the latest date of the stock_symbol
         stock = StockData.objects.filter(
@@ -100,7 +101,15 @@ def home2(request):
                 'change': round(change, 2)  # Round the change to 2 decimal places
             })
 
-    return render(request, 'pages/home2.html', {'stock_data': stock_data})
+            # Fetch historical data for the stock (last 30 days)
+            historical_data[stock.stock_symbol] = StockData.objects.filter(
+                stock_symbol=stock.stock_symbol
+            ).order_by('-date')[:30].values('date', 'close')
+
+    return render(request, 'pages/home2.html', {
+        'stock_data': stock_data,
+        'historical_data': historical_data
+    })
 
 def home1(request):
     # Fetch the latest 20 unique stocks by date
