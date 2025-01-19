@@ -1,0 +1,125 @@
+/* CSS Variables for Light Theme */
+:root {
+    --primary-bg: #ffffff; /* White background */
+    --secondary-bg: #f5f5f5; /* Light gray */
+    --accent-color: #8a2be2; /* Purple accent */
+    --text-color: #333333; /* Dark gray text */
+    --text-secondary: #666666; /* Gray text */
+    --card-bg: #ffffff; /* White card background */
+    --card-hover: #f0f0f0; /* Light gray hover */
+    --button-bg: #8a2be2; /* Purple button */
+    --button-hover: #6a1b9a; /* Darker purple hover */
+}
+
+/* CSS Variables for Dark Theme */
+body.dark-mode {
+    --primary-bg: #1a1a1a; /* Dark background */
+    --secondary-bg: #2a2a2a; /* Darker gray */
+    --accent-color: #8a2be2; /* Purple accent */
+    --text-color: #f0f0f0; /* Light text */
+    --text-secondary: #b0b0b0; /* Light gray text */
+    --card-bg: #2a2a2a; /* Dark card background */
+    --card-hover: #3a3a3a; /* Darker hover */
+    --button-bg: #8a2be2; /* Purple button */
+    --button-hover: #6a1b9a; /* Darker purple hover */
+}
+
+/* Header */
+header {
+    background: var(--secondary-bg);
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+header .nav-container {
+    display: flex;
+    justify-content: space-between;
+    /*align-items: center;*/
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--accent-color);
+}
+
+header h1 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Navigation */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--card-bg);
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content a {
+    color: var(--text-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--button-hover);
+}

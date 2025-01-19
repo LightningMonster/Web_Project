@@ -36,53 +36,60 @@
         /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
+            margin: 0;
+            padding: 0;
             background-color: var(--primary-bg);
             color: var(--text-color);
-            overflow-x: hidden;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container {
-            width: 100%; /* Full width */
-            max-width: 1600px; /* Maximum width for larger screens */
-            margin: 0 auto; /* Center the container horizontally */
-            padding: 0 20px; /* Add padding to prevent content from touching edges */
-            box-sizing: border-box; /* Include padding in width calculation */
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         /* Header */
         header {
             background: var(--secondary-bg);
-            padding: 15px 0;
+            padding: 10px 0;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%; /* Full width */
+            width: 100%;
         }
 
-        header .container {
+        header .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         header h1 {
             margin: 0;
             font-size: 24px;
-            color: var(--accent-color); /* Purple accent */
+            color: var(--accent-color);
+        }
+
+        header h1 a {
+            text-decoration: none;
+            color: inherit;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 15px;
+            gap: 10px;
             padding: 0;
             margin: 0;
         }
 
         nav ul li a {
             text-decoration: none;
-            color: var(--text-color); /* Default text color */
+            color: var(--text-color);
             font-size: 14px;
             padding: 6px 12px;
             border-radius: 5px;
@@ -90,8 +97,8 @@
         }
 
         nav ul li a:hover {
-            background-color: var(--accent-color); /* Purple background on hover */
-            color: white; /* White text on hover */
+            background-color: var(--accent-color);
+            color: white;
         }
 
         /* Dropdown styles */
@@ -111,7 +118,7 @@
         }
 
         .dropdown-content a {
-            color: var(--text-color); /* Default text color */
+            color: var(--text-color);
             padding: 12px 16px;
             text-decoration: none;
             display: block;
@@ -119,8 +126,8 @@
         }
 
         .dropdown-content a:hover {
-            background-color: var(--accent-color); /* Purple background on hover */
-            color: white; /* White text on hover */
+            background-color: var(--accent-color);
+            color: white;
         }
 
         .dropdown:hover .dropdown-content {
@@ -132,7 +139,7 @@
             background-color: var(--button-bg);
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
@@ -148,13 +155,13 @@
             padding: 100px 20px;
             text-align: center;
             background: var(--secondary-bg);
-            width: 100%; /* Full width */
+            width: 100%;
         }
 
         .hero h2 {
             font-size: 42px;
             margin-bottom: 10px;
-            color: var(--accent-color); /* Purple accent */
+            color: var(--accent-color);
         }
 
         .hero p {
@@ -183,28 +190,28 @@
         #search-form button {
             padding: 12px 24px;
             border: none;
-            background-color: var(--button-bg); /* Purple button */
-            color: var(--primary-bg); /* White text */
+            background-color: var(--button-bg);
+            color: var(--primary-bg);
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         #search-form button:hover {
-            background-color: var(--button-hover); /* Darker purple hover */
+            background-color: var(--button-hover);
         }
 
         /* Trending Stocks */
         .trending-stocks {
             padding: 60px 0;
-            width: 100%; /* Full width */
+            width: 100%;
         }
 
         .trending-stocks h3 {
             text-align: center;
             margin-bottom: 30px;
             font-size: 28px;
-            color: var(--accent-color); /* Purple accent */
+            color: var(--accent-color);
         }
 
         .stock-grid {
@@ -222,8 +229,8 @@
             color: var(--text-color);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 250px; /* Fixed width */
-            height: 150px; /* Fixed height */
+            width: 250px;
+            height: 150px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -261,14 +268,14 @@
         .news-section {
             padding: 60px 0;
             background: var(--secondary-bg);
-            width: 100%; /* Full width */
+            width: 100%;
         }
 
         .news-section h3 {
             text-align: center;
             margin-bottom: 30px;
             font-size: 28px;
-            color: var(--accent-color); /* Purple accent */
+            color: var(--accent-color);
         }
 
         .news-grid {
@@ -321,7 +328,7 @@
             text-align: center;
             padding: 20px 0;
             margin-top: 60px;
-            width: 100%; /* Full width */
+            width: 100%;
         }
 
         footer p {
@@ -350,13 +357,10 @@
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="container">
-            <h1>Indian Stock Analysis</h1>
-            <form id="search-form">
-                <input type="text" id="stock-search" placeholder="Search for a stock (e.g., TCS, RELIANCE)" required>
-                <button type="submit">Search</button>
-            </form>
+        <div class="nav-container">
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
@@ -411,6 +415,10 @@
         <div class="container">
             <h2>Track Your Favorite Indian Stocks</h2>
             <p>Stay ahead with real-time stock insights and news.</p>
+            <form id="search-form">
+                <input type="text" id="stock-search" placeholder="Search for a stock (e.g., TCS, RELIANCE)" required>
+                <button type="submit">Search</button>
+            </form>
         </div>
     </section>
 
@@ -431,6 +439,15 @@
                     </span>
                 </a>
                 {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="news-section">
+        <div class="container">
+            <h3>Latest News</h3>
+            <div class="news-grid">
+                <!-- Add news items here -->
             </div>
         </div>
     </section>
