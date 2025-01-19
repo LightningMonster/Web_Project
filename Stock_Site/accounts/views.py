@@ -70,8 +70,12 @@ def logout_user(request):
     messages.success(request, 'Logged out successfully')
     return redirect('/')
 
-@login_required
+@login_required(login_url='login')
 def home2(request):
+
+    if not request.user.is_authenticated:
+        return redirect('login')  
+    
     # Define the stock symbols you're interested in
     stock_symbols = ['SHILPAMED.BO', 'LAURUSLABS.NS', 'ITC.BO', 'MARUTI.BO', 'LT.BO']
 
@@ -143,7 +147,11 @@ def home1(request):
 
     return render(request, 'pages/home1.html', {'stock_data': stock_data})
 
+@login_required(login_url='login')
 def calculators(request):
+    if not request.user.is_authenticated:
+        return redirect('login')  
+    
     return render(request, 'pages/calculator.html')
 
 from django.db.models import Max, Subquery, OuterRef, F
