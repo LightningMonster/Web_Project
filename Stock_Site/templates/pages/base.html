@@ -13,6 +13,12 @@
             padding: 0;
             background-color: #000000;
             color: #0ef0d6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
         }
 
         /* Header */
@@ -20,6 +26,7 @@
             background: linear-gradient(90deg, #1c1e22, #090a0b);
             color: #e60fc5;
             padding: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         header .container {
@@ -31,36 +38,23 @@
             align-items: center;
         }
 
-        /* Aligning the site name and favicon to the left */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .site-name {
-            display: flex;
-            align-items: center;
-            gap: 10px; /* Add space between favicon and site name */
-        }
-
         header h1 {
             margin: 0;
             font-size: 22px;
         }
 
+        header h1 a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Navigation */
         nav ul {
             list-style: none;
             display: flex;
             gap: 20px;
             padding: 0;
             margin: 0;
-            justify-content: flex-end; /* Align other items to the right */
-        }
-
-        nav ul li {
-            display: inline-block;
         }
 
         nav ul li a {
@@ -76,32 +70,6 @@
             background-color: #1f1f1f;
         }
 
-        /* Search Bar Styling */
-        .search-bar form {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .search-bar input {
-            width: 80%;
-            padding: 8px;
-            font-size: 14px;
-            border-radius: 5px;
-            border: 1px solid #db03df;
-            margin-right: 10px;
-        }
-
-        .search-bar button {
-            padding: 8px 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
         /* Dropdown styles */
         .dropdown {
             position: relative;
@@ -115,6 +83,7 @@
             min-width: 160px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
+            border-radius: 5px;
         }
 
         .dropdown-content a {
@@ -122,6 +91,7 @@
             padding: 12px 16px;
             text-decoration: none;
             display: block;
+            transition: background-color 0.3s ease;
         }
 
         .dropdown-content a:hover {
@@ -130,6 +100,22 @@
 
         .dropdown:hover .dropdown-content {
             display: block;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background-color: #8a2be2;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: #6a1b9a;
         }
 
         /* Main Content */
@@ -151,45 +137,23 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-
-        /* Favicon styling */
-        .favicon {
-            width: 32px;
-            height: 32px;
-        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <header>
         <div class="container">
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
             <nav>
-                <ul class="navbar">
-                    <!-- Favicon and Site Name aligned to the left -->
-                    <li class="site-name">
-                        <img src="{% static 'favicon/favicon.webp' %}" alt="Logo" class="favicon">
-                        <span class="site-title">StocksStat</span>
-                    </li>
-    
-                    <!-- Centered Search Bar -->
-                    <li class="search-bar">
-                        <form method="get" action="{% url 'dashboard' %}">
-                            <input type="text" name="search" placeholder="Search stocks..." required>
-                            <button type="submit">Search</button>
-                        </form>
-                    </li>
-    
-                    <!-- Navigation Links -->
+                <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
                     <li><a href="{% url 'nse' %}">NSE</a></li>
                     <li><a href="{% url 'bse' %}">BSE</a></li>
                     <li><a href="{% url 'calculators' %}">Calculators</a></li>
-    
-                    <!-- User Dropdown -->
                     <li class="dropdown">
                         <a href="#" class="dropbtn">
                             {% if user.is_authenticated %}
-                                Hi, {{ user.first_name }} {{ user.last_name }}!
+                            Hi, {{ user.first_name }} {{ user.last_name }}!
                             {% else %}
                                 Guest
                             {% endif %}
@@ -204,6 +168,9 @@
                             {% endif %}
                         </div>
                     </li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -216,10 +183,39 @@
         {% endblock %}
     </div>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- JavaScript for Dark/Light Mode Toggle -->
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check user's preference from localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            themeToggle.textContent = '🌙 Dark Mode';
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeToggle.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
 </body>
 </html>

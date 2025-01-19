@@ -2,29 +2,269 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h2>Your Watchlist</h2>
-<ul id="watchlist">
-    {% for item in watchlist %}
-        <li>
-            {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
-        </li>
-    {% empty %}
-        <li>No stocks in your watchlist.</li>
-    {% endfor %}
-</ul>
+<style>
+    /* CSS Variables for Light Theme */
+    :root {
+        --primary-bg: #ffffff; /* White background */
+        --secondary-bg: #f5f5f5; /* Light gray */
+        --accent-color: #8a2be2; /* Purple accent */
+        --text-color: #333333; /* Dark gray text */
+        --text-secondary: #666666; /* Gray text */
+        --card-bg: #ffffff; /* White card background */
+        --card-hover: #f0f0f0; /* Light gray hover */
+        --positive: #4caf50; /* Green for positive change */
+        --negative: #f44336; /* Red for negative change */
+        --button-bg: #8a2be2; /* Purple button */
+        --button-hover: #6a1b9a; /* Darker purple hover */
+    }
 
-<h3>Add a Stock to Watchlist</h3>
-<form method="post" action="{% url 'add_to_watchlist' %}">
-    {% csrf_token %}
-    <label for="stock_symbol">Stock Symbol:</label>
-    <input type="text" id="stock_symbol" name="stock_symbol" required>
-    <button type="submit">Add</button>
-</form>
+    /* CSS Variables for Dark Theme */
+    body.dark-mode {
+        --primary-bg: #1a1a1a; /* Dark background */
+        --secondary-bg: #2a2a2a; /* Darker gray */
+        --accent-color: #8a2be2; /* Purple accent */
+        --text-color: #f0f0f0; /* Light text */
+        --text-secondary: #b0b0b0; /* Light gray text */
+        --card-bg: #2a2a2a; /* Dark card background */
+        --card-hover: #3a3a3a; /* Darker hover */
+        --button-bg: #8a2be2; /* Purple button */
+        --button-hover: #6a1b9a; /* Darker purple hover */
+    }
 
-<h3>Available Stocks</h3>
-<ul>
-    {% for stock in available_stocks %}
-        <li>{{ stock.stock_symbol }}</li>
-    {% endfor %}
-</ul>
+    /* General Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--primary-bg);
+        color: var(--text-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    h2, h3 {
+        color: var(--accent-color);
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        background: var(--card-bg);
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    li:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--text-color);
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        width: 100%;
+        max-width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: var(--primary-bg);
+        color: var(--text-color);
+        outline: none;
+    }
+
+    button {
+        padding: 10px 20px;
+        border: none;
+        background-color: var(--button-bg);
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: var(--button-hover);
+    }
+
+    /* Header Styles */
+    header {
+        background: var(--secondary-bg);
+        padding: 10px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+
+    header .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 24px;
+        color: var(--accent-color);
+    }
+
+    header h1 a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+    /* Dropdown styles */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--card-bg);
+        min-width: 160px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 5px;
+    }
+
+    .dropdown-content a {
+        color: var(--text-color);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .dropdown-content a:hover {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Toggle Button */
+    .theme-toggle {
+        background-color: var(--button-bg);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+        background-color: var(--button-hover);
+    }
+</style>
+
+<!-- Header -->
+<header>
+    
+</header>
+
+<div class="container">
+    <h2>Your Watchlist</h2>
+    <ul id="watchlist">
+        {% for item in watchlist %}
+            <li>
+                {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
+            </li>
+        {% empty %}
+            <li>No stocks in your watchlist.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Add a Stock to Watchlist</h3>
+    <form method="post" action="{% url 'add_to_watchlist' %}">
+        {% csrf_token %}
+        <label for="stock_symbol">Stock Symbol:</label>
+        <input type="text" id="stock_symbol" name="stock_symbol" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <h3>Available Stocks</h3>
+    <ul>
+        {% for stock in available_stocks %}
+            <li>{{ stock.stock_symbol }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- JavaScript for Dark/Light Mode Toggle -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Check user's preference from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        themeToggle.textContent = '☀️ Light Mode';
+    } else {
+        body.classList.remove('dark-mode');
+        themeToggle.textContent = '🌙 Dark Mode';
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        if (body.classList.contains('dark-mode')) {
+            themeToggle.textContent = '☀️ Light Mode';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeToggle.textContent = '🌙 Dark Mode';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+</script>
 {% endblock %}
