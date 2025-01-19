@@ -3,50 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            text-align: center;
-        }
-
-        .form-container {
-            max-width: 400px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .message {
-            color: red;
-        }
-    </style>
+    <title>Register - Indian Stock Analysis</title>
+    {% load static %}
+        <link rel="stylesheet" href="{% static 'css/accounts/login-register.css' %}">
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>
+                <a href="{% url 'home1' %}">Indian Stock Analysis</a>
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Notification -->
+    {% if messages %}
+    <div class="notification" id="notification">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    <script>
+        // Display notification and auto-hide after 3 seconds
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+    {% endif %}
+
+    <!-- Registration Form -->
     <div class="form-container">
         <h2>Register</h2>
         <form method="POST">
@@ -59,7 +58,34 @@
             <input type="password" name="confirm_password" placeholder="Confirm Password" required>
             <button type="submit">Register</button>
         </form>
-        <p class="message">{% for message in messages %}{{ message }}{% endfor %}</p>
     </div>
+
+    <!-- JavaScript for Dark/Light Mode Toggle -->
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check user's preference from localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            themeToggle.textContent = '🌙 Dark Mode';
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeToggle.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
 </body>
 </html>
