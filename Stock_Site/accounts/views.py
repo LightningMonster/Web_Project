@@ -289,6 +289,7 @@ def add_to_watchlist(request):
     return redirect('dashboard')
 
 def stock_detail(request, stock_symbol):
+    # Fetch stock data
     stock_data = StockData.objects.filter(stock_symbol=stock_symbol).order_by('-date')
     if not stock_data.exists():
         return render(request, 'error.html', {'message': f"No data found for stock symbol: {stock_symbol}"})
@@ -303,12 +304,28 @@ def stock_detail(request, stock_symbol):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Fetch news related to the stock symbol
+    query = f"{stock_symbol} stock"  # Example: "RELIANCE stock"
+    encoded_query = quote(query)  # Encode the query parameter
+    url = f"https://news.google.com/rss/search?q={encoded_query}"
+    feed = feedparser.parse(url)
+
+    # Prepare news data
+    news_data = []
+    for entry in feed.entries[:8]:  # Limit to 5 news items
+        news_data.append({
+            'title': entry.title,
+            'link': entry.link,
+            'published': entry.published
+        })
+
     context = {
         'stock_symbol': stock_symbol,
         'latest_data': latest_data,
         'high_52week': high_52week,
         'low_52week': low_52week,
         'page_obj': page_obj,
+        'news_data': news_data,  # Pass news data to the template
     }
 
     return render(request, 'pages/stock_detail.html', context)

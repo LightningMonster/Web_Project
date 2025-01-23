@@ -193,6 +193,59 @@
             padding: 8px 16px;
         }
 
+        /* News Section */
+        .news-section {
+            padding: 60px 0;
+            background: var(--secondary-bg);
+            width: 100%;
+        }
+
+        .news-section h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: var(--accent-color);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .news-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-item h4 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-color);
+        }
+
+        .news-item h4 a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .news-item h4 a:hover {
+            color: var(--accent-color);
+        }
+
+        .news-item p {
+            font-size: 14px;
+            margin: 5px 0;
+            color: var(--text-secondary);
+        }
+
         /* Dark mode toggle button */
         .theme-toggle {
             background-color: var(--button-bg);
@@ -294,6 +347,23 @@
                 <a href="?page={{ page_obj.next_page_number }}">Next</a>
             {% endif %}
         </div>
+
+        <!-- News Section -->
+        <section class="news-section">
+            <div class="container">
+                <h3>News for {{ stock_symbol }}</h3>
+                <div class="news-grid">
+                    {% for news in news_data %}
+                    <div class="news-item">
+                        <div class="news-content">
+                            <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
+                            <p>{{ news.published }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- JavaScript for Dark/Light Mode Toggle -->
