@@ -285,8 +285,6 @@
         }
 
         .news-item {
-            display: flex;
-            gap: 15px;
             background: var(--card-bg);
             padding: 15px;
             border-radius: 10px;
@@ -298,24 +296,22 @@
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
 
-        .news-item img {
-            width: 100px;
-            height: 100px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .news-content {
-            flex-grow: 1;
-        }
-
-        .news-content h4 {
+        .news-item h4 {
             margin: 0;
             font-size: 18px;
             color: var(--text-color);
         }
 
-        .news-content p {
+        .news-item h4 a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .news-item h4 a:hover {
+            color: var(--accent-color);
+        }
+
+        .news-item p {
             font-size: 14px;
             margin: 5px 0;
             color: var(--text-secondary);
@@ -447,7 +443,14 @@
         <div class="container">
             <h3>Latest News</h3>
             <div class="news-grid">
-                <!-- Add news items here -->
+                {% for news in news_data %}
+                <div class="news-item">
+                    <div class="news-content">
+                        <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
+                        <p>{{ news.published }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
