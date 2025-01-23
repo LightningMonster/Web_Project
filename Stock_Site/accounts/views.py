@@ -6,11 +6,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.models import StockData
 from decimal import Decimal
-from django.db.models import Max, F
 from django.db.models import Subquery, OuterRef
 from django.core.paginator import Paginator
 from django.db.models import Max, Min
 from .models import StockData, Watchlist
+import feedparser
 
 def register(request):
     if request.method == 'POST':
@@ -117,6 +117,10 @@ def home2(request):
 
 def home1(request):
     # Fetch the latest 20 unique stocks by date
+
+    if request.user.is_authenticated:
+        return redirect('home2/')
+    
     stocks = (
         StockData.objects.order_by('stock_symbol', '-date')
         .distinct('stock_symbol')[:20]
