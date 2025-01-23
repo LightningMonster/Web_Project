@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from django.db.models import Max, Min
 from .models import StockData, Watchlist
 import feedparser
+from urllib.parse import quote 
 
 def register(request):
     if request.method == 'POST':
@@ -72,10 +73,9 @@ def logout_user(request):
 
 @login_required(login_url='login')
 def home2(request):
-
     if not request.user.is_authenticated:
         return redirect('login')  
-    
+
     # Define the stock symbols you're interested in
     stock_symbols = ['SHILPAMED.BO', 'LAURUSLABS.NS', 'ITC.BO', 'MARUTI.BO', 'LT.BO']
 
@@ -110,9 +110,25 @@ def home2(request):
                 stock_symbol=stock.stock_symbol
             ).order_by('-date')[:30].values('date', 'close')
 
+    # Fetch stock market news from Google News RSS Feed
+    query = "Indian stock market"
+    encoded_query = quote(query)  # Encode the query parameter
+    url = f"https://news.google.com/rss/search?q={encoded_query}"
+    feed = feedparser.parse(url)
+
+    # Prepare news data
+    news_data = []
+    for entry in feed.entries[:10]:  # Limit to 5 news items
+        news_data.append({
+            'title': entry.title,
+            'link': entry.link,
+            'published': entry.published
+        })
+
     return render(request, 'pages/home2.html', {
         'stock_data': stock_data,
-        'historical_data': historical_data
+        'historical_data': historical_data,
+        'news_data': news_data  # Pass news data to the template
     })
 
 def home1(request):
