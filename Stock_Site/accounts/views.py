@@ -282,6 +282,7 @@ def add_to_watchlist(request):
         
         if stock_data:
             Watchlist.objects.get_or_create(user=request.user, stock_data=stock_data)
+            messages.success(request, f"{stock_symbol} added to your watchlist.")
         else:
             messages.error(request, "Invalid stock symbol.")
         
@@ -329,3 +330,25 @@ def stock_detail(request, stock_symbol):
     }
 
     return render(request, 'pages/stock_detail.html', context)
+
+def remove_from_watchlist(request):
+    if request.method == 'POST':
+        stock_symbol = request.POST.get('stock_symbol')
+        try:
+            # Find the stock in the user's watchlist and delete it
+            watchlist_item = Watchlist.objects.filter(
+                user=request.user,
+                stock_data__stock_symbol=stock_symbol
+            ).first()
+
+            if watchlist_item:
+                watchlist_item.delete()
+                messages.success(request, f"{stock_symbol} removed from your watchlist.")
+            else:
+                messages.error(request, "Stock not found in your watchlist.")
+        except Exception as e:
+            print(f"Error: {e}")
+            messages.error(request, "An error occurred while removing the stock.")
+
+        return redirect('dashboard')
+    return redirect('dashboard')

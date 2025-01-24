@@ -42,11 +42,23 @@
     }
 
     .container {
+        display: flex;
         width: 100%;
         max-width: 1800px;
         margin: 0 auto;
         padding: 0 20px;
         box-sizing: border-box;
+    }
+
+    .watchlist-section {
+        width: 25%;
+        padding-right: 20px;
+        border-right: 1px solid var(--secondary-bg);
+    }
+
+    .main-content {
+        width: 75%;
+        padding-left: 20px;
     }
 
     h2, h3 {
@@ -205,6 +217,74 @@
     .theme-toggle:hover {
         background-color: var(--button-hover);
     }
+
+    /* Plus Button Styles */
+    .plus-button {
+        background-color: var(--button-bg);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .plus-button:hover {
+        background-color: var(--button-hover);
+    }
+
+    /* Minus Button Styles */
+    .minus-button {
+        background-color: var(--negative);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .minus-button:hover {
+        background-color: #d32f2f;
+    }
+
+    /* Scrollable Card for Available Stocks */
+    .scrollable-card {
+        background: var(--card-bg);
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        max-height: 400px; /* Adjust height as needed */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+
+    /* Footer Styles */
+    footer {
+        background: var(--secondary-bg);
+        padding: 20px 0;
+        text-align: center;
+        margin-top: 40px;
+        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    footer p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 14px;
+    }
+
+    /* Stock Name Link Styles */
+    .stock-link {
+        text-decoration: none;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+    }
+
+    .stock-link:hover {
+        color: var(--accent-color);
+    }
 </style>
 
 <!-- Header -->
@@ -213,32 +293,50 @@
 </header>
 
 <div class="container">
-    <h2>Your Watchlist</h2>
-    <ul id="watchlist">
-        {% for item in watchlist %}
-            <li>
-                {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
-            </li>
-        {% empty %}
-            <li>No stocks in your watchlist.</li>
-        {% endfor %}
-    </ul>
+    <!-- Watchlist Section (Left Side) -->
+    <div class="watchlist-section">
+        <h2>Your Watchlist</h2>
+        <ul id="watchlist">
+            {% for item in watchlist %}
+                <li>
+                    <button class="minus-button" onclick="removeStockFromWatchlist('{{ item.stock_data__stock_symbol }}')">-</button>
+                    <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
+                        {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
+                    </a>
+                </li>
+            {% empty %}
+                <li>No stocks in your watchlist.</li>
+            {% endfor %}
+        </ul>
+    </div>
 
-    <h3>Add a Stock to Watchlist</h3>
-    <form method="post" action="{% url 'add_to_watchlist' %}">
-        {% csrf_token %}
-        <label for="stock_symbol">Stock Symbol:</label>
-        <input type="text" id="stock_symbol" name="stock_symbol" required>
-        <button type="submit">Add</button>
-    </form>
+    <!-- Main Content Section (Right Side) -->
+    <div class="main-content">
+        <h3>Add a Stock to Watchlist</h3>
+        <form method="post" action="{% url 'add_to_watchlist' %}">
+            {% csrf_token %}
+            <label for="stock_symbol">Stock Symbol:</label>
+            <input type="text" id="stock_symbol" name="stock_symbol" required>
+            <button type="submit">Add</button>
+        </form>
 
-    <h3>Available Stocks</h3>
-    <ul>
-        {% for stock in available_stocks %}
-            <li>{{ stock.stock_symbol }}</li>
-        {% endfor %}
-    </ul>
+        <h3>Available Stocks</h3>
+        <div class="scrollable-card">
+            <ul>
+                {% for stock in available_stocks %}
+                    <li>
+                        <button class="plus-button" onclick="addStockToWatchlist('{{ stock.stock_symbol }}')">+</button>
+                        <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
+                            {{ stock.stock_symbol }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
+
+
 
 <!-- JavaScript for Dark/Light Mode Toggle -->
 <script>
@@ -266,5 +364,49 @@
             localStorage.setItem('theme', 'light');
         }
     });
+
+    // Function to add stock to watchlist
+    function addStockToWatchlist(stockSymbol) {
+        fetch("{% url 'add_to_watchlist' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: `stock_symbol=${stockSymbol}`
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload(); // Reload the page to reflect the changes
+            } else {
+                alert('Failed to add stock to watchlist.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Function to remove stock from watchlist
+    function removeStockFromWatchlist(stockSymbol) {
+        fetch("{% url 'remove_from_watchlist' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: `stock_symbol=${stockSymbol}`
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload(); // Reload the page to reflect the changes
+            } else {
+                alert('Failed to remove stock from watchlist.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 </script>
 {% endblock %}
