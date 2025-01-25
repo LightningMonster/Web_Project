@@ -1,412 +1,139 @@
-{% extends 'pages/base.html' %}
-{% block title %}Dashboard{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - StockStats</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div>
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home2' %}">Home</a></li>
+                    <li><a href="{% url 'nse' %}">NSE</a></li>
+                    <li><a href="{% url 'bse' %}">BSE</a></li>
+                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">
+                            {% if user.is_authenticated %}
+                            Hi, {{ user.first_name }} {{ user.last_name }}!
+                            {% else %}
+                                Guest
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'dashboard' %}">Dashboard</a>
+                            <a href="#">Tools</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Login</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-{% block content %}
-<style>
-    /* CSS Variables for Light Theme */
-    :root {
-        --primary-bg: #ffffff; /* White background */
-        --secondary-bg: #f5f5f5; /* Light gray */
-        --accent-color: #8a2be2; /* Purple accent */
-        --text-color: #333333; /* Dark gray text */
-        --text-secondary: #666666; /* Gray text */
-        --card-bg: #ffffff; /* White card background */
-        --card-hover: #f0f0f0; /* Light gray hover */
-        --positive: #4caf50; /* Green for positive change */
-        --negative: #f44336; /* Red for negative change */
-        --button-bg: #8a2be2; /* Purple button */
-        --button-hover: #6a1b9a; /* Darker purple hover */
-    }
-
-    /* CSS Variables for Dark Theme */
-    body.dark-mode {
-        --primary-bg: #1a1a1a; /* Dark background */
-        --secondary-bg: #2a2a2a; /* Darker gray */
-        --accent-color: #8a2be2; /* Purple accent */
-        --text-color: #f0f0f0; /* Light text */
-        --text-secondary: #b0b0b0; /* Light gray text */
-        --card-bg: #2a2a2a; /* Dark card background */
-        --card-hover: #3a3a3a; /* Darker hover */
-        --button-bg: #8a2be2; /* Purple button */
-        --button-hover: #6a1b9a; /* Darker purple hover */
-    }
-
-    /* General Styles */
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: var(--primary-bg);
-        color: var(--text-color);
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .container {
-        display: flex;
-        width: 100%;
-        max-width: 1800px;
-        margin: 0 auto;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-
-    .watchlist-section {
-        width: 25%;
-        padding-right: 20px;
-        border-right: 1px solid var(--secondary-bg);
-    }
-
-    .main-content {
-        width: 75%;
-        padding-left: 20px;
-    }
-
-    h2, h3 {
-        color: var(--accent-color);
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    li {
-        background: var(--card-bg);
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    li:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    form {
-        margin-top: 20px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-        color: var(--text-color);
-    }
-
-    input[type="text"] {
-        padding: 10px;
-        width: 100%;
-        max-width: 300px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: var(--primary-bg);
-        color: var(--text-color);
-        outline: none;
-    }
-
-    button {
-        padding: 10px 20px;
-        border: none;
-        background-color: var(--button-bg);
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-        background-color: var(--button-hover);
-    }
-
-    /* Header Styles */
-    header {
-        background: var(--secondary-bg);
-        padding: 10px 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 100%;
-    }
-
-    header .nav-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1800px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    header h1 {
-        margin: 0;
-        font-size: 24px;
-        color: var(--accent-color);
-    }
-
-    header h1 a {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    nav ul {
-        list-style: none;
-        display: flex;
-        gap: 10px;
-        padding: 0;
-        margin: 0;
-    }
-
-    nav ul li a {
-        text-decoration: none;
-        color: var(--text-color);
-        font-size: 14px;
-        padding: 6px 12px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    nav ul li a:hover {
-        background-color: var(--accent-color);
-        color: white;
-    }
-
-    /* Dropdown styles */
-    .dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: var(--card-bg);
-        min-width: 160px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        border-radius: 5px;
-    }
-
-    .dropdown-content a {
-        color: var(--text-color);
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .dropdown-content a:hover {
-        background-color: var(--accent-color);
-        color: white;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    /* Toggle Button */
-    .theme-toggle {
-        background-color: var(--button-bg);
-        color: white;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.3s ease;
-    }
-
-    .theme-toggle:hover {
-        background-color: var(--button-hover);
-    }
-
-    /* Plus Button Styles */
-    .plus-button {
-        background-color: var(--button-bg);
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        margin-right: 10px;
-        transition: background-color 0.3s ease;
-    }
-
-    .plus-button:hover {
-        background-color: var(--button-hover);
-    }
-
-    /* Minus Button Styles */
-    .minus-button {
-        background-color: var(--negative);
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        margin-right: 10px;
-        transition: background-color 0.3s ease;
-    }
-
-    .minus-button:hover {
-        background-color: #d32f2f;
-    }
-
-    /* Scrollable Card for Available Stocks */
-    .scrollable-card {
-        background: var(--card-bg);
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 10px;
-        max-height: 400px; /* Adjust height as needed */
-        overflow-y: auto; /* Enable vertical scrolling */
-    }
-
-    /* Footer Styles */
-    footer {
-        background: var(--secondary-bg);
-        padding: 20px 0;
-        text-align: center;
-        margin-top: 40px;
-        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    footer p {
-        margin: 0;
-        color: var(--text-secondary);
-        font-size: 14px;
-    }
-
-    /* Stock Name Link Styles */
-    .stock-link {
-        text-decoration: none;
-        color: var(--text-color);
-        transition: color 0.3s ease;
-    }
-
-    .stock-link:hover {
-        color: var(--accent-color);
-    }
-</style>
-
-<!-- Header -->
-<header>
-    
-</header>
-
-<div class="container">
-    <!-- Watchlist Section (Left Side) -->
-    <div class="watchlist-section">
-        <h2>Your Watchlist</h2>
-        <ul id="watchlist">
-            {% for item in watchlist %}
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Watchlist Section (Left Side) -->
+        <div class="watchlist-section">
+            <h2>Your Watchlist</h2>
+            <ul id="watchlist">{% for item in watchlist %}
                 <li>
                     <button class="minus-button" onclick="removeStockFromWatchlist('{{ item.stock_data__stock_symbol }}')">-</button>
                     <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
                         {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
                     </a>
-                </li>
-            {% empty %}
-                <li>No stocks in your watchlist.</li>
-            {% endfor %}
-        </ul>
-    </div>
+                </li>{% empty %}
+                <li>No stocks in your watchlist.</li>{% endfor %}
+            </ul>
+        </div>
 
-    <!-- Main Content Section (Right Side) -->
-    <div class="main-content">
-        <h3>Add a Stock to Watchlist</h3>
-        <form method="post" action="{% url 'add_to_watchlist' %}">
-            {% csrf_token %}
-            <label for="stock_symbol">Stock Symbol:</label>
-            <input type="text" id="stock_symbol" name="stock_symbol" required>
-            <button type="submit">Add</button>
-        </form>
+        <!-- Main Content Section (Right Side) -->
+        <div class="main-content">
+            <h3>Add a Stock to Watchlist</h3>
+            <form method="post" action="{% url 'add_to_watchlist' %}">
+                {% csrf_token %}
+                <label for="stock_symbol">Stock Symbol:</label>
+                <input type="text" id="stock_symbol" name="stock_symbol" required>
+                <button type="submit">Add</button>
+            </form>
 
-        <h3>Available Stocks</h3>
-        <div class="scrollable-card">
-            <ul>
-                {% for stock in available_stocks %}
+            <h3>Available Stocks</h3>
+            <div class="scrollable-card">
+                <ul>{% for stock in available_stocks %}
                     <li>
                         <button class="plus-button" onclick="addStockToWatchlist('{{ stock.stock_symbol }}')">+</button>
                         <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
                             {{ stock.stock_symbol }}
                         </a>
-                    </li>
-                {% endfor %}
-            </ul>
+                    </li>{% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
+    <!-- Footer -->
+    <footer>
+        <div>
+            <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+        </div>
+    </footer>
 
-
-<!-- JavaScript for Dark/Light Mode Toggle -->
-<script>
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-
-    // Check user's preference from localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        body.classList.add('dark-mode');
-        themeToggle.textContent = '☀️ Light Mode';
-    } else {
-        body.classList.remove('dark-mode');
-        themeToggle.textContent = '🌙 Dark Mode';
-    }
-
-    // Toggle theme on button click
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        if (body.classList.contains('dark-mode')) {
-            themeToggle.textContent = '☀️ Light Mode';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeToggle.textContent = '🌙 Dark Mode';
-            localStorage.setItem('theme', 'light');
+    <!-- JavaScript for Dark/Light Mode Toggle -->
+    <script>
+        // Function to add stock to watchlist
+        function addStockToWatchlist(stockSymbol) {
+            fetch("{% url 'add_to_watchlist' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `stock_symbol=${stockSymbol}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Failed to add stock to watchlist.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
-    });
 
-    // Function to add stock to watchlist
-    function addStockToWatchlist(stockSymbol) {
-        fetch("{% url 'add_to_watchlist' %}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: `stock_symbol=${stockSymbol}`
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.reload(); // Reload the page to reflect the changes
-            } else {
-                alert('Failed to add stock to watchlist.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-
-    // Function to remove stock from watchlist
-    function removeStockFromWatchlist(stockSymbol) {
-        fetch("{% url 'remove_from_watchlist' %}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: `stock_symbol=${stockSymbol}`
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.reload(); // Reload the page to reflect the changes
-            } else {
-                alert('Failed to remove stock from watchlist.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-</script>
-{% endblock %}
+        // Function to remove stock from watchlist
+        function removeStockFromWatchlist(stockSymbol) {
+            fetch("{% url 'remove_from_watchlist' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `stock_symbol=${stockSymbol}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Failed to remove stock from watchlist.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

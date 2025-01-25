@@ -4,358 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indian Stock Analysis - Home</title>
-    <style>
-        /* CSS Variables for Light Theme */
-        :root {
-            --primary-bg: #ffffff; /* White background */
-            --secondary-bg: #f5f5f5; /* Light gray */
-            --accent-color: #8a2be2; /* Purple accent */
-            --text-color: #333333; /* Dark gray text */
-            --text-secondary: #666666; /* Gray text */
-            --card-bg: #ffffff; /* White card background */
-            --card-hover: #f0f0f0; /* Light gray hover */
-            --positive: #4caf50; /* Green for positive change */
-            --negative: #f44336; /* Red for negative change */
-            --button-bg: #8a2be2; /* Purple button */
-            --button-hover: #6a1b9a; /* Darker purple hover */
-        }
-
-        /* CSS Variables for Dark Theme */
-        body.dark-mode {
-            --primary-bg: #1a1a1a; /* Dark background */
-            --secondary-bg: #2a2a2a; /* Darker gray */
-            --accent-color: #8a2be2; /* Purple accent */
-            --text-color: #f0f0f0; /* Light text */
-            --text-secondary: #b0b0b0; /* Light gray text */
-            --card-bg: #2a2a2a; /* Dark card background */
-            --card-hover: #3a3a3a; /* Darker hover */
-            --button-bg: #8a2be2; /* Purple button */
-            --button-hover: #6a1b9a; /* Darker purple hover */
-        }
-
-        /* General Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--primary-bg);
-            color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-
-        /* Header */
-        header {
-            background: var(--secondary-bg);
-            padding: 10px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-        }
-
-        header .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: var(--accent-color);
-        }
-
-        header h1 a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 10px;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        /* Dropdown styles */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--card-bg);
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            border-radius: 5px;
-        }
-
-        .dropdown-content a {
-            color: var(--text-color);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Toggle Button */
-        .theme-toggle {
-            background-color: var(--button-bg);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 100px 20px;
-            text-align: center;
-            background: var(--primary-bg);
-            width: 100%;
-        }
-
-        .hero h2 {
-            font-size: 42px;
-            margin-bottom: 10px;
-            color: var(--accent-color);
-        }
-
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-        }
-
-        #search-form {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        #stock-search {
-            padding: 12px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: var(--primary-bg);
-            color: var(--text-color);
-            outline: none;
-        }
-
-        #search-form button {
-            padding: 12px 24px;
-            border: none;
-            background-color: var(--button-bg);
-            color: var(--primary-bg);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #search-form button:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* Trending Stocks */
-        .trending-stocks {
-            padding: 60px 0;
-            width: 100%;
-        }
-
-        .trending-stocks h3 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            color: var(--accent-color);
-        }
-
-        .stock-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            justify-items: center;
-        }
-
-        .stock-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            color: var(--text-color);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 250px;
-            height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .stock-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .stock-card h4 {
-            font-size: 20px;
-            margin: 0 0 10px;
-        }
-
-        .stock-card p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .stock-card .change {
-            font-size: 16px;
-        }
-
-        .stock-card .positive {
-            color: var(--positive);
-        }
-
-        .stock-card .negative {
-            color: var(--negative);
-        }
-
-        /* News Section */
-        .news-section {
-            padding: 60px 0;
-            background: var(--secondary-bg);
-            width: 100%;
-        }
-
-        .news-section h3 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            color: var(--accent-color);
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .news-item {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .news-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .news-item h4 {
-            margin: 0;
-            font-size: 18px;
-            color: var(--text-color);
-        }
-
-        .news-item h4 a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .news-item h4 a:hover {
-            color: var(--accent-color);
-        }
-
-        .news-item p {
-            font-size: 14px;
-            margin: 5px 0;
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--secondary-bg);
-            color: var(--text-color);
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 60px;
-            width: 100%;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 14px;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--positive);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            display: none;
-            z-index: 1000;
-        }
-
-        .notification.error {
-            background-color: var(--negative);
-        }
-    </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div class="nav-container">
+        <div>
             <h1><a href="{% url 'home1' %}">StockStats</a></h1>
             <nav>
                 <ul>
@@ -389,6 +42,7 @@
         </div>
     </header>
 
+    <!-- Notification -->
     {% if messages %}
     <div class="notification" id="notification">
         {% for message in messages %}
@@ -407,8 +61,9 @@
     </script>
     {% endif %}
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
+        <div>
             <h2>Track Your Favorite Indian Stocks</h2>
             <p>Stay ahead with real-time stock insights and news.</p>
             <form id="search-form">
@@ -418,8 +73,9 @@
         </div>
     </section>
 
+    <!-- Trending Stocks -->
     <section class="trending-stocks">
-        <div class="container">
+        <div>
             <h3>Trending Indian Stocks</h3>
             <div class="stock-grid">
                 {% for stock in stock_data %}
@@ -439,8 +95,9 @@
         </div>
     </section>
 
+    <!-- News Section -->
     <section class="news-section">
-        <div class="container">
+        <div>
             <h3>Latest News</h3>
             <div class="news-grid">
                 {% for news in news_data %}
@@ -455,38 +112,11 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
-        <div class="container">
+        <div>
             <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- JavaScript for Dark/Light Mode Toggle -->
-    <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        // Check user's preference from localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️ Light Mode';
-        } else {
-            body.classList.remove('dark-mode');
-            themeToggle.textContent = '🌙 Dark Mode';
-        }
-
-        // Toggle theme on button click
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                themeToggle.textContent = '☀️ Light Mode';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeToggle.textContent = '🌙 Dark Mode';
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    </script>
 </body>
 </html>

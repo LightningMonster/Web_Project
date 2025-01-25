@@ -4,269 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Details - {{ stock_symbol }}</title>
-    <style>
-        /* Reuse the CSS from your home page */
-        :root {
-            --primary-bg: #ffffff;
-            --secondary-bg: #f5f5f5;
-            --accent-color: #8a2be2;
-            --text-color: #333333;
-            --text-secondary: #666666;
-            --card-bg: #ffffff;
-            --card-hover: #f0f0f0;
-            --positive: #4caf50;
-            --negative: #f44336;
-            --button-bg: #8a2be2;
-            --button-hover: #6a1b9a;
-        }
-
-        body.dark-mode {
-            --primary-bg: #1a1a1a;
-            --secondary-bg: #2a2a2a;
-            --accent-color: #8a2be2;
-            --text-color: #f0f0f0;
-            --text-secondary: #b0b0b0;
-            --card-bg: #2a2a2a;
-            --card-hover: #3a3a3a;
-            --button-bg: #8a2be2;
-            --button-hover: #6a1b9a;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--primary-bg);
-            color: var(--text-color);
-            overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-
-        /* Header */
-        header {
-            background: var(--secondary-bg);
-            padding: 15px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: var(--accent-color);
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 15px;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        /* Dropdown styles */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--card-bg);
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            border-radius: 5px;
-        }
-
-        .dropdown-content a {
-            color: var(--text-color);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Stock Info Section */
-        h1 {
-            color: var(--accent-color);
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .stock-info {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        .stock-info p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid var(--secondary-bg);
-        }
-
-        th {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        tr:hover {
-            background-color: var(--card-hover);
-        }
-
-        .pagination {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .pagination a {
-            color: var(--accent-color);
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .pagination a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        .pagination span {
-            padding: 8px 16px;
-        }
-
-        /* News Section */
-        .news-section {
-            padding: 60px 0;
-            background: var(--secondary-bg);
-            width: 100%;
-        }
-
-        .news-section h3 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            color: var(--accent-color);
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .news-item {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .news-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .news-item h4 {
-            margin: 0;
-            font-size: 18px;
-            color: var(--text-color);
-        }
-
-        .news-item h4 a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .news-item h4 a:hover {
-            color: var(--accent-color);
-        }
-
-        .news-item p {
-            font-size: 14px;
-            margin: 5px 0;
-            color: var(--text-secondary);
-        }
-
-        /* Dark mode toggle button */
-        .theme-toggle {
-            background-color: var(--button-bg);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background-color: var(--button-hover);
-        }
-    </style>
 </head>
 <body>
     <!-- Header with Navigation Bar -->
     <header>
-        <div class="container">
+        <div>
             <h1>Indian Stock Analysis</h1>
             <nav>
                 <ul>
@@ -300,11 +42,11 @@
         </div>
     </header>
 
-    <div class="container">
+    <div>
         <h1>Stock Details for {{ stock_symbol }}</h1>
 
         <!-- Stock Info Section -->
-        <div class="stock-info">
+        <div>
             <p>Latest Price: ₹{{ latest_data.close }}</p>
             <p>52-Week High: ₹{{ high_52week }}</p>
             <p>52-Week Low: ₹{{ low_52week }}</p>
@@ -338,7 +80,7 @@
         </table>
 
         <!-- Pagination -->
-        <div class="pagination">
+        <div>
             {% if page_obj.has_previous %}
                 <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
             {% endif %}
@@ -349,13 +91,13 @@
         </div>
 
         <!-- News Section -->
-        <section class="news-section">
-            <div class="container">
+        <section>
+            <div>
                 <h3>News for {{ stock_symbol }}</h3>
-                <div class="news-grid">
+                <div>
                     {% for news in news_data %}
-                    <div class="news-item">
-                        <div class="news-content">
+                    <div>
+                        <div>
                             <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
                             <p>{{ news.published }}</p>
                         </div>
@@ -366,32 +108,5 @@
         </section>
     </div>
 
-    <!-- JavaScript for Dark/Light Mode Toggle -->
-    <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        // Check user's preference from localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️ Light Mode';
-        } else {
-            body.classList.remove('dark-mode');
-            themeToggle.textContent = '🌙 Dark Mode';
-        }
-
-        // Toggle theme on button click
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                themeToggle.textContent = '☀️ Light Mode';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeToggle.textContent = '🌙 Dark Mode';
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    </script>
 </body>
 </html>
