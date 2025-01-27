@@ -1,0 +1,77 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stock Homepage</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/homepg1.css' %}">
+    </head>
+    <body>
+        <div class="navbar">
+            <h1>Stock Data Homepage</h1>
+            <div class="buttons">
+                <a href="accounts/login">Login</a>
+                <a href="/register">Register</a>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="notification" id="notification">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+
+        {% endif %}
+
+        <div class="container">
+            {% for stock in stock_data %}
+                <div class="stock-box" onclick="showLoginMessage()">
+                    <div class="stock-name">{{ stock.symbol }}</div>
+                    <div class="stock-price">₹{{ stock.last_price }}</div>
+                    <div class="stock-change {% if stock.price_change >= 0 %}increase{% else %}decrease{% endif %}">
+                        {{ stock.price_change|floatformat:2 }}%
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="notification error" id="login-message">Please login for using more features!</div>
+
+        <div class="container">
+    
+            <!-- Features List Section -->
+            <div class="features-section">
+                <h3>Available Features After Login</h3>
+                <ul>
+                    <li>
+                        <strong>Real-time Stock Charts</strong> - View interactive line and candlestick charts for stock price trends.
+                    </li>
+                    <li>
+                        <strong>Comprehensive Stock Information</strong> - Get detailed information about stocks, including market cap, P/E ratio, dividend yield, and more.
+                    </li>
+                    <li>
+                        <strong>Buy/Sell Stock</strong> - Engage in trading with real-time stock prices (mock trading or real trading based on your platform's setup).
+                    </li>
+                    <li>
+                        <strong>Portfolio Management</strong> - Track your stock portfolio’s performance, including profit/loss calculations and current value.
+                    </li>
+                    <li>
+                        <strong>Net Worth Summary</strong> - Get an overview of the total value of your stocks, including any profit/loss.
+                    </li>
+                    <li>
+                        <strong>Stock Calculators</strong> - Use calculators to help with your stock trading, such as profit/loss calculators and dividend yield estimators.
+                    </li>
+                    <li>
+                        <strong>Watchlist</strong> - Add stocks to your watchlist and track their performance over time.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    
+
+        {% load static %}
+        <script src="{% static 'js/home1.js' %}"></script>
+    </body>
+    </html>

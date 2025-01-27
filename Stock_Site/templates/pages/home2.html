@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Stock Analysis - Home</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div>
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home2' %}">Home</a></li>
+                    <li><a href="{% url 'nse' %}">NSE</a></li>
+                    <li><a href="{% url 'bse' %}">BSE</a></li>
+                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">
+                            {% if user.is_authenticated %}
+                            Hi, {{ user.first_name }} {{ user.last_name }}!
+                            {% else %}
+                                Guest
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'dashboard' %}">Dashboard</a>
+                            <a href="#">Tools</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Login</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Notification -->
+    {% if messages %}
+    <div class="notification" id="notification">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    <script>
+        // Display notification and auto-hide after 3 seconds
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+    {% endif %}
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h2>Track Your Favorite Indian Stocks</h2>
+            <p>Stay ahead with real-time stock insights and news.</p>
+            <form id="search-form">
+                <input type="text" id="stock-search" placeholder="Search for a stock (e.g., TCS, RELIANCE)" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Trending Stocks -->
+    <section class="trending-stocks">
+        <div>
+            <h3>Trending Indian Stocks</h3>
+            <div class="stock-grid">
+                {% for stock in stock_data %}
+                <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
+                    <h4>{{ stock.symbol }}</h4>
+                    <p>₹{{ stock.last_price }}</p>
+                    <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
+                        {% if stock.change > 0 %}
+                            +{{ stock.change }}%
+                        {% else %}
+                            {{ stock.change }}%
+                        {% endif %}
+                    </span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-section">
+        <div>
+            <h3>Latest News</h3>
+            <div class="news-grid">
+                {% for news in news_data %}
+                <div class="news-item">
+                    <div class="news-content">
+                        <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
+                        <p>{{ news.published }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

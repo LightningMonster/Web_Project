@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - StockStats</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div>
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home2' %}">Home</a></li>
+                    <li><a href="{% url 'nse' %}">NSE</a></li>
+                    <li><a href="{% url 'bse' %}">BSE</a></li>
+                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">
+                            {% if user.is_authenticated %}
+                            Hi, {{ user.first_name }} {{ user.last_name }}!
+                            {% else %}
+                                Guest
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'dashboard' %}">Dashboard</a>
+                            <a href="#">Tools</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Login</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Watchlist Section (Left Side) -->
+        <div class="watchlist-section">
+            <h2>Your Watchlist</h2>
+            <ul id="watchlist">{% for item in watchlist %}
+                <li>
+                    <button class="minus-button" onclick="removeStockFromWatchlist('{{ item.stock_data__stock_symbol }}')">-</button>
+                    <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
+                        {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
+                    </a>
+                </li>{% empty %}
+                <li>No stocks in your watchlist.</li>{% endfor %}
+            </ul>
+        </div>
+
+        <!-- Main Content Section (Right Side) -->
+        <div class="main-content">
+            <h3>Add a Stock to Watchlist</h3>
+            <form method="post" action="{% url 'add_to_watchlist' %}">
+                {% csrf_token %}
+                <label for="stock_symbol">Stock Symbol:</label>
+                <input type="text" id="stock_symbol" name="stock_symbol" required>
+                <button type="submit">Add</button>
+            </form>
+
+            <h3>Available Stocks</h3>
+            <div class="scrollable-card">
+                <ul>{% for stock in available_stocks %}
+                    <li>
+                        <button class="plus-button" onclick="addStockToWatchlist('{{ stock.stock_symbol }}')">+</button>
+                        <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
+                            {{ stock.stock_symbol }}
+                        </a>
+                    </li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Dark/Light Mode Toggle -->
+    <script>
+        // Function to add stock to watchlist
+        function addStockToWatchlist(stockSymbol) {
+            fetch("{% url 'add_to_watchlist' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `stock_symbol=${stockSymbol}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Failed to add stock to watchlist.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to remove stock from watchlist
+        function removeStockFromWatchlist(stockSymbol) {
+            fetch("{% url 'remove_from_watchlist' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `stock_symbol=${stockSymbol}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload(); // Reload the page to reflect the changes
+                } else {
+                    alert('Failed to remove stock from watchlist.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
