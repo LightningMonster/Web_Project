@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indian Stock Analysis - Home</title>
-<<<<<<< Updated upstream
-=======
     <style>
         /* CSS Variables for Light Theme */
         :root {
@@ -411,7 +409,6 @@
             background-color: var(--negative);
         }
     </style>
->>>>>>> Stashed changes
 </head>
 <body>
     <!-- Video Background -->
@@ -422,7 +419,7 @@
 
     <!-- Header -->
     <header>
-        <div>
+        <div class="nav-container">
             <h1><a href="{% url 'home1' %}">StockStats</a></h1>
             <nav>
                 <ul>
@@ -456,7 +453,6 @@
         </div>
     </header>
 
-    <!-- Notification -->
     {% if messages %}
     <div class="notification" id="notification">
         {% for message in messages %}
@@ -475,9 +471,8 @@
     </script>
     {% endif %}
 
-    <!-- Hero Section -->
     <section class="hero">
-        <div>
+        <div class="container">
             <h2>Track Your Favorite Indian Stocks</h2>
             <p>Stay ahead with real-time stock insights and news.</p>
             <form id="search-form">
@@ -487,9 +482,8 @@
         </div>
     </section>
 
-    <!-- Trending Stocks -->
     <section class="trending-stocks">
-        <div>
+        <div class="container">
             <h3>Trending Indian Stocks</h3>
             <div class="stock-grid">
                 {% for stock in stock_data %}
@@ -509,9 +503,8 @@
         </div>
     </section>
 
-    <!-- News Section -->
     <section class="news-section">
-        <div>
+        <div class="container">
             <h3>Latest News</h3>
             <div class="news-grid">
                 {% for news in news_data %}
@@ -526,11 +519,38 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
-        <div>
+        <div class="container">
             <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- JavaScript for Dark/Light Mode Toggle -->
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check user's preference from localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            themeToggle.textContent = '🌙 Dark Mode';
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeToggle.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '🌙 Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
 </body>
 </html>
