@@ -1,12 +1,17 @@
 import pandas as pd
 import yfinance as yf
 import os
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand # library for making file as a command 
 
-class Command(BaseCommand):
-    help = 'Fetch and save historical stock data along with company information'
+class Command(BaseCommand): # file name as a command (python manage.py collect_data) we can run file entering command
+    help = 'Read tickers from the input file and save all data about stock in the historical_data folder'
 
+    #handle: This is the method that Django calls when executing the management command.
     def handle(self, *args, **kwargs):
+        #self: Refers to the instance of the Command class.
+        #*args: Collects any additional positional arguments passed to the command. (1 2 etc. [only if file needed command line argument.])
+        #**kwargs: Collects any additional keyword arguments passed to the command. (--help, etc.)
+
         # Path to the input CSV file
         input_file = 'accounts/management/commands/Collectors/sources/test_stocks_list.csv'
         
