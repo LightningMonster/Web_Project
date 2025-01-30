@@ -412,9 +412,10 @@
 </head>
 <body>
     <!-- Video Background -->
+    {% load static %}
+
     <video id="video-background" autoplay muted loop>
-        <source src="https://videos.pexels.com/video-files/18743334/18743334-hd_1920_1080_60fps.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
     </video>
 
     <!-- Header -->
