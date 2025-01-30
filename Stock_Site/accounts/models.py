@@ -12,6 +12,19 @@ class StockData(models.Model):
     dividends = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stock_splits = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
+    # New fields
+    company_name = models.CharField(max_length=255, null=True, blank=True)
+    industry = models.CharField(max_length=255, null=True, blank=True)
+    sector = models.CharField(max_length=100, null=True, blank=True)
+    ceo = models.CharField(max_length=255, null=True, blank=True)
+    headquarters = models.CharField(max_length=255, null=True, blank=True)
+    website = models.CharField(max_length=255, null=True, blank=True)
+    market_cap = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
+    pe_ratio = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    eps = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    dividend_yield = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    fifty_two_week_high = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    fifty_two_week_low = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     class Meta:
         unique_together = ('stock_symbol', 'date')  # Ensures that a stock symbol and date combination is unique
 

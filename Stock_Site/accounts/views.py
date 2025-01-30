@@ -300,6 +300,18 @@ def stock_detail(request, stock_symbol):
     low_52week = stock_data.aggregate(Min('low'))['low__min']
     latest_data = stock_data.first()
 
+    # Fetch additional company details (assuming they are stored in the latest_data object)
+    company_name = latest_data.company_name
+    ceo = latest_data.ceo
+    headquarters = latest_data.headquarters
+    industry = latest_data.industry
+    sector = latest_data.sector
+    website = latest_data.website
+    dividend_yield = latest_data.dividend_yield
+    eps = latest_data.eps
+    market_cap = latest_data.market_cap
+    pe_ratio = latest_data.pe_ratio
+
     # Paginate the historical data
     paginator = Paginator(stock_data, 10)  # Show 10 records per page
     page_number = request.GET.get('page')
@@ -313,20 +325,33 @@ def stock_detail(request, stock_symbol):
 
     # Prepare news data
     news_data = []
-    for entry in feed.entries[:8]:  # Limit to 5 news items
+    for entry in feed.entries[:8]:  # Limit to 8 news items
         news_data.append({
             'title': entry.title,
             'link': entry.link,
             'published': entry.published
         })
 
+    # Prepare context with all fields
     context = {
         'stock_symbol': stock_symbol,
         'latest_data': latest_data,
         'high_52week': high_52week,
         'low_52week': low_52week,
         'page_obj': page_obj,
-        'news_data': news_data,  # Pass news data to the template
+        'news_data': news_data,
+        'company_name': company_name,
+        'ceo': ceo,
+        'headquarters': headquarters,
+        'industry': industry,
+        'sector': sector,
+        'website': website,
+        'dividend_yield': dividend_yield,
+        'eps': eps,
+        'fifty_two_week_high': high_52week,  # Same as high_52week
+        'fifty_two_week_low': low_52week,    # Same as low_52week
+        'market_cap': market_cap,
+        'pe_ratio': pe_ratio,
     }
 
     return render(request, 'pages/stock_detail.html', context)

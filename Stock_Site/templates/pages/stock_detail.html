@@ -19,7 +19,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropbtn">
                             {% if user.is_authenticated %}
-                            Hi, {{ user.first_name }} {{ user.last_name }}!
+                                Hi, {{ user.first_name }} {{ user.last_name }}!
                             {% else %}
                                 Guest
                             {% endif %}
@@ -42,19 +42,30 @@
         </div>
     </header>
 
+    <!-- Stock Overview -->
     <div>
         <h1>Stock Details for {{ stock_symbol }}</h1>
 
         <!-- Stock Info Section -->
         <div>
-            <p>Latest Price: ₹{{ latest_data.close }}</p>
-            <p>52-Week High: ₹{{ high_52week }}</p>
-            <p>52-Week Low: ₹{{ low_52week }}</p>
+            <p><strong>Company Name:</strong> {{ company_name }}</p>
+            <p><strong>CEO:</strong> {{ ceo }}</p>
+            <p><strong>Headquarters:</strong> {{ headquarters }}</p>
+            <p><strong>Industry:</strong> {{ industry }}</p>
+            <p><strong>Sector:</strong> {{ sector }}</p>
+            <p><strong>Website:</strong> <a href="{{ website }}" target="_blank">{{ website }}</a></p>
+            <p><strong>Latest Price:</strong> ₹{{ latest_data.close }}</p>
+            <p><strong>52-Week High:</strong> ₹{{ fifty_two_week_high }}</p>
+            <p><strong>52-Week Low:</strong> ₹{{ fifty_two_week_low }}</p>
+            <p><strong>Market Capitalization:</strong> ₹{{ market_cap }}</p>
+            <p><strong>P/E Ratio:</strong> {{ pe_ratio }}</p>
+            <p><strong>EPS (Earnings Per Share):</strong> {{ eps }}</p>
+            <p><strong>Dividend Yield:</strong> {{ dividend_yield }}%</p>
         </div>
 
         <!-- Historical Data Table -->
         <h2>Historical Data</h2>
-        <table>
+        <table border="1">
             <thead>
                 <tr>
                     <th>Date</th>
@@ -63,6 +74,8 @@
                     <th>Low</th>
                     <th>Close</th>
                     <th>Volume</th>
+                    <th>Dividends</th>
+                    <th>Stock Splits</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +87,12 @@
                     <td>{{ record.low }}</td>
                     <td>{{ record.close }}</td>
                     <td>{{ record.volume }}</td>
+                    <td>{{ record.dividends }}</td>
+                    <td>{{ record.stock_splits }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No historical data available.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -93,15 +112,15 @@
         <!-- News Section -->
         <section>
             <div>
-                <h3>News for {{ stock_symbol }}</h3>
+                <h3>Latest News for {{ stock_symbol }}</h3>
                 <div>
                     {% for news in news_data %}
                     <div>
-                        <div>
-                            <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
-                            <p>{{ news.published }}</p>
-                        </div>
+                        <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
+                        <p><em>Published on:</em> {{ news.published }}</p>
                     </div>
+                    {% empty %}
+                    <p>No news available for this stock.</p>
                     {% endfor %}
                 </div>
             </div>
