@@ -3,63 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            text-align: center;
-        }
-
-        .form-container {
-            max-width: 400px;
-            margin: 100px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            display: none;
-        }
-
-        .notification.error {
-            background-color: #dc3545;
-        }
-    </style>
+    <title>Login - Indian Stock Analysis</title>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div>
+            <h1>
+                <a href="{% url 'home1' %}">Indian Stock Analysis</a>
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Notification -->
     {% if messages %}
     <div class="notification" id="notification">
         {% for message in messages %}
@@ -78,7 +43,8 @@
     </script>
     {% endif %}
 
-    <div class="form-container">
+    <!-- Login Form -->
+    <div>
         <h2>Login</h2>
         <form method="POST">
             {% csrf_token %}

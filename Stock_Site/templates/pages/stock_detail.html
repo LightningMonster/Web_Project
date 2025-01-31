@@ -4,48 +4,471 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Details - {{ stock_symbol }}</title>
+    <style>
+        /* General Styles */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f4f4f9;
+            --text-color: #333;
+            --card-background: #fff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--card-background);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1;
+            min-width: 160px;
+        }
+
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .theme-toggle {
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: #2980b9;
+        }
+
+        /* Main Content Styles */
+        main {
+            padding: 40px 0;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        /* Stock Info Section */
+        .stock-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stock-info p {
+            margin: 0;
+        }
+
+        .stock-info strong {
+            color: var(--primary-color);
+        }
+
+        /* Historical Data Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        table tr:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination a, .pagination span {
+            padding: 8px 16px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination a:hover {
+            background-color: #2980b9;
+        }
+
+        .pagination span {
+            background-color: var(--primary-color);
+        }
+
+        /* News Section */
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+
+        .news-item h4 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .news-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--primary-color);
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            --background-color: #1a1a1a;
+            --text-color: #f4f4f4;
+            --card-background: #2c2c2c;
+        }
+
+        body.dark-mode .dropdown-content {
+            background-color: #2c2c2c;
+        }
+
+        body.dark-mode .dropdown-content a {
+            color: #f4f4f4;
+        }
+
+        body.dark-mode .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark-mode table tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .news-item {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .stock-info {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .dropdown-content {
+                position: static;
+                display: none;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Stock Details for {{ stock_symbol }}</h1>
-    <p>Latest Price: ₹{{ latest_data.close }}</p>
-    <p>52-Week High: ₹{{ high_52week }}</p>
-    <p>52-Week Low: ₹{{ low_52week }}</p>
+    <!-- Header with Navigation Bar -->
+    <header>
+        <div class="container">
+            <h1>Indian Stock Analysis</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home2' %}">Home</a></li>
+                    <li><a href="{% url 'nse' %}">NSE</a></li>
+                    <li><a href="{% url 'bse' %}">BSE</a></li>
+                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">
+                            {% if user.is_authenticated %}
+                                Hi, {{ user.first_name }} {{ user.last_name }}!
+                            {% else %}
+                                Guest
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'dashboard' %}">Dashboard</a>
+                            <a href="#">Tools</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Login</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li>
+                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <h2>Historical Data</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Open</th>
-                <th>High</th>
-                <th>Low</th>
-                <th>Close</th>
-                <th>Volume</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in page_obj %}
-            <tr>
-                <td>{{ record.date }}</td>
-                <td>{{ record.open }}</td>
-                <td>{{ record.high }}</td>
-                <td>{{ record.low }}</td>
-                <td>{{ record.close }}</td>
-                <td>{{ record.volume }}</td>
-            </tr>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Stock Overview -->
+        <h1>Stock Details for {{ stock_symbol }}</h1>
+
+        <!-- Stock Info Section -->
+        <div class="card">
+            <h2>Stock Information</h2>
+            <div class="stock-info">
+                <p><strong>Company Name:</strong> {{ company_name }}</p>
+                <p><strong>CEO:</strong> {{ ceo }}</p>
+                <p><strong>Headquarters:</strong> {{ headquarters }}</p>
+                <p><strong>Industry:</strong> {{ industry }}</p>
+                <p><strong>Sector:</strong> {{ sector }}</p>
+                <p><strong>Website:</strong> <a href="{{ website }}" target="_blank">{{ website }}</a></p>
+                <p><strong>Latest Price:</strong> ₹{{ latest_data.close }}</p>
+                <p><strong>52-Week High:</strong> ₹{{ fifty_two_week_high }}</p>
+                <p><strong>52-Week Low:</strong> ₹{{ fifty_two_week_low }}</p>
+                <p><strong>Market Capitalization:</strong> ₹{{ market_cap }}</p>
+                <p><strong>P/E Ratio:</strong> {{ pe_ratio }}</p>
+                <p><strong>EPS (Earnings Per Share):</strong> {{ eps }}</p>
+                <p><strong>Dividend Yield:</strong> {{ dividend_yield }}%</p>
+            </div>
+        </div>
+    
+        <!-- Historical Data Table -->
+        <div class="card">
+            <h2>Historical Data</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Open</th>
+                            <th>High</th>
+                            <th>Low</th>
+                            <th>Close</th>
+                            <th>Volume</th>
+                            <th>Dividends</th>
+                            <th>Stock Splits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in page_obj %}
+                        <tr>
+                            <td>{{ record.date }}</td>
+                            <td>{{ record.open }}</td>
+                            <td>{{ record.high }}</td>
+                            <td>{{ record.low }}</td>
+                            <td>{{ record.close }}</td>
+                            <td>{{ record.volume }}</td>
+                            <td>{{ record.dividends }}</td>
+                            <td>{{ record.stock_splits }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8">No historical data available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                {% endif %}
+            </div>
+        </div>
+    
+        <!-- News Section -->
+        <div class="card">
+            <h2>Latest News for {{ stock_symbol }}</h2>
+            {% for news in news_data %}
+            <div class="news-item">
+                <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
+                <p><em>Published on:</em> {{ news.published }}</p>
+            </div>
+            {% empty %}
+            <p>No news available for this stock.</p>
             {% endfor %}
-        </tbody>
-    </table>
+        </div>
+    </main>
 
-    <!-- Pagination -->
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-        {% endif %}
-        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Next</a>
-        {% endif %}
-    </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            themeToggle.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('darkMode');
+        if (savedTheme === 'true') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Light Mode';
+        }
+
+        // Dropdown menu functionality for mobile
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    dropdown.querySelector('.dropdown-content').style.display = 
+                        dropdown.querySelector('.dropdown-content').style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

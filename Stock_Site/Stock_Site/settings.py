@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     'accounts',
 ]
@@ -79,7 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stock_analysis',
-        'USER': 'phalguni',
+        'USER': 'omkar',
         'PASSWORD': '1234',
         'HOST': 'localhost',  # Use the IP if hosted remotely
         'PORT': '5432',       # Default PostgreSQL port
@@ -133,3 +134,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Login URL
+LOGIN_URL = 'login' 

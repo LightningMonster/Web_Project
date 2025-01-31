@@ -6,11 +6,30 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.models import StockData
 from decimal import Decimal
-from django.db.models import Max, F
 from django.db.models import Subquery, OuterRef
 from django.core.paginator import Paginator
 from django.db.models import Max, Min
 from .models import StockData, Watchlist
+import feedparser
+from urllib.parse import quote 
+import yfinance as yf
+
+# Function to fetch live stock price
+def fetch_live_stock_price(ticker):
+    try:
+        # Fetch the stock data using yfinance
+        stock = yf.Ticker(ticker)
+
+        # Get the live price (current price)
+        live_price = stock.history(period="1d", interval="1m")["Close"][-1]  # Get the latest closing price for the 1-minute interval
+
+        # Return the live price
+        return live_price
+
+    except Exception as e:
+        # Handle errors (e.g., ticker not found)
+        print(f"Error fetching live price for {ticker}: {e}")
+        return None
 
 def register(request):
     if request.method == 'POST':
@@ -70,40 +89,115 @@ def logout_user(request):
     messages.success(request, 'Logged out successfully')
     return redirect('/')
 
-@login_required
+@login_required(login_url='login')
 def home2(request):
-    # Define the stock symbols you're interested in
-    stock_symbols = ['SHILPAMED.BO', 'LAURUSLABS.NS', 'ITC.BO', 'MARUTI.BO', 'LT.BO']
+    if not request.user.is_authenticated:
+        return redirect('login')
+        return redirect('login')
 
-    # Fetch the latest date for each stock symbol
-    latest_dates = StockData.objects.filter(
-        stock_symbol__in=stock_symbols
-    ).values('stock_symbol').annotate(latest_date=Max('date'))
+    # Fetch all distinct stock symbols from the database
+    all_stock_symbols = StockData.objects.values_list('stock_symbol', flat=True).distinct()
 
-    # Prepare a list to hold the latest stock data for each stock symbol
-    stock_data = []
+    stock_data = []  # Trending stocks (Top 5 by volume)
+    gainers_losers_data = []  # Stores all stocks for gainers/losers sorting
+    historical_data = {}
+    
+    # Get the latest entry for each stock symbol (sorted by volume)
+    latest_entries = StockData.objects.filter(
+        stock_symbol__in=all_stock_symbols
+    ).order_by('-date', '-volume')[:5]  # Top 5 stocks by volume
 
-    # Fetch the latest stock entry for each symbol
-    for latest in latest_dates:
-        # Fetch the stock entry for the latest date of the stock_symbol
-        stock = StockData.objects.filter(
-            stock_symbol=latest['stock_symbol'],
-            date=latest['latest_date']
-        ).first()  # We only need the latest entry
+    for stock in all_stock_symbols:
+        # Fetch last two entries for the stock symbol
+        last_two_entries = StockData.objects.filter(
+            stock_symbol=stock
+        ).order_by('-date')[:2]
 
-        if stock:
-            # Calculate the percentage change
-            change = ((stock.close - stock.open) / stock.open) * 100 if stock.open else 0
-            stock_data.append({
-                'symbol': stock.stock_symbol,
-                'last_price': stock.close,
-                'change': round(change, 2)  # Round the change to 2 decimal places
+        if len(last_two_entries) == 2:
+            previous_close = last_two_entries[1].close
+            current_close = last_two_entries[0].close
+            change = ((current_close - previous_close) / previous_close) * 100 if previous_close else 0
+
+            # Store all stocks for gainers/losers selection
+            gainers_losers_data.append({
+                'symbol': last_two_entries[0].stock_symbol,
+                'change': round(change, 2)  # Calculating change here
             })
 
-    return render(request, 'pages/home2.html', {'stock_data': stock_data})
+            # Fetch historical data (last 30 days)
+            historical_data[last_two_entries[0].stock_symbol] = StockData.objects.filter(
+                stock_symbol=last_two_entries[0].stock_symbol
+            ).order_by('-date')[:30].values('date', 'close')
+
+    # Select **Top 5 Stocks by Volume** for Trending Section
+    for stock in latest_entries:
+        last_two_entries = StockData.objects.filter(
+            stock_symbol=stock.stock_symbol
+        ).order_by('-date')[:2]
+        
+        if len(last_two_entries) == 2:
+            previous_close = last_two_entries[1].close
+            current_close = last_two_entries[0].close
+            change = ((current_close - previous_close) / previous_close) * 100 if previous_close else 0
+
+            # Fetch live price for the stock
+            live_price = fetch_live_stock_price(stock.stock_symbol)
+
+            # Add live price to the stock data
+            stock_data.append({
+                'symbol': stock.stock_symbol,
+                'last_price': current_close,
+                'change': round(change, 2),  # Calculating change here
+                'volume': stock.volume,
+                'live_price': live_price if live_price else current_close  # Fallback to last_close if live price is unavailable
+            })
+
+    # Sort all stocks for gainers/losers selection
+    sorted_gainers = sorted(gainers_losers_data, key=lambda x: x['change'], reverse=True)[:5]
+    sorted_losers = sorted(gainers_losers_data, key=lambda x: x['change'])[:5]
+
+    # Fetch live prices for gainers and losers
+    for stock in sorted_gainers:
+        live_price = fetch_live_stock_price(stock['symbol'])
+        stock['live_price'] = live_price if live_price else None
+
+    for stock in sorted_losers:
+        live_price = fetch_live_stock_price(stock['symbol'])
+        stock['live_price'] = live_price if live_price else None
+
+    # Fetch stock market news from Google News RSS Feed
+    query = "Indian stock market"
+    encoded_query = quote(query)
+    encoded_query = quote(query)
+    url = f"https://news.google.com/rss/search?q={encoded_query}"
+    feed = feedparser.parse(url)
+
+    # Prepare news data
+    news_data = []  # Limit to 10 news items
+    for entry in feed.entries[:10]:  # Limit to 10 news items
+        news_data.append({
+            'title': entry.title,
+            'link': entry.link,
+            'published': entry.published
+        })
+
+    return render(request, 'pages/home2.html', {
+        'all_stocks': all_stock_symbols,  # Pass all stock symbols
+        'stock_data': stock_data,  # Top 5 stocks by volume
+        'historical_data': historical_data,
+        'news_data': news_data,
+        'top_gainers': sorted_gainers,  # Top 5 gainers with live price
+        'top_losers': sorted_losers  # Top 5 losers with live price
+    })
+
+
 
 def home1(request):
     # Fetch the latest 20 unique stocks by date
+
+    if request.user.is_authenticated:
+        return redirect('home2/')
+    
     stocks = (
         StockData.objects.order_by('stock_symbol', '-date')
         .distinct('stock_symbol')[:20]
@@ -134,7 +228,11 @@ def home1(request):
 
     return render(request, 'pages/home1.html', {'stock_data': stock_data})
 
+@login_required(login_url='login')
 def calculators(request):
+    if not request.user.is_authenticated:
+        return redirect('login')  
+    
     return render(request, 'pages/calculator.html')
 
 from django.db.models import Max, Subquery, OuterRef, F
@@ -245,6 +343,7 @@ def add_to_watchlist(request):
         
         if stock_data:
             Watchlist.objects.get_or_create(user=request.user, stock_data=stock_data)
+            messages.success(request, f"{stock_symbol} added to your watchlist.")
         else:
             messages.error(request, "Invalid stock symbol.")
         
@@ -252,6 +351,7 @@ def add_to_watchlist(request):
     return redirect('dashboard')
 
 def stock_detail(request, stock_symbol):
+    # Fetch stock data
     stock_data = StockData.objects.filter(stock_symbol=stock_symbol).order_by('-date')
     if not stock_data.exists():
         return render(request, 'error.html', {'message': f"No data found for stock symbol: {stock_symbol}"})
@@ -261,17 +361,80 @@ def stock_detail(request, stock_symbol):
     low_52week = stock_data.aggregate(Min('low'))['low__min']
     latest_data = stock_data.first()
 
+    # Fetch additional company details (assuming they are stored in the latest_data object)
+    company_name = latest_data.company_name
+    ceo = latest_data.ceo
+    headquarters = latest_data.headquarters
+    industry = latest_data.industry
+    sector = latest_data.sector
+    website = latest_data.website
+    dividend_yield = latest_data.dividend_yield
+    eps = latest_data.eps
+    market_cap = latest_data.market_cap
+    pe_ratio = latest_data.pe_ratio
+
     # Paginate the historical data
     paginator = Paginator(stock_data, 10)  # Show 10 records per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # Fetch news related to the stock symbol
+    query = f"{stock_symbol} stock"  # Example: "RELIANCE stock"
+    encoded_query = quote(query)  # Encode the query parameter
+    url = f"https://news.google.com/rss/search?q={encoded_query}"
+    feed = feedparser.parse(url)
+
+    # Prepare news data
+    news_data = []
+    for entry in feed.entries[:8]:  # Limit to 8 news items
+        news_data.append({
+            'title': entry.title,
+            'link': entry.link,
+            'published': entry.published
+        })
+
+    # Prepare context with all fields
     context = {
         'stock_symbol': stock_symbol,
         'latest_data': latest_data,
         'high_52week': high_52week,
         'low_52week': low_52week,
         'page_obj': page_obj,
+        'news_data': news_data,
+        'company_name': company_name,
+        'ceo': ceo,
+        'headquarters': headquarters,
+        'industry': industry,
+        'sector': sector,
+        'website': website,
+        'dividend_yield': dividend_yield,
+        'eps': eps,
+        'fifty_two_week_high': high_52week,  # Same as high_52week
+        'fifty_two_week_low': low_52week,    # Same as low_52week
+        'market_cap': market_cap,
+        'pe_ratio': pe_ratio,
     }
 
     return render(request, 'pages/stock_detail.html', context)
+
+def remove_from_watchlist(request):
+    if request.method == 'POST':
+        stock_symbol = request.POST.get('stock_symbol')
+        try:
+            # Find the stock in the user's watchlist and delete it
+            watchlist_item = Watchlist.objects.filter(
+                user=request.user,
+                stock_data__stock_symbol=stock_symbol
+            ).first()
+
+            if watchlist_item:
+                watchlist_item.delete()
+                messages.success(request, f"{stock_symbol} removed from your watchlist.")
+            else:
+                messages.error(request, "Stock not found in your watchlist.")
+        except Exception as e:
+            print(f"Error: {e}")
+            messages.error(request, "An error occurred while removing the stock.")
+
+        return redirect('dashboard')
+    return redirect('dashboard')
