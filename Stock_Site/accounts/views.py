@@ -93,6 +93,7 @@ def logout_user(request):
 def home2(request):
     if not request.user.is_authenticated:
         return redirect('login')
+        return redirect('login')
 
     # Fetch all distinct stock symbols from the database
     all_stock_symbols = StockData.objects.values_list('stock_symbol', flat=True).distinct()
@@ -167,11 +168,12 @@ def home2(request):
     # Fetch stock market news from Google News RSS Feed
     query = "Indian stock market"
     encoded_query = quote(query)
+    encoded_query = quote(query)
     url = f"https://news.google.com/rss/search?q={encoded_query}"
     feed = feedparser.parse(url)
 
     # Prepare news data
-    news_data = []
+    news_data = []  # Limit to 10 news items
     for entry in feed.entries[:10]:  # Limit to 10 news items
         news_data.append({
             'title': entry.title,
@@ -187,6 +189,7 @@ def home2(request):
         'top_gainers': sorted_gainers,  # Top 5 gainers with live price
         'top_losers': sorted_losers  # Top 5 losers with live price
     })
+
 
 
 def home1(request):

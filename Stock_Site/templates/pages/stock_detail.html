@@ -42,11 +42,33 @@
         </div>
     </header>
 
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Stock Details for {{ stock_symbol }}</h1>
+    
+        <!-- Company Information -->
+        <div class="card p-4 mb-4">
+            <h2 class="mb-3">{{ company_name }}</h2>
+            <p><strong>Industry:</strong> {{ industry }}</p>
+            <p><strong>Sector:</strong> {{ sector }}</p>
+            <p><strong>CEO:</strong> {{ ceo }}</p>
+            <p><strong>Headquarters:</strong> {{ headquarters }}</p>
+            <p><strong>Website:</strong> <a href="{{ website }}" target="_blank">{{ website }}</a></p>
+        </div>
+    
     <!-- Stock Overview -->
     <div>
         <h1>Stock Details for {{ stock_symbol }}</h1>
 
         <!-- Stock Info Section -->
+        <div class="card p-4 mb-4">
+            <h2 class="mb-3">Stock Information</h2>
+            <p><strong>Latest Price:</strong> ₹{{ latest_data.close }}</p>
+            <p><strong>52-Week High:</strong> ₹{{ high_52week }}</p>
+            <p><strong>52-Week Low:</strong> ₹{{ low_52week }}</p>
+            <p><strong>Market Cap:</strong> ₹{{ market_cap }}</p>
+            <p><strong>P/E Ratio:</strong> {{ pe_ratio }}</p>
+            <p><strong>EPS:</strong> {{ eps }}</p>
+            <p><strong>Dividend Yield:</strong> {{ dividend_yield }}%</p>
         <div>
             <p><strong>Company Name:</strong> {{ company_name }}</p>
             <p><strong>CEO:</strong> {{ ceo }}</p>
@@ -62,8 +84,42 @@
             <p><strong>EPS (Earnings Per Share):</strong> {{ eps }}</p>
             <p><strong>Dividend Yield:</strong> {{ dividend_yield }}%</p>
         </div>
-
+    
         <!-- Historical Data Table -->
+        <h2 class="mb-3">Historical Data</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Open</th>
+                        <th>High</th>
+                        <th>Low</th>
+                        <th>Close</th>
+                        <th>Volume</th>
+                        <th>Dividends</th>
+                        <th>Stock Splits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in page_obj %}
+                    <tr>
+                        <td>{{ record.date }}</td>
+                        <td>₹{{ record.open }}</td>
+                        <td>₹{{ record.high }}</td>
+                        <td>₹{{ record.low }}</td>
+                        <td>₹{{ record.close }}</td>
+                        <td>{{ record.volume }}</td>
+                        <td>{{ record.dividends }}</td>
+                        <td>{{ record.stock_splits }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
         <h2>Historical Data</h2>
         <table border="1">
             <thead>
@@ -108,7 +164,7 @@
                 <a href="?page={{ page_obj.next_page_number }}">Next</a>
             {% endif %}
         </div>
-
+    
         <!-- News Section -->
         <section>
             <div>
@@ -126,6 +182,7 @@
             </div>
         </section>
     </div>
+    
 
 </body>
 </html>
