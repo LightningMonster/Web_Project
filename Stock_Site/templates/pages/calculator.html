@@ -10,8 +10,9 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #121212;
+            color: #00ffff;
+            min-height: 100vh;
         }
 
         .container {
@@ -21,94 +22,176 @@
             padding: 20px;
         }
 
-        h1, h2 {
+        h1 {
             text-align: center;
+            color: #00ffff;
+            margin-bottom: 40px;
+        }
+
+        .calculators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .calculator {
-            background-color: #fff;
+            background-color: #1e1e1e;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
         }
 
         .calculator h3 {
             margin-top: 0;
+            color: #00ffff;
+            font-size: 1.2em;
+            margin-bottom: 15px;
         }
 
         .calculator input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 8px;
+            margin: 8px 0;
+            background-color:   #ece4e4;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+            color: #000000;
+            font-size: 14px;
+        }
+
+        .calculator input::placeholder {
+            color: #050505;
+            opacity: 0.6;
         }
 
         .calculator button {
-            padding: 10px 20px;
-            background-color: #3498db;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #006666;
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
         }
 
         .calculator button:hover {
-            background-color: #2980b9;
+            background-color: #008080;
         }
 
         .result {
-            margin-top: 20px;
-            font-weight: bold;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(0, 255, 255, 0.1);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Stock Calculators</h1>
+        
+        <div class="calculators-grid">
+            <!-- Profit/Loss Calculator -->
+            <div class="calculator">
+                <h3>Profit/Loss Calculator</h3>
+                <input type="number" id="buyPrice" placeholder="Buy Price (₹)">
+                <input type="number" id="sellPrice" placeholder="Sell Price (₹)">
+                <input type="number" id="quantity" placeholder="Quantity">
+                <button onclick="calculateProfitLoss()">Calculate</button>
+                <div class="result" id="profitLossResult"></div>
+            </div>
 
-        <!-- Profit/Loss Calculator -->
-        <div class="calculator">
-            <h3>Profit/Loss Calculator</h3>
-            <input type="number" id="buyPrice" placeholder="Buy Price (₹)">
-            <input type="number" id="sellPrice" placeholder="Sell Price (₹)">
-            <input type="number" id="quantity" placeholder="Quantity">
-            <button onclick="calculateProfitLoss()">Calculate</button>
-            <div class="result" id="profitLossResult"></div>
-        </div>
+            <!-- Dividend Yield Calculator -->
+            <div class="calculator">
+                <h3>Dividend Yield Calculator</h3>
+                <input type="number" id="dividendAmount" placeholder="Dividend Amount (₹)">
+                <input type="number" id="stockPrice" placeholder="Stock Price (₹)">
+                <button onclick="calculateDividendYield()">Calculate</button>
+                <div class="result" id="dividendYieldResult"></div>
+            </div>
 
-        <!-- Dividend Yield Calculator -->
-        <div class="calculator">
-            <h3>Dividend Yield Calculator</h3>
-            <input type="number" id="dividendAmount" placeholder="Dividend Amount (₹)">
-            <input type="number" id="stockPrice" placeholder="Stock Price (₹)">
-            <button onclick="calculateDividendYield()">Calculate</button>
-            <div class="result" id="dividendYieldResult"></div>
-        </div>
+            <!-- CAGR Calculator -->
+            <div class="calculator">
+                <h3>CAGR Calculator</h3>
+                <input type="number" id="initialValue" placeholder="Initial Investment (₹)">
+                <input type="number" id="finalValue" placeholder="Final Value (₹)">
+                <input type="number" id="years" placeholder="Number of Years">
+                <button onclick="calculateCAGR()">Calculate</button>
+                <div class="result" id="cagrResult"></div>
+            </div>
 
-        <!-- CAGR Calculator -->
-        <div class="calculator">
-            <h3>Compound Annual Growth Rate (CAGR) Calculator</h3>
-            <input type="number" id="initialValue" placeholder="Initial Investment (₹)">
-            <input type="number" id="finalValue" placeholder="Final Value (₹)">
-            <input type="number" id="years" placeholder="Number of Years">
-            <button onclick="calculateCAGR()">Calculate</button>
-            <div class="result" id="cagrResult"></div>
-        </div>
+            <!-- P/E Ratio Calculator -->
+            <div class="calculator">
+                <h3>P/E Ratio Calculator</h3>
+                <input type="number" id="stockPricePE" placeholder="Stock Price (₹)">
+                <input type="number" id="eps" placeholder="Earnings Per Share (₹)">
+                <button onclick="calculatePERatio()">Calculate</button>
+                <div class="result" id="peRatioResult"></div>
+            </div>
 
-        <!-- P/E Ratio Calculator -->
-        <div class="calculator">
-            <h3>Price-to-Earnings (P/E) Ratio Calculator</h3>
-            <input type="number" id="stockPricePE" placeholder="Stock Price (₹)">
-            <input type="number" id="eps" placeholder="Earnings Per Share (₹)">
-            <button onclick="calculatePERatio()">Calculate</button>
-            <div class="result" id="peRatioResult"></div>
+            <!-- ROI Calculator -->
+            <div class="calculator">
+                <h3>ROI Calculator</h3>
+                <input type="number" id="investmentAmount" placeholder="Investment Amount (₹)">
+                <input type="number" id="returnAmount" placeholder="Return Amount (₹)">
+                <button onclick="calculateROI()">Calculate</button>
+                <div class="result" id="roiResult"></div>
+            </div>
+
+            <!-- Margin Calculator -->
+            <div class="calculator">
+                <h3>Margin Calculator</h3>
+                <input type="number" id="revenue" placeholder="Revenue (₹)">
+                <input type="number" id="cost" placeholder="Cost (₹)">
+                <button onclick="calculateMargin()">Calculate</button>
+                <div class="result" id="marginResult"></div>
+            </div>
+
+            <!-- Risk-Reward Ratio Calculator -->
+            <div class="calculator">
+                <h3>Risk-Reward Ratio</h3>
+                <input type="number" id="potentialProfit" placeholder="Potential Profit (₹)">
+                <input type="number" id="potentialLoss" placeholder="Potential Loss (₹)">
+                <button onclick="calculateRiskReward()">Calculate</button>
+                <div class="result" id="riskRewardResult"></div>
+            </div>
+
+            <!-- Market Cap Calculator -->
+            <div class="calculator">
+                <h3>Market Cap Calculator</h3>
+                <input type="number" id="sharePrice" placeholder="Share Price (₹)">
+                <input type="number" id="totalShares" placeholder="Total Shares">
+                <button onclick="calculateMarketCap()">Calculate</button>
+                <div class="result" id="marketCapResult"></div>
+            </div>
+
+            <!-- EPS Calculator -->
+            <div class="calculator">
+                <h3>EPS Calculator</h3>
+                <input type="number" id="netIncome" placeholder="Net Income (₹)">
+                <input type="number" id="sharesOutstanding" placeholder="Shares Outstanding">
+                <button onclick="calculateEPS()">Calculate</button>
+                <div class="result" id="epsResult"></div>
+            </div>
+
+            <!-- PEG Ratio Calculator -->
+            <div class="calculator">
+                <h3>PEG Ratio Calculator</h3>
+                <input type="number" id="peRatioPEG" placeholder="P/E Ratio">
+                <input type="number" id="growthRate" placeholder="Growth Rate (%)">
+                <button onclick="calculatePEGRatio()">Calculate</button>
+                <div class="result" id="pegRatioResult"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Profit/Loss Calculator
+        // Existing Calculators
         function calculateProfitLoss() {
             const buyPrice = parseFloat(document.getElementById('buyPrice').value);
             const sellPrice = parseFloat(document.getElementById('sellPrice').value);
@@ -124,7 +207,6 @@
             document.getElementById('profitLossResult').innerText = resultText;
         }
 
-        // Dividend Yield Calculator
         function calculateDividendYield() {
             const dividendAmount = parseFloat(document.getElementById('dividendAmount').value);
             const stockPrice = parseFloat(document.getElementById('stockPrice').value);
@@ -138,7 +220,6 @@
             document.getElementById('dividendYieldResult').innerText = `Dividend Yield: ${dividendYield.toFixed(2)}%`;
         }
 
-        // CAGR Calculator
         function calculateCAGR() {
             const initialValue = parseFloat(document.getElementById('initialValue').value);
             const finalValue = parseFloat(document.getElementById('finalValue').value);
@@ -153,7 +234,6 @@
             document.getElementById('cagrResult').innerText = `CAGR: ${cagr.toFixed(2)}%`;
         }
 
-        // P/E Ratio Calculator
         function calculatePERatio() {
             const stockPricePE = parseFloat(document.getElementById('stockPricePE').value);
             const eps = parseFloat(document.getElementById('eps').value);
@@ -165,6 +245,85 @@
 
             const peRatio = stockPricePE / eps;
             document.getElementById('peRatioResult').innerText = `P/E Ratio: ${peRatio.toFixed(2)}`;
+        }
+
+        // New Calculators
+        function calculateROI() {
+            const investmentAmount = parseFloat(document.getElementById('investmentAmount').value);
+            const returnAmount = parseFloat(document.getElementById('returnAmount').value);
+
+            if (isNaN(investmentAmount) || isNaN(returnAmount) || investmentAmount === 0) {
+                document.getElementById('roiResult').innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            const roi = ((returnAmount - investmentAmount) / investmentAmount) * 100;
+            document.getElementById('roiResult').innerText = `ROI: ${roi.toFixed(2)}%`;
+        }
+
+        function calculateMargin() {
+            const revenue = parseFloat(document.getElementById('revenue').value);
+            const cost = parseFloat(document.getElementById('cost').value);
+
+            if (isNaN(revenue) || isNaN(cost) || revenue === 0) {
+                document.getElementById('marginResult').innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            const margin = ((revenue - cost) / revenue) * 100;
+            document.getElementById('marginResult').innerText = `Margin: ${margin.toFixed(2)}%`;
+        }
+
+        function calculateRiskReward() {
+            const potentialProfit = parseFloat(document.getElementById('potentialProfit').value);
+            const potentialLoss = parseFloat(document.getElementById('potentialLoss').value);
+
+            if (isNaN(potentialProfit) || isNaN(potentialLoss) || potentialLoss === 0) {
+                document.getElementById('riskRewardResult').innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            const riskRewardRatio = potentialProfit / potentialLoss;
+            document.getElementById('riskRewardResult').innerText = `Risk-Reward Ratio: ${riskRewardRatio.toFixed(2)}`;
+        }
+
+        function calculateMarketCap() {
+            const sharePrice = parseFloat(document.getElementById('sharePrice').value);
+            const totalShares = parseFloat(document.getElementById('totalShares').value);
+
+            if (isNaN(sharePrice) || isNaN(totalShares)) {
+                document.getElementById('marketCapResult').innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            const marketCap = sharePrice * totalShares;
+            document.getElementById('marketCapResult').innerText = `Market Cap: ₹${marketCap.toLocaleString()}`;
+        }
+
+        function calculateEPS() {
+            const netIncome = parseFloat(document.getElementById('netIncome').value);
+            const sharesOutstanding = parseFloat(document.getElementById('sharesOutstanding').value);
+
+            if (isNaN(netIncome) || isNaN(sharesOutstanding) || sharesOutstanding === 0) {
+                document.getElementById('epsResult').innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            const eps = netIncome / sharesOutstanding;
+            document.getElementById('epsResult').innerText = `EPS: ₹${eps.toFixed(2)}`;
+        }
+
+        function calculatePEGRatio() {
+            const peRatioPEG = parseFloat(document.getElementById('peRatioPEG').value);
+            const growthRate = parseFloat(document.getElementById('growthRate').value);
+
+            if (isNaN(peRatioPEG) || isNaN(growthRate) || growthRate === 0) {
+                document.getElementById('pegRatioResult').innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            const pegRatio = peRatioPEG / growthRate;
+            document.getElementById('pegRatioResult').innerText = `PEG Ratio: ${pegRatio.toFixed(2)}`;
         }
     </script>
 </body>
