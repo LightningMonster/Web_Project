@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indian Stock Analysis - Home</title>
+    {% load humanize %}  <!-- Load humanize filters -->
+
     <style>
         /* CSS Variables for Light Theme */
         :root {
@@ -413,7 +415,6 @@
 <body>
     <!-- Video Background -->
     {% load static %}
-
     <video id="video-background" autoplay muted loop>
         <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
     </video>
@@ -483,6 +484,7 @@
         </div>
     </section>
 
+   <!-- Trending Stocks Section -->
     <section class="trending-stocks">
         <div class="container">
             <h3>Trending Indian Stocks</h3>
@@ -490,7 +492,7 @@
                 {% for stock in stock_data %}
                 <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                     <h4>{{ stock.symbol }}</h4>
-                    <p>₹{{ stock.last_price }}</p>
+                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
                     <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
                         {% if stock.change > 0 %}
                             +{{ stock.change }}%
@@ -504,6 +506,41 @@
         </div>
     </section>
 
+
+
+    <!-- Top Gainers Section -->
+    <section class="trending-stocks">
+        <div class="container">
+            <h3>Top Gainers</h3>
+            <div class="stock-grid">
+                {% for stock in top_gainers %}
+                <div class="stock-card">
+                    <h4>{{ stock.symbol }}</h4>
+                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
+                    <p>Change: <span class="positive">+{{ stock.change }}%</span></p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Losers Section -->
+    <section class="trending-stocks">
+        <div class="container">
+            <h3>Top Losers</h3>
+            <div class="stock-grid">
+                {% for stock in top_losers %}
+                <div class="stock-card">
+                    <h4>{{ stock.symbol }}</h4>
+                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
+                    <p>Change: <span class="negative">{{ stock.change }}%</span></p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
     <section class="news-section">
         <div class="container">
             <h3>Latest News</h3>
@@ -520,6 +557,7 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="container">
             <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>

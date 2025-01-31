@@ -12,6 +12,24 @@ from django.db.models import Max, Min
 from .models import StockData, Watchlist
 import feedparser
 from urllib.parse import quote 
+import yfinance as yf
+
+# Function to fetch live stock price
+def fetch_live_stock_price(ticker):
+    try:
+        # Fetch the stock data using yfinance
+        stock = yf.Ticker(ticker)
+
+        # Get the live price (current price)
+        live_price = stock.history(period="1d", interval="1m")["Close"][-1]  # Get the latest closing price for the 1-minute interval
+
+        # Return the live price
+        return live_price
+
+    except Exception as e:
+        # Handle errors (e.g., ticker not found)
+        print(f"Error fetching live price for {ticker}: {e}")
+        return None
 
 def register(request):
     if request.method == 'POST':
@@ -74,51 +92,87 @@ def logout_user(request):
 @login_required(login_url='login')
 def home2(request):
     if not request.user.is_authenticated:
-        return redirect('login')  
+        return redirect('login')
 
-    # Define the stock symbols you're interested in
-    stock_symbols = ['SHILPAMED.BO', 'LAURUSLABS.NS', 'ITC.BO', 'MARUTI.BO', 'LT.BO']
+    # Fetch all distinct stock symbols from the database
+    all_stock_symbols = StockData.objects.values_list('stock_symbol', flat=True).distinct()
 
-    # Fetch the latest date for each stock symbol
-    latest_dates = StockData.objects.filter(
-        stock_symbol__in=stock_symbols
-    ).values('stock_symbol').annotate(latest_date=Max('date'))
+    stock_data = []  # Trending stocks (Top 5 by volume)
+    gainers_losers_data = []  # Stores all stocks for gainers/losers sorting
+    historical_data = {}
+    
+    # Get the latest entry for each stock symbol (sorted by volume)
+    latest_entries = StockData.objects.filter(
+        stock_symbol__in=all_stock_symbols
+    ).order_by('-date', '-volume')[:5]  # Top 5 stocks by volume
 
-    # Prepare a list to hold the latest stock data for each stock symbol
-    stock_data = []
-    historical_data = {}  # To store historical data for each stock
+    for stock in all_stock_symbols:
+        # Fetch last two entries for the stock symbol
+        last_two_entries = StockData.objects.filter(
+            stock_symbol=stock
+        ).order_by('-date')[:2]
 
-    # Fetch the latest stock entry for each symbol and historical data
-    for latest in latest_dates:
-        # Fetch the stock entry for the latest date of the stock_symbol
-        stock = StockData.objects.filter(
-            stock_symbol=latest['stock_symbol'],
-            date=latest['latest_date']
-        ).first()  # We only need the latest entry
+        if len(last_two_entries) == 2:
+            previous_close = last_two_entries[1].close
+            current_close = last_two_entries[0].close
+            change = ((current_close - previous_close) / previous_close) * 100 if previous_close else 0
 
-        if stock:
-            # Calculate the percentage change
-            change = ((stock.close - stock.open) / stock.open) * 100 if stock.open else 0
-            stock_data.append({
-                'symbol': stock.stock_symbol,
-                'last_price': stock.close,
-                'change': round(change, 2)  # Round the change to 2 decimal places
+            # Store all stocks for gainers/losers selection
+            gainers_losers_data.append({
+                'symbol': last_two_entries[0].stock_symbol,
+                'change': round(change, 2)  # Calculating change here
             })
 
-            # Fetch historical data for the stock (last 30 days)
-            historical_data[stock.stock_symbol] = StockData.objects.filter(
-                stock_symbol=stock.stock_symbol
+            # Fetch historical data (last 30 days)
+            historical_data[last_two_entries[0].stock_symbol] = StockData.objects.filter(
+                stock_symbol=last_two_entries[0].stock_symbol
             ).order_by('-date')[:30].values('date', 'close')
+
+    # Select **Top 5 Stocks by Volume** for Trending Section
+    for stock in latest_entries:
+        last_two_entries = StockData.objects.filter(
+            stock_symbol=stock.stock_symbol
+        ).order_by('-date')[:2]
+        
+        if len(last_two_entries) == 2:
+            previous_close = last_two_entries[1].close
+            current_close = last_two_entries[0].close
+            change = ((current_close - previous_close) / previous_close) * 100 if previous_close else 0
+
+            # Fetch live price for the stock
+            live_price = fetch_live_stock_price(stock.stock_symbol)
+
+            # Add live price to the stock data
+            stock_data.append({
+                'symbol': stock.stock_symbol,
+                'last_price': current_close,
+                'change': round(change, 2),  # Calculating change here
+                'volume': stock.volume,
+                'live_price': live_price if live_price else current_close  # Fallback to last_close if live price is unavailable
+            })
+
+    # Sort all stocks for gainers/losers selection
+    sorted_gainers = sorted(gainers_losers_data, key=lambda x: x['change'], reverse=True)[:5]
+    sorted_losers = sorted(gainers_losers_data, key=lambda x: x['change'])[:5]
+
+    # Fetch live prices for gainers and losers
+    for stock in sorted_gainers:
+        live_price = fetch_live_stock_price(stock['symbol'])
+        stock['live_price'] = live_price if live_price else None
+
+    for stock in sorted_losers:
+        live_price = fetch_live_stock_price(stock['symbol'])
+        stock['live_price'] = live_price if live_price else None
 
     # Fetch stock market news from Google News RSS Feed
     query = "Indian stock market"
-    encoded_query = quote(query)  # Encode the query parameter
+    encoded_query = quote(query)
     url = f"https://news.google.com/rss/search?q={encoded_query}"
     feed = feedparser.parse(url)
 
     # Prepare news data
     news_data = []
-    for entry in feed.entries[:10]:  # Limit to 5 news items
+    for entry in feed.entries[:10]:  # Limit to 10 news items
         news_data.append({
             'title': entry.title,
             'link': entry.link,
@@ -126,10 +180,14 @@ def home2(request):
         })
 
     return render(request, 'pages/home2.html', {
-        'stock_data': stock_data,
+        'all_stocks': all_stock_symbols,  # Pass all stock symbols
+        'stock_data': stock_data,  # Top 5 stocks by volume
         'historical_data': historical_data,
-        'news_data': news_data  # Pass news data to the template
+        'news_data': news_data,
+        'top_gainers': sorted_gainers,  # Top 5 gainers with live price
+        'top_losers': sorted_losers  # Top 5 losers with live price
     })
+
 
 def home1(request):
     # Fetch the latest 20 unique stocks by date
