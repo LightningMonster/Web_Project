@@ -1,3 +1,9 @@
+# collect_data.py 
+# run command: python manage.py collect_data
+"""
+This Django management command collects stock data for multiple companies listed in a CSV file 
+    and saves the historical stock data along with company details in CSV format.
+"""
 import pandas as pd
 import yfinance as yf
 import os
@@ -81,31 +87,36 @@ class Command(BaseCommand): # file name as a command (python manage.py collect_d
                     # Extracts the company's market capitalization (total value of all outstanding shares)
 
                     "Volume": info.get("volume"),
-
+                    # Retrieves the trading volume (number of shares traded) for the current day
 
                     "P/E Ratio": info.get("trailingPE"),
-
+                    # Extracts the Price-to-Earnings (P/E) ratio, which compares the company's stock price to its earnings per share
 
                     "EPS": info.get("trailingEps"),
-
+                    # Retrieves the earnings per share (EPS). EPS indicates the company's profitability.
 
                     "Dividend Yield": info.get("dividendYield"),
-
+                    # Extracts the dividend yield (if available). This represents the annual dividend paid out as a percentage of the stock price.
 
                     "52-Week High": info.get("fiftyTwoWeekHigh"),
-
+                    # Retrieves the highest stock price over the past 52 weeks
 
                     "52-Week Low": info.get("fiftyTwoWeekLow"),
-
+                    # Fetches the lowest stock price over the past 52 weeks
 
                 }
 
                 # Fetch historical data
                 historical_data = stock.history(period="max", interval="1d")
+                # stock.history(...) - This method retrieves historical stock price data.
+                # period = "max" - This specifies the maximum available historical data for the stock.
+                # interval = "1d" - This sets the frequency of data points to one day (daily stock prices).
 
                 if not historical_data.empty:
                     # Reset index to get Date as a column
                     historical_data.reset_index(inplace=True)
+                    # history() returns a DataFrame where the index is Date by default.
+                    # reset_index(inplace=True) moves the Date from the index to a regular column.
 
                     # Merge company info with historical data
                     for key, value in company_data.items():
@@ -113,12 +124,15 @@ class Command(BaseCommand): # file name as a command (python manage.py collect_d
 
                     # Save merged data to a CSV file
                     output_file = os.path.join(output_dir, f'{ticker}_data.csv')
-                    historical_data.to_csv(output_file, index=False)
+                    historical_data.to_csv(output_file, index=False) # index=False - prevents saving the default Pandas index.
                     print(f"Merged data for {ticker} saved successfully.")
                 else:
                     print(f"No historical data available for {ticker}.")
 
-            except Exception as e:
+            except Exception as e: # Catches any unexpected errors that occur during data fetching.
                 print(f"Error fetching data for {ticker}: {e}")
 
         print("All stock data fetching completed.")
+
+# Output should be like this
+# Date,Open,High,Low,Close,Volume,Dividends,Stock Splits,Ticker,Company Name,Industry,Sector,CEO,Headquarters,Website,Current Price,Open Price,Market Cap,P/E Ratio,EPS,Dividend Yield,52-Week High,52-Week Low
