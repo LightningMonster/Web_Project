@@ -4,6 +4,283 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - StockStats</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #f4fafa; /* Cyan text for dark mode */
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.light-mode {   /* Light Mode Styles (unchanged) */
+            background-color: #f4f4f9;
+            color: #620770;
+        }
+
+        a {
+            color: #ffffff; /* Cyan links for dark mode */
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        body.light-mode a { /* Light Mode text color (unchanged) */
+            color: #6c0486;
+        }
+
+        a:hover {
+            color: #00cccc; /* Darker cyan for hover in dark mode */
+        }
+
+        body.light-mode a:hover {
+            color: #040404;
+        }
+
+        /* Header */
+        header {
+            background-color: #000000;
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.light-mode header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav ul li {
+            display: inline-block;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1e1e1e; /* Darker background for dropdown */
+            border: 1px solid rgba(0, 255, 255, 0.546);
+            border-radius: 4px;
+            padding: 10px;
+            z-index: 1;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.light-mode .dropdown-content {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 5px 0;
+            color: #f3fdfd; /* Cyan text for dropdown in dark mode */
+            transition: color 0.3s;
+        }
+
+        body.light-mode .dropdown-content a {
+            color: #080808;
+        }
+
+        .dropdown-content a:hover {
+            color: #00cccc; /* Darker cyan for hover in dark mode */
+        }
+
+        body.light-mode .dropdown-content a:hover {
+            color: #008080;
+        }
+
+        .theme-toggle { /* Dark Mode Button */
+            background-color: #72098f; /* Cyan button for dark mode */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {   /* Dark Mode Button Hover */
+            background-color: #852d82; /* Darker cyan for hover */
+        }
+
+        /* Main Content */
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .watchlist-section, .main-content {
+            background-color: #1e1e1e; /* Darker background for sections */
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            flex: 1;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.light-mode .watchlist-section, body.light-mode .main-content {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+        }
+
+        .watchlist-section h2, .main-content h3 { /* Dark mode Watchlist and Main Content Headings */
+            margin-top: 0;
+            color: #fdfdfd; /* Cyan headings for dark mode */
+            transition: color 0.3s;
+        }
+
+        body.light-mode .watchlist-section h2, body.light-mode .main-content h3 {/* Light mode Watchlist and Main Content Headings */
+            color: #6f058f;
+        }
+
+        .watchlist-section ul, .main-content ul {/* Dark mode Watchlist and Main Content List */
+            list-style: none;
+            padding: 0;
+        }
+
+        .watchlist-section li, .main-content li {/* Dark mode Watchlist and Main Content List Items */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            transition: border-color 0.3s;
+        }
+
+        body.light-mode .watchlist-section li, body.light-mode .main-content li {/* Light mode Watchlist and Main Content List Items */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .watchlist-section li:last-child, .main-content li:last-child {/* Dark mode Watchlist and Main Content List Items */    
+            border-bottom: none;
+        }
+
+        .plus-button, .minus-button {/* Dark mode Plus and Minus Buttons */
+            background-color: #72098f; /* Cyan buttons for dark mode */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .plus-button:hover, .minus-button:hover {/* Dark mode Plus and Minus Buttons Hover */
+            background-color: #005555; /* Darker cyan for hover */
+        }
+
+        .scrollable-card {/* Dark mode Scrollable Card */
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 4px;
+            padding: 10px;
+            transition: border-color 0.3s;
+        }
+
+        body.light-mode .scrollable-card {/* Light mode Scrollable Card */
+            border: 1px solid #ddd;
+        }
+
+        /* Forms */
+        form {/* Dark mode Form */
+            margin-bottom: 20px;
+        }
+
+        label {/* Dark mode Form Label */
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff; /* Cyan labels for dark mode */
+            transition: color 0.3s;
+        }
+
+        body.light-mode label {/* Light mode Form Label */
+            color: #6f0589;
+        }
+
+        input[type="text"] {/*  Dark mode Form Input */
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            background-color: #2d2d2d;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+            color: #ffffff;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        body.light-mode input[type="text"] {/* Light mode Form Input */
+            background-color: #f4f4f9;
+            border: 1px solid #ddd;
+            color: #000000;
+        }
+
+        button[type="submit"] {/* Dark mode Form Submit Button */
+            background-color: #72098f; /* Cyan submit button for dark mode */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button[type="submit"]:hover {/* Dark mode Form Submit Button Hover */
+            background-color: #f0f4f4; /* Darker cyan for hover */
+        }
+
+        /* Footer */
+        footer {                            /* Dark mode Footer */
+            background-color: #1e1e1e;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.light-mode footer {    /* Light mode Footer */
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+        }
+
+        footer p {      /*  Dark mode Footer Paragraph */
+            margin: 0;
+            color: #ffffff; /* Cyan text for footer in dark mode */
+            transition: color 0.3s;
+        }
+
+        body.light-mode footer p {  /* Light mode Footer Paragraph */
+            color: #333;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -47,14 +324,17 @@
         <!-- Watchlist Section (Left Side) -->
         <div class="watchlist-section">
             <h2>Your Watchlist</h2>
-            <ul id="watchlist">{% for item in watchlist %}
+            <ul id="watchlist">
+                {% for item in watchlist %}
                 <li>
                     <button class="minus-button" onclick="removeStockFromWatchlist('{{ item.stock_data__stock_symbol }}')">-</button>
                     <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
                         {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
                     </a>
-                </li>{% empty %}
-                <li>No stocks in your watchlist.</li>{% endfor %}
+                </li>
+                {% empty %}
+                <li>No stocks in your watchlist.</li>
+                {% endfor %}
             </ul>
         </div>
 
@@ -70,13 +350,15 @@
 
             <h3>Available Stocks</h3>
             <div class="scrollable-card">
-                <ul>{% for stock in available_stocks %}
+                <ul>
+                    {% for stock in available_stocks %}
                     <li>
                         <button class="plus-button" onclick="addStockToWatchlist('{{ stock.stock_symbol }}')">+</button>
                         <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
                             {{ stock.stock_symbol }}
                         </a>
-                    </li>{% endfor %}
+                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -134,6 +416,13 @@
                 console.error('Error:', error);
             });
         }
+
+        // Dark/Light Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            themeToggle.textContent = document.body.classList.contains('light-mode') ? '🌙 Dark Mode' : '🌞 Light Mode';
+        });
     </script>
 </body>
 </html>
