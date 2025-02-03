@@ -23,10 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3b+-9on@rbeunf)b$a=v5(j*p2dd8j_!p5+z68$63kadbl(4s1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True                                                                                                                                                                                                        
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -80,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stock_analysis',
-        'USER': 'phalguni',
+        'USER': 'yash',
         'PASSWORD': '1234',
         'HOST': 'localhost',  # Use the IP if hosted remotely
         'PORT': '5432',       # Default PostgreSQL port
