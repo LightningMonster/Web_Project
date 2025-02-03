@@ -3,223 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Homepage</title>
+    <title>StockStats</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #050505c0;
-            color: #333;
+        font-family: Arial, sans-serif;
+        background-color: #1b0101;
+        color: #333;
         }
 
-        /* Navbar Styles */
         .navbar {
-            background-color: #030303;
-            color: rgb(22, 202, 222);
-            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #00076b;
+            padding: 10px 20px;
+            color: white;
+            font-size:xx-large;
         }
 
-        .navbar h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        .navbar .buttons a {
-            color: rgb(9, 211, 233);
-            text-decoration: none;
-            margin-left: 15px;
-            padding: 8px 12px;
-            border-radius: 4px;
-            background-color: #3498db;
-            transition: background-color 0.3s ease;
-        }
-
-        .navbar .buttons a:hover {
-            background-color: #cccfd1;
-           color:black;
-        }
-        /* Notification Styles */
-        .notification {
+        .warning {
+            background-color: #5c514f;
             padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
             text-align: center;
-            display: none;
+            color:white;
         }
 
-        .notification.error {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-
-        #login-message {
-            display: none;
-            background-color: #0c0c0c;
-            color: #14d5df;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
+        .tagline {
             text-align: center;
+            margin: 20px 0;
+            color: #4900cf;
+            font-size: 64px;
         }
 
-        /* Container Styles */
-        .container {
+        .stock-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns per row */
+            gap: 20px;
             padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            justify-content: center;
         }
 
-        /* Stock Box Styles */
         .stock-box {
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            width: 200px;
-            display: inline-block;
-        }
-
-        .stock-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .stock-name {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .stock-price {
-            font-size: 16px;
-            color: #2ecc71;
-            margin-bottom: 10px;
-        }
-
-        .stock-change {
-            font-size: 14px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        .stock-change.increase {
-            background-color: #e8f5e9;
-            color: #2ecc71;
-        }
-
-        .stock-change.decrease {
-            background-color: #ffebee;
-            color: #c62828;
-        }
-
-        /* Features Section Styles */
-        .features-section {
-            margin-top: 30px;
-            background-color: white;
+            border: 1px solid #ccc;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 28px;
+            font-weight: bold;
         }
 
-        .features-section h3 {
-            margin-top: 0;
-            font-size: 22px;
-            color: #080808;
+        /* Responsive Design: Adjust layout for smaller screens */
+        @media (max-width: 768px) {
+            .stock-info {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns per row for tablets */
+            }
         }
 
-        .features-section ul {
-            list-style-type: none;
-            padding: 0;
+        @media (max-width: 480px) {
+            .stock-info {
+                grid-template-columns: repeat(1, 1fr); /* 1 column per row for mobile */
+            }
         }
 
-        .features-section ul li {
+
+        .moving-pictures {
+            width: 100%;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .moving-track {
+            display: flex;
+            gap: 10px;
+            animation: scroll 15s linear infinite;
+        }
+
+        .moving-track img {
+            width: 2048px;
+            height: 200px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animation for continuous scrolling */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Moves half of the track, allowing seamless loop */
+        }
+
+        /* Duplicate images for seamless transition */
+        .moving-track:hover {
+            animation-play-state: paused; /* Pauses on hover */
+        }
+
+
+        .features {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .features h2 {
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .feature-container {
+            display: flex;
+            flex-direction: column; /* Stack boxes in one column */
+            align-items: center;
+            gap: 20px;
+        }
+
+        .feature-box {
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .feature-box img {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            background-color: #d9d9d9;
+            padding: 10px;
+        }
+
+        .feature-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .feature-box h3 {
             margin-bottom: 10px;
-            font-size: 16px;
-            line-height: 1.6;
+            font-size: 22px;
+            color: white;
         }
 
-        .features-section ul li strong {
-            color: #090a0a;
+        .feature-box p {
+            font-size: 16px;
+            color: white;
+        }
+
+        /* Unique Background Colors */
+        .feature-box:nth-child(1) { background-color: #007bff; } /* Blue */
+        .feature-box:nth-child(2) { background-color: #28a745; } /* Green */
+        .feature-box:nth-child(3) { background-color: #ffc107; } /* Yellow */
+        .feature-box:nth-child(4) { background-color: #dc3545; } /* Red */
+        .feature-box:nth-child(5) { background-color: #6f42c1; } /* Purple */
+
+        .creators {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .creators h2 {
+            margin-bottom: 20px;
+        }
+
+        .creator-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .creator {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+        }
+
+        .creator img {
+            width: 100px;
+            border-radius: 50%;
+        }
+
+        .creator p {
+            margin-top: 10px;
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h1>Stock Data Homepage</h1>
-        <div class="buttons">
-            <a href="accounts/login">Login</a>
-            <a href="/register">Register</a>
+    <nav class="navbar">
+        <div class="logo">StockStats</div>
+        <div class="nav-buttons">
+            <button class="login">Login</button>
+            <button class="register">Register</button>
+        </div>
+    </nav>
+    <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
+    <h1 class="tagline">Your Gateway to Stock Market Insights</h1>
+    <div class="stock-info">
+        <div class="stock-box">Stock 1 Info</div>
+        <div class="stock-box">Stock 2 Info</div>
+        <div class="stock-box">Stock 3 Info</div>
+        <div class="stock-box">Stock 4 Info</div>
+        <div class="stock-box">Stock 5 Info</div>
+        <div class="stock-box">Stock 6 Info</div>
+        <div class="stock-box">Stock 7 Info</div>
+        <div class="stock-box">Stock 8 Info</div>
+    </div>
+    <div class="moving-pictures">
+        <div class="moving-track">
+            {% load static %}
+            <img src="{% static 'images/stocksphoto1.jpeg' %}" alt="Stock Image 1">
+            <img src="{% static 'images/stocksphoto2.jpeg' %}" alt="Stock Image 2">
+            <img src="{% static 'images/stocksphoto3.jpeg' %}" alt="Stock Image 3">
+            <img src="{% static 'images/stocksphoto4.jpeg' %}" alt="Stock Image 4">
+            <img src="{% static 'images/stocksphoto5.jpeg' %}" alt="Stock Image 5">
+            <img src="{% static 'images/stocksphoto6.jpeg' %}" alt="Stock Image 6">
+    
+            <!-- Duplicate images for smooth looping -->
+            <img src="{% static 'images/stocksphoto1.jpeg' %}" alt="Stock Image 1">
+            <img src="{% static 'images/stocksphoto2.jpeg' %}" alt="Stock Image 2">
+            <img src="{% static 'images/stocksphoto3.jpeg' %}" alt="Stock Image 3">
+            <img src="{% static 'images/stocksphoto4.jpeg' %}" alt="Stock Image 4">
+            <img src="{% static 'images/stocksphoto5.jpeg' %}" alt="Stock Image 5">
+            <img src="{% static 'images/stocksphoto6.jpeg' %}" alt="Stock Image 6">
         </div>
     </div>
-
-    {% if messages %}
-    <div class="notification" id="notification">
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <div class="container">
-        {% for stock in stock_data %}
-            <div class="stock-box" onclick="showLoginMessage()">
-                <div class="stock-name">{{ stock.symbol }}</div>
-                <div class="stock-price">₹{{ stock.last_price }}</div>
-                <div class="stock-change {% if stock.price_change >= 0 %}increase{% else %}decrease{% endif %}">
-                    {{ stock.price_change|floatformat:2 }}%
+    
+    <div class="features">
+        <h2>Features</h2>
+        <div class="feature-container">
+            <div class="feature-box">
+                <img src="watchlist.jpg" alt="Watchlist">
+                <div class="feature-content">
+                    <h3>Personalized Watchlist</h3>
+                    <p>Track your favorite stocks in one place.</p>
                 </div>
             </div>
-        {% endfor %}
-    </div>
-
-    <div class="notification error" id="login-message">Please login for using more features!</div>
-
-    <div class="container">
-        <!-- Features List Section -->
-        <div class="features-section">
-            <h3>Available Features After Login</h3>
-            <ul>
-                <li>
-                    <strong>Real-time Stock Charts</strong> - View interactive line and candlestick charts for stock price trends.
-                </li>
-                <li>
-                    <strong>Comprehensive Stock Information</strong> - Get detailed information about stocks, including market cap, P/E ratio, dividend yield, and more.
-                </li>
-                <li>
-                    <strong>Portfolio Management</strong> - Track your stock portfolio’s performance, including profit/loss calculations and current value.
-                </li>
-                <li>
-                    <strong>Stock Calculators</strong> - Use calculators to help with your stock trading, such as profit/loss calculators and dividend yield estimators.
-                </li>
-                <li>
-                    <strong>Watchlist</strong> - Add stocks to your watchlist and track their performance over time.
-                </li>
-                <li>
-                    <strong>News</strong> - Add stocks to your watchlist and track their performance over time.
-                </li>
-            </ul>
+            <div class="feature-box">
+                <img src="news.jpg" alt="Latest News">
+                <div class="feature-content">
+                    <h3>Latest News</h3>
+                    <p>Stay updated with real-time stock market news.</p>
+                </div>
+            </div>
+            <div class="feature-box">
+                <img src="calculator.jpg" alt="Calculators">
+                <div class="feature-content">
+                    <h3>Calculators</h3>
+                    <p>Use financial calculators for investment decisions.</p>
+                </div>
+            </div>
+            <div class="feature-box">
+                <img src="charts.jpg" alt="Charts and Graphs">
+                <div class="feature-content">
+                    <h3>Charts and Graphs</h3>
+                    <p>Analyze stock trends with detailed graphs.</p>
+                </div>
+            </div>
+            <div class="feature-box">
+                <img src="stock-info.jpg" alt="Stock Info">
+                <div class="feature-content">
+                    <h3>Detailed Stock Info</h3>
+                    <p>Access in-depth stock data and insights.</p>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+    <div class="creators">
+        <h2>Creators of the Site</h2>
+        <div class="creator-container">
+            <div class="creator">
+                <img src="creator1.jpg" alt="Creator 1">
+                <p>Creator 1: Description</p>
+            </div>
+            <div class="creator">
+                <img src="creator2.jpg" alt="Creator 2">
+                <p>Creator 2: Description</p>
+            </div>
+            <div class="creator">
+                <img src="creator3.jpg" alt="Creator 3">
+                <p>Creator 3: Description</p>
+            </div>
         </div>
     </div>
-
-    <script>
-        function showLoginMessage() {
-            const loginMessage = document.getElementById('login-message');
-            loginMessage.style.display = 'block';
-            setTimeout(() => {
-                loginMessage.style.display = 'none';
-            }, 3000); // Hide the message after 3 seconds
-        }
-    </script>
+    <footer>
+        <p>&copy; 2025 StockStats. Contact us at info@stockstats.com</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
