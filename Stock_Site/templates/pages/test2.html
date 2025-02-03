@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Homepage</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #050505c0;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #030303;
+            color: rgb(22, 202, 222);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar .buttons a {
+            color: rgb(9, 211, 233);
+            text-decoration: none;
+            margin-left: 15px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background-color: #3498db;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .buttons a:hover {
+            background-color: #cccfd1;
+           color:black;
+        }
+        /* Notification Styles */
+        .notification {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+
+        .notification.error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        #login-message {
+            display: none;
+            background-color: #0c0c0c;
+            color: #14d5df;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        /* Container Styles */
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Stock Box Styles */
+        .stock-box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 200px;
+            display: inline-block;
+        }
+
+        .stock-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stock-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stock-price {
+            font-size: 16px;
+            color: #2ecc71;
+            margin-bottom: 10px;
+        }
+
+        .stock-change {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .stock-change.increase {
+            background-color: #e8f5e9;
+            color: #2ecc71;
+        }
+
+        .stock-change.decrease {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        /* Features Section Styles */
+        .features-section {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .features-section h3 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #080808;
+        }
+
+        .features-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .features-section ul li {
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .features-section ul li strong {
+            color: #090a0a;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Stock Data Homepage</h1>
+        <div class="buttons">
+            <a href="accounts/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </div>
+
+    {% if messages %}
+    <div class="notification" id="notification">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        {% for stock in stock_data %}
+            <div class="stock-box" onclick="showLoginMessage()">
+                <div class="stock-name">{{ stock.symbol }}</div>
+                <div class="stock-price">₹{{ stock.last_price }}</div>
+                <div class="stock-change {% if stock.price_change >= 0 %}increase{% else %}decrease{% endif %}">
+                    {{ stock.price_change|floatformat:2 }}%
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="notification error" id="login-message">Please login for using more features!</div>
+
+    <div class="container">
+        <!-- Features List Section -->
+        <div class="features-section">
+            <h3>Available Features After Login</h3>
+            <ul>
+                <li>
+                    <strong>Real-time Stock Charts</strong> - View interactive line and candlestick charts for stock price trends.
+                </li>
+                <li>
+                    <strong>Comprehensive Stock Information</strong> - Get detailed information about stocks, including market cap, P/E ratio, dividend yield, and more.
+                </li>
+                <li>
+                    <strong>Portfolio Management</strong> - Track your stock portfolio’s performance, including profit/loss calculations and current value.
+                </li>
+                <li>
+                    <strong>Stock Calculators</strong> - Use calculators to help with your stock trading, such as profit/loss calculators and dividend yield estimators.
+                </li>
+                <li>
+                    <strong>Watchlist</strong> - Add stocks to your watchlist and track their performance over time.
+                </li>
+                <li>
+                    <strong>News</strong> - Add stocks to your watchlist and track their performance over time.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showLoginMessage() {
+            const loginMessage = document.getElementById('login-message');
+            loginMessage.style.display = 'block';
+            setTimeout(() => {
+                loginMessage.style.display = 'none';
+            }, 3000); // Hide the message after 3 seconds
+        }
+    </script>
+</body>
+</html>

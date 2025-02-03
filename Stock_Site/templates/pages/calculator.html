@@ -13,6 +13,12 @@
             background-color: #121212;
             color: #00ffff;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.light-mode {
+            background-color: #ffffff;
+            color: #800080;
         }
 
         .container {
@@ -24,7 +30,7 @@
 
         h1 {
             text-align: center;
-            color: #00ffff;
+            color: inherit;
             margin-bottom: 40px;
         }
 
@@ -39,11 +45,17 @@
             padding: 20px;
             border-radius: 8px;
             border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .light-mode .calculator {
+            background-color: #f0f0f0;
+            border-color: rgba(128, 0, 128, 0.2);
         }
 
         .calculator h3 {
             margin-top: 0;
-            color: #00ffff;
+            color: inherit;
             font-size: 1.2em;
             margin-bottom: 15px;
         }
@@ -52,11 +64,16 @@
             width: 100%;
             padding: 8px;
             margin: 8px 0;
-            background-color:   #ece4e4;
+            background-color: #ece4e4;
             border: 1px solid rgba(0, 255, 255, 0.3);
             border-radius: 4px;
             color: #000000;
             font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .light-mode .calculator input {
+            border-color: rgba(128, 0, 128, 0.3);
         }
 
         .calculator input::placeholder {
@@ -77,8 +94,16 @@
             transition: background-color 0.2s;
         }
 
+        .light-mode .calculator button {
+            background-color: #800080;
+        }
+
         .calculator button:hover {
             background-color: #008080;
+        }
+
+        .light-mode .calculator button:hover {
+            background-color: #660066;
         }
 
         .result {
@@ -88,10 +113,45 @@
             border-radius: 4px;
             text-align: center;
             font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .light-mode .result {
+            background-color: rgba(128, 0, 128, 0.1);
+        }
+
+        /* Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #006666;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .light-mode .theme-toggle {
+            background-color: #800080;
+        }
+
+        .theme-toggle:hover {
+            color:rgb(255, 255, 255);
+             background-color: #0d0e0e;
+        }
+
+        .light-mode .theme-toggle:hover {
+            color:#660066
+            background-color:black;
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
     <div class="container">
         <h1>Stock Calculators</h1>
         
@@ -191,6 +251,21 @@
     </div>
 
     <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggleButton = document.querySelector('.theme-toggle');
+
+            body.classList.toggle('light-mode');
+
+            // Update the button text based on the current theme
+            if (body.classList.contains('light-mode')) {
+                themeToggleButton.textContent = '🌙 Dark Mode';
+            } else {
+                themeToggleButton.textContent = '☀️ Light Mode';
+            }
+        }
+
         // Existing Calculators
         function calculateProfitLoss() {
             const buyPrice = parseFloat(document.getElementById('buyPrice').value);
@@ -247,7 +322,6 @@
             document.getElementById('peRatioResult').innerText = `P/E Ratio: ${peRatio.toFixed(2)}`;
         }
 
-        // New Calculators
         function calculateROI() {
             const investmentAmount = parseFloat(document.getElementById('investmentAmount').value);
             const returnAmount = parseFloat(document.getElementById('returnAmount').value);
