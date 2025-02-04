@@ -87,7 +87,7 @@
         /* Header */
         header {
             background: var(--secondary-bg);
-            padding: 8px 8px;
+            padding: 20px 0;
             box-shadow: 0 4px 6px rgba(4, 153, 222, 0.1);
             width: 100%;
             position: relative;
@@ -100,7 +100,7 @@
             align-items: center;
             max-width: 1800px;
             margin: 0 auto;
-            padding: 0  px 15px;
+            padding: 0 20px;
         }
 
         header h1 {
@@ -426,6 +426,8 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
+                    <li><a href="{% url 'nse' %}">NSE</a></li>
+                    <li><a href="{% url 'bse' %}">BSE</a></li>
                     <li><a href="{% url 'calculators' %}">Calculators</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropbtn">
