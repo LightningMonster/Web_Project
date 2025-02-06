@@ -195,13 +195,14 @@ def home2(request):
 
 
 def home1(request):
-    # Fetch the latest 20 unique stocks by date
-
+    # Redirect authenticated users to 'home2/'
     if request.user.is_authenticated:
         return redirect('home2/')
-    
+
+    # Fetch the latest 8 unique stocks ending with '.NS' by date
     stocks = (
-        StockData.objects.order_by('stock_symbol', '-date')
+        StockData.objects.filter(stock_symbol__endswith='.BO')
+        .order_by('stock_symbol', '-date')
         .distinct('stock_symbol')[:8]
     )
 
