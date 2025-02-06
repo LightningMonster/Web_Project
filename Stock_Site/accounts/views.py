@@ -202,7 +202,7 @@ def home1(request):
     
     stocks = (
         StockData.objects.order_by('stock_symbol', '-date')
-        .distinct('stock_symbol')[:20]
+        .distinct('stock_symbol')[:8]
     )
 
     stock_data = []

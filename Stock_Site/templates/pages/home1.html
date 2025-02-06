@@ -338,80 +338,22 @@
     <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
     <h1 class="tagline">Your Gateway to Stock Market Insights</h1>
     <div class="stock-info">
+
+        {% for stock in stock_data %}
         <div class="stock-box">
-            <div class="box">
-              <span class="title">1 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div>
-          <div class="stock-box">
-            <div class="box">
-              <span class="title">2 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div><div class="stock-box">
-            <div class="box">
-              <span class="title">3 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div><div class="stock-box">
-            <div class="box">
-              <span class="title">4 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div><div class="stock-box">
-            <div class="box">
-              <span class="title">5 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div><div class="stock-box">
-            <div class="box">
-              <span class="title">6 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div><div class="stock-box">
-            <div class="box">
-              <span class="title">7 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div><div class="stock-box">
-            <div class="box">
-              <span class="title">8 Stock Name</span>
-              <div>
-                <strong>Profit</strong>
-                <p>any info</p>
-                <span>VALID</span> <span>01/28</span>
-              </div>
-            </div>
-          </div>
+            
+                <div class="box" onclick="showLoginMessage()">
+
+                    <span class="title">{{ stock.symbol }}</span>
+
+                        <strong>Price: ₹{{ stock.last_price }}</strong>
+                        <p class="stock-change {% if stock.price_change >= 0 %}increase{% else %}decrease{% endif %}">
+                            {{ stock.price_change|floatformat:2 }}%
+                        </p>
+                </div>
+            
+        </div>
+        {% endfor %}
     </div>
     <div class="moving-pictures">
         <div class="moving-track">
