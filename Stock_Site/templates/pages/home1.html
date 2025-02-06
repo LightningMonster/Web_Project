@@ -8,14 +8,14 @@
     <style>
         body {
         font-family: Arial, sans-serif;
-        background-color: #1b0101;
+        background-color: #000000;
         color: #333;
         }
 
         .navbar {
             display: flex;
-            justify-content: space-between;
-            background-color: #00076b;
+            justify-content: flex-start;
+            /*background-color: #00076b;*/
             padding: 10px 20px;
             color: white;
             font-size:xx-large;
@@ -44,14 +44,84 @@
         }
 
         .stock-box {
-            border: 1px solid #ccc;
-            padding: 20px;
-            text-align: center;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            font-size: 28px;
-            font-weight: bold;
+        color: white;
+        position: relative;
+        font-family: sans-serif;
+        }
+
+        .stock-box::before,
+        .stock-box::after {
+        content: "";
+        background-color: #fab5704c;
+        position: absolute;
+        }
+
+        .stock-box::before {
+        border-radius: 50%;
+        width: 6rem;
+        height: 6rem;
+        top: 30%;
+        right: 7%;
+        }
+
+        .stock-box::after {
+        content: "";
+        position: absolute;
+        height: 3rem;
+        top: 8%;
+        right: 5%;
+        border: 1px solid;
+        }
+
+        .stock-box .box {
+        width: 400px;
+        height: 150px;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.074);
+        border: 1px solid rgba(255, 255, 255, 0.222);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        border-radius: 0.7rem;
+        transition: all ease 0.3s;
+        }
+
+        .stock-box .box {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        }
+
+        .stock-box .box .title {
+        font-size: 2rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        }
+
+        .stock-box .box div strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        }
+
+        .stock-box .box div p {
+        margin: 0;
+        font-size: 0.9em;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        }
+
+        .stock-box .box div span {
+        font-size: 0.7rem;
+        font-weight: 300;
+        }
+
+        .stock-box .box div span:nth-child(3) {
+        font-weight: 500;
+        margin-right: 0.2rem;
+        }
+
+        .stock-box .box:hover {
+        box-shadow: 0px 0px 20px 1px #ffbb763f;
+        border: 1px solid rgba(255, 255, 255, 0.454);
         }
 
         /* Responsive Design: Adjust layout for smaller screens */
@@ -100,6 +170,50 @@
             animation-play-state: paused; /* Pauses on hover */
         }
 
+.get-started-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+    position: relative;
+}
+
+.get-started {
+    background-color: purple;
+    color: white;
+    font-size: 24px;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    z-index: 10; /* Keeps button on top */
+}
+
+/* Screen Blur on Hover */
+.get-started:hover ~ * {
+    filter: blur(5px);
+}
+
+/* White Dots Animation */
+.dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    opacity: 1;
+    animation: dotExpand 1.5s ease-out forwards;
+}
+
+@keyframes dotExpand {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(3); opacity: 0.5; }
+    100% { transform: scale(5); opacity: 0; }
+}
+
+
 
         .features {
             padding: 40px;
@@ -108,7 +222,8 @@
 
         .features h2 {
             margin-bottom: 30px;
-            font-size: 28px;
+            font-size: 36px;
+            color: #4900cf;
         }
 
         .feature-container {
@@ -121,44 +236,53 @@
         .feature-box {
             padding: 10px;
             border-radius: 15px;
+            border-color: #d9d9d9;
             box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            text-align: center;
+            width: 100%;
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
         .feature-box img {
-            width: 120px;
-            height: 120px;
+            width: 400px;
+            height: 200px;
             border-radius: 10px;
             background-color: #d9d9d9;
-            padding: 10px;
+            padding: 20px;
         }
 
         .feature-content {
             flex: 1;
             text-align: left;
+            padding : 20px;
         }
 
         .feature-box h3 {
             margin-bottom: 10px;
-            font-size: 22px;
+            font-size: 28px;
             color: white;
         }
 
         .feature-box p {
-            font-size: 16px;
+            font-size: 20px;
             color: white;
         }
 
+        .feature-box:nth-child(odd) {
+            flex-direction: row; /* Image Left, Text Right */
+        }
+
+        .feature-box:nth-child(even) {
+            flex-direction: row-reverse; /* Image Right, Text Left */
+        }
+
         /* Unique Background Colors */
-        .feature-box:nth-child(1) { background-color: #007bff; } /* Blue */
-        .feature-box:nth-child(2) { background-color: #28a745; } /* Green */
-        .feature-box:nth-child(3) { background-color: #ffc107; } /* Yellow */
-        .feature-box:nth-child(4) { background-color: #dc3545; } /* Red */
-        .feature-box:nth-child(5) { background-color: #6f42c1; } /* Purple */
+        .feature-box:nth-child(1) { background-color: #5c5e5e7a; } 
+        .feature-box:nth-child(2) { background-color: #5c5e5e7a; }
+        .feature-box:nth-child(3) { background-color: #5c5e5e7a; }
+        .feature-box:nth-child(4) { background-color: #5c5e5e7a; } 
+        .feature-box:nth-child(5) { background-color: #5c5e5e7a; } 
 
         .creators {
             padding: 20px;
@@ -167,21 +291,25 @@
 
         .creators h2 {
             margin-bottom: 20px;
+            color: #4900cf;
+            font-size: 36px;
         }
 
         .creator-container {
             display: flex;
             justify-content: center;
             gap: 20px;
+            width: 100%;
         }
 
         .creator {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.555);
             padding: 15px;
             border-radius: 10px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            width: 200px;
+            width: 400px;
             text-align: center;
+            font-size: 20px;
         }
 
         .creator img {
@@ -205,42 +333,113 @@
 <body>
     <nav class="navbar">
         <div class="logo">StockStats</div>
-        <div class="nav-buttons">
-            <button class="login">Login</button>
-            <button class="register">Register</button>
-        </div>
     </nav>
+    
     <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
     <h1 class="tagline">Your Gateway to Stock Market Insights</h1>
     <div class="stock-info">
-        <div class="stock-box">Stock 1 Info</div>
-        <div class="stock-box">Stock 2 Info</div>
-        <div class="stock-box">Stock 3 Info</div>
-        <div class="stock-box">Stock 4 Info</div>
-        <div class="stock-box">Stock 5 Info</div>
-        <div class="stock-box">Stock 6 Info</div>
-        <div class="stock-box">Stock 7 Info</div>
-        <div class="stock-box">Stock 8 Info</div>
+        <div class="stock-box">
+            <div class="box">
+              <span class="title">1 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div>
+          <div class="stock-box">
+            <div class="box">
+              <span class="title">2 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div><div class="stock-box">
+            <div class="box">
+              <span class="title">3 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div><div class="stock-box">
+            <div class="box">
+              <span class="title">4 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div><div class="stock-box">
+            <div class="box">
+              <span class="title">5 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div><div class="stock-box">
+            <div class="box">
+              <span class="title">6 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div><div class="stock-box">
+            <div class="box">
+              <span class="title">7 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div><div class="stock-box">
+            <div class="box">
+              <span class="title">8 Stock Name</span>
+              <div>
+                <strong>Profit</strong>
+                <p>any info</p>
+                <span>VALID</span> <span>01/28</span>
+              </div>
+            </div>
+          </div>
     </div>
     <div class="moving-pictures">
         <div class="moving-track">
             {% load static %}
             <img src="{% static 'images/stocksphoto1.jpeg' %}" alt="Stock Image 1">
-            <img src="{% static 'images/stocksphoto2.jpeg' %}" alt="Stock Image 2">
-            <img src="{% static 'images/stocksphoto3.jpeg' %}" alt="Stock Image 3">
-            <img src="{% static 'images/stocksphoto4.jpeg' %}" alt="Stock Image 4">
-            <img src="{% static 'images/stocksphoto5.jpeg' %}" alt="Stock Image 5">
-            <img src="{% static 'images/stocksphoto6.jpeg' %}" alt="Stock Image 6">
+            <img src="{% static 'images/stocksphoto2.jpg' %}" alt="Stock Image 2">
+            <img src="{% static 'images/stocksphoto3.jpg' %}" alt="Stock Image 3">
+            <img src="{% static 'images/stocksphoto4.jpg' %}" alt="Stock Image 4">
+            <img src="{% static 'images/stocksphoto5.jpg' %}" alt="Stock Image 5">
+            <img src="{% static 'images/stocksphoto6.jpg' %}" alt="Stock Image 6">
+            <img src="{% static 'images/stocksphoto7.jpg' %}" alt="Stock Image 7">
     
             <!-- Duplicate images for smooth looping -->
             <img src="{% static 'images/stocksphoto1.jpeg' %}" alt="Stock Image 1">
-            <img src="{% static 'images/stocksphoto2.jpeg' %}" alt="Stock Image 2">
-            <img src="{% static 'images/stocksphoto3.jpeg' %}" alt="Stock Image 3">
-            <img src="{% static 'images/stocksphoto4.jpeg' %}" alt="Stock Image 4">
-            <img src="{% static 'images/stocksphoto5.jpeg' %}" alt="Stock Image 5">
-            <img src="{% static 'images/stocksphoto6.jpeg' %}" alt="Stock Image 6">
+            <img src="{% static 'images/stocksphoto2.jpg' %}" alt="Stock Image 2">
+            <img src="{% static 'images/stocksphoto3.jpg' %}" alt="Stock Image 3">
+            <img src="{% static 'images/stocksphoto4.jpg' %}" alt="Stock Image 4">
+            <img src="{% static 'images/stocksphoto5.jpg' %}" alt="Stock Image 5">
+            <img src="{% static 'images/stocksphoto6.jpg' %}" alt="Stock Image 6">
+            <img src="{% static 'images/stocksphoto7.jpg' %}" alt="Stock Image 7">
         </div>
     </div>
+
+    <div class="get-started-container">
+        <div class="buttons">
+            <a href="/login">Get Started</a>
+        </div>
+    </div>    
     
     <div class="features">
         <h2>Features</h2>
@@ -287,22 +486,27 @@
         <h2>Creators of the Site</h2>
         <div class="creator-container">
             <div class="creator">
-                <img src="creator1.jpg" alt="Creator 1">
-                <p>Creator 1: Description</p>
+                <img src="yash.jpg" alt="Yash S. Dhadve"><br>
+                <p id="1" style="font-size: 26px;"><b>Mr. Yash Suresh Dhadve</b><br> </p>
+                <p id="2">T.Y. BSc (Computer Science) Student<br> Roll No.2 <br> Kaveri College of Arts,Science and commerce</p>
             </div>
             <div class="creator">
-                <img src="creator2.jpg" alt="Creator 2">
-                <p>Creator 2: Description</p>
+                <img src="phalguni.jpg" alt="Phalguni R. Ubhe"><br>
+                <p id="1" style="font-size: 26px;" ><b>Ms. Phalguni Rajaram Ubhe</b><br></p>
+                <p id="2"> T.Y. BSc (Computer Science) Student<br> Roll No.3 <br> Kaveri College of Arts,Science and commerce</p>
             </div>
             <div class="creator">
-                <img src="creator3.jpg" alt="Creator 3">
-                <p>Creator 3: Description</p>
+                <img src="omkar.jpg" alt="Omkar r. Ghule"><br>
+                <p id="1" style="font-size: 26px;"><b>Mr. Omkar Rajaram Ghule</b><br></p>
+                <p id="2"> T.Y. BSc (Computer Science) Student<br> Roll No.4 <br> Kaveri College of Arts,Science and commerce</p>
             </div>
         </div>
     </div>
     <footer>
         <p>&copy; 2025 StockStats. Contact us at info@stockstats.com</p>
     </footer>
-    <script src="script.js"></script>
+    <script>
+
+    </script>                      
 </body>
 </html>
