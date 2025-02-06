@@ -68,3 +68,6 @@ stock_analysis=#    ALTER TABLE stock_data
 # Check in database where new fields are added or not!
 
 stock_analysis=# SELECT * FROM accounts_stockdata WHERE stock_symbol = 'ITC.NS';
+
+#clear database values
+TRUNCATE TABLE accounts_stockdata CASCADE;
