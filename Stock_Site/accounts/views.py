@@ -39,6 +39,7 @@ def register(request):
         email = request.POST['email']
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
+        gender = request.POST['gender']
 
         if password == confirm_password:
             if User.objects.filter(username=username).exists():
@@ -51,7 +52,8 @@ def register(request):
                     password=password,
                     first_name=first_name,
                     last_name=last_name,
-                    email=email
+                    email=email,
+                    gender=gender
                 )
                 user.save()
                 messages.success(request, 'Registration successful. Please login.')

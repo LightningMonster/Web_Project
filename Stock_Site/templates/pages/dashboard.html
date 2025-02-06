@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE
+html >
+  <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,110 +12,70 @@
             margin: 0;
             padding: 0;
             background-color: #121212;
-            color: #f4fafa; /* Cyan text for dark mode */
+            color: #f4fafa;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             transition: background-color 0.3s, color 0.3s;
         }
 
-        body.light-mode {   /* Light Mode Styles (unchanged) */
+        body.light-mode {
             background-color: #f4f4f9;
             color: #620770;
         }
 
         a {
-            color: #ffffff; /* Cyan links for dark mode */
+            color: #ffffff;
             text-decoration: none;
             transition: color 0.3s;
         }
 
-        body.light-mode a { /* Light Mode text color (unchanged) */
+        body.light-mode a {
             color: #6c0486;
         }
 
         a:hover {
-            color: #00cccc; /* Darker cyan for hover in dark mode */
+            color: #00cccc;
         }
 
         body.light-mode a:hover {
             color: #040404;
         }
 
-        /* Header */
-        header {
+        /* Top Navbar */
+        .top-navbar {
             background-color: #000000;
-            padding: 20px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-            transition: background-color 0.3s, border-color 0.3s;
         }
 
-        body.light-mode header {
+        body.light-mode .top-navbar {
             background-color: #ffffff;
             border-bottom: 1px solid #ddd;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 1.5em;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        .profile-section {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 10px;
         }
 
-        nav ul li {
-            display: inline-block;
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #72098f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #1e1e1e; /* Darker background for dropdown */
-            border: 1px solid rgba(0, 255, 255, 0.546);
-            border-radius: 4px;
-            padding: 10px;
-            z-index: 1;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        body.light-mode .dropdown-content {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown-content a {
-            display: block;
-            padding: 5px 0;
-            color: #f3fdfd; /* Cyan text for dropdown in dark mode */
-            transition: color 0.3s;
-        }
-
-        body.light-mode .dropdown-content a {
-            color: #080808;
-        }
-
-        .dropdown-content a:hover {
-            color: #00cccc; /* Darker cyan for hover in dark mode */
-        }
-
-        body.light-mode .dropdown-content a:hover {
-            color: #008080;
-        }
-
-        .theme-toggle { /* Dark Mode Button */
-            background-color: #72098f; /* Cyan button for dark mode */
+        .theme-toggle {
+            background-color: #72098f;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -123,21 +84,61 @@
             transition: background-color 0.2s;
         }
 
-        .theme-toggle:hover {   /* Dark Mode Button Hover */
-            background-color: #852d82; /* Darker cyan for hover */
+        .theme-toggle:hover {
+            background-color: #852d82;
+        }
+
+        /* Main Content Layout */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #000000;
+            padding: 20px;
+            border-right: 1px solid rgba(0, 255, 255, 0.2);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.light-mode .sidebar {
+            background-color: #ffffff;
+            border-right: 1px solid #ddd;
+        }
+
+        .sidebar h1 {
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 10px;
         }
 
         /* Main Content */
-        .container {
-            display: flex;
-            gap: 20px;
+        .main-container {
+            flex: 1;
             padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        .watchlist-section, .main-content {
-            background-color: #1e1e1e; /* Darker background for sections */
+        .content {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .watchlist-section, .stock-section {
+            background-color: #1e1e1e;
             padding: 20px;
             border-radius: 8px;
             border: 1px solid rgba(0, 255, 255, 0.2);
@@ -145,27 +146,27 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        body.light-mode .watchlist-section, body.light-mode .main-content {
+        body.light-mode .watchlist-section, body.light-mode .stock-section {
             background-color: #ffffff;
             border: 1px solid #ddd;
         }
 
-        .watchlist-section h2, .main-content h3 { /* Dark mode Watchlist and Main Content Headings */
+        .watchlist-section h2, .stock-section h3 {
             margin-top: 0;
-            color: #fdfdfd; /* Cyan headings for dark mode */
+            color: #fdfdfd;
             transition: color 0.3s;
         }
 
-        body.light-mode .watchlist-section h2, body.light-mode .main-content h3 {/* Light mode Watchlist and Main Content Headings */
+        body.light-mode .watchlist-section h2, body.light-mode .stock-section h3 {
             color: #6f058f;
         }
 
-        .watchlist-section ul, .main-content ul {/* Dark mode Watchlist and Main Content List */
+        .watchlist-section ul, .stock-section ul {
             list-style: none;
             padding: 0;
         }
 
-        .watchlist-section li, .main-content li {/* Dark mode Watchlist and Main Content List Items */
+        .watchlist-section li, .stock-section li {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -174,16 +175,16 @@
             transition: border-color 0.3s;
         }
 
-        body.light-mode .watchlist-section li, body.light-mode .main-content li {/* Light mode Watchlist and Main Content List Items */
+        body.light-mode .watchlist-section li, body.light-mode .stock-section li {
             border-bottom: 1px solid #ddd;
         }
 
-        .watchlist-section li:last-child, .main-content li:last-child {/* Dark mode Watchlist and Main Content List Items */    
+        .watchlist-section li:last-child, .stock-section li:last-child {
             border-bottom: none;
         }
 
-        .plus-button, .minus-button {/* Dark mode Plus and Minus Buttons */
-            background-color: #72098f; /* Cyan buttons for dark mode */
+        .plus-button, .minus-button {
+            background-color: #72098f;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -192,11 +193,11 @@
             transition: background-color 0.2s;
         }
 
-        .plus-button:hover, .minus-button:hover {/* Dark mode Plus and Minus Buttons Hover */
-            background-color: #005555; /* Darker cyan for hover */
+        .plus-button:hover, .minus-button:hover {
+            background-color: #005555;
         }
 
-        .scrollable-card {/* Dark mode Scrollable Card */
+        .scrollable-card {
             max-height: 300px;
             overflow-y: auto;
             border: 1px solid rgba(0, 255, 255, 0.2);
@@ -205,27 +206,27 @@
             transition: border-color 0.3s;
         }
 
-        body.light-mode .scrollable-card {/* Light mode Scrollable Card */
+        body.light-mode .scrollable-card {
             border: 1px solid #ddd;
         }
 
         /* Forms */
-        form {/* Dark mode Form */
+        form {
             margin-bottom: 20px;
         }
 
-        label {/* Dark mode Form Label */
+        label {
             display: block;
             margin-bottom: 5px;
-            color: #ffffff; /* Cyan labels for dark mode */
+            color: #ffffff;
             transition: color 0.3s;
         }
 
-        body.light-mode label {/* Light mode Form Label */
+        body.light-mode label {
             color: #6f0589;
         }
 
-        input[type="text"] {/*  Dark mode Form Input */
+        input[type="text"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -236,14 +237,14 @@
             transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
 
-        body.light-mode input[type="text"] {/* Light mode Form Input */
+        body.light-mode input[type="text"] {
             background-color: #f4f4f9;
             border: 1px solid #ddd;
             color: #000000;
         }
 
-        button[type="submit"] {/* Dark mode Form Submit Button */
-            background-color: #72098f; /* Cyan submit button for dark mode */
+        button[type="submit"] {
+            background-color: #72098f;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -252,124 +253,129 @@
             transition: background-color 0.2s;
         }
 
-        button[type="submit"]:hover {/* Dark mode Form Submit Button Hover */
-            background-color: #f0f4f4; /* Darker cyan for hover */
+        button[type="submit"]:hover {
+            background-color: #f0f4f4;
         }
 
         /* Footer */
-        footer {                            /* Dark mode Footer */
+        footer {
             background-color: #1e1e1e;
             padding: 20px;
             text-align: center;
             border-top: 1px solid rgba(0, 255, 255, 0.2);
-            margin-top: 20px;
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        body.light-mode footer {    /* Light mode Footer */
+        body.light-mode footer {
             background-color: #ffffff;
             border-top: 1px solid #ddd;
         }
 
-        footer p {      /*  Dark mode Footer Paragraph */
+        footer p {
             margin: 0;
-            color: #ffffff; /* Cyan text for footer in dark mode */
+            color: #ffffff;
             transition: color 0.3s;
         }
 
-        body.light-mode footer p {  /* Light mode Footer Paragraph */
+        body.light-mode footer p {
             color: #333;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div>
-            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <h1>StockStats Dashboard</h1>
+        <div class="profile-section">
+            <div class="profile-image">
+                {% if user.is_authenticated %}
+                    {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                {% else %}
+                    G
+                {% endif %}
+            </div>
+            <span>
+                {% if user.is_authenticated %}
+                    {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                    Guest
+                {% endif %}
+            </span>
+            <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
                     <li><a href="{% url 'calculators' %}">Calculators</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">
-                            {% if user.is_authenticated %}
-                            Hi, {{ user.first_name }} {{ user.last_name }}!
-                            {% else %}
-                                Guest
-                            {% endif %}
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="{% url 'dashboard' %}">Dashboard</a>
-                            <a href="#">Tools</a>
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
-                            {% else %}
-                                <a href="{% url 'login' %}">Login</a>
-                            {% endif %}
-                        </div>
-                    </li>
-                    <li>
-                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
-                    </li>
+                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li><a href="#">Tools</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
-    </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Watchlist Section (Left Side) -->
-        <div class="watchlist-section">
-            <h2>Your Watchlist</h2>
-            <ul id="watchlist">
-                {% for item in watchlist %}
-                <li>
-                    <button class="minus-button" onclick="removeStockFromWatchlist('{{ item.stock_data__stock_symbol }}')">-</button>
-                    <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
-                        {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
-                    </a>
-                </li>
-                {% empty %}
-                <li>No stocks in your watchlist.</li>
-                {% endfor %}
-            </ul>
-        </div>
+        <!-- Main Content -->
+        <div class="main-container">
+            <div class="content">
+                <!-- Watchlist Section -->
+                <div class="watchlist-section">
+                    <h2>Your Watchlist</h2>
+                    <ul id="watchlist">
+                        {% for item in watchlist %}
+                        <li>
+                            <button class="minus-button" onclick="removeStockFromWatchlist('{{ item.stock_data__stock_symbol }}')">-</button>
+                            <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
+                                {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
+                            </a>
+                        </li>
+                        {% empty %}
+                        <li>No stocks in your watchlist.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
-        <!-- Main Content Section (Right Side) -->
-        <div class="main-content">
-            <h3>Add a Stock to Watchlist</h3>
-            <form method="post" action="{% url 'add_to_watchlist' %}">
-                {% csrf_token %}
-                <label for="stock_symbol">Stock Symbol:</label>
-                <input type="text" id="stock_symbol" name="stock_symbol" required>
-                <button type="submit">Add</button>
-            </form>
+                <!-- Stock Section -->
+                <div class="stock-section">
+                    <h3>Add a Stock to Watchlist</h3>
+                    <form method="post" action="{% url 'add_to_watchlist' %}">
+                        {% csrf_token %}
+                        <label for="stock_symbol">Stock Symbol:</label>
+                        <input type="text" id="stock_symbol" name="stock_symbol" required>
+                        <button type="submit">Add</button>
+                    </form>
 
-            <h3>Available Stocks</h3>
-            <div class="scrollable-card">
-                <ul>
-                    {% for stock in available_stocks %}
-                    <li>
-                        <button class="plus-button" onclick="addStockToWatchlist('{{ stock.stock_symbol }}')">+</button>
-                        <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
-                            {{ stock.stock_symbol }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
+                    <h3>Available Stocks</h3>
+                    <div class="scrollable-card">
+                        <ul>
+                            {% for stock in available_stocks %}
+                            <li>
+                                <button class="plus-button" onclick="addStockToWatchlist('{{ stock.stock_symbol }}')">+</button>
+                                <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
+                                    {{ stock.stock_symbol }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
+
+            <!-- Footer -->
+            <footer>
+                <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div>
-            <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript for Dark/Light Mode Toggle -->
     <script>
         // Function to add stock to watchlist
         function addStockToWatchlist(stockSymbol) {
@@ -424,3 +430,4 @@
     </script>
 </body>
 </html>
+
