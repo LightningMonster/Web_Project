@@ -1,4 +1,4 @@
-#!/home/omkar/Desktop/project/Web_Project/Stock_Site/myenv/bin/python3
+#!/home/yash/Desktop/Stock_Project/Web_Project/Stock_Site/myenv/bin/python3
 
 import datetime
 import os
