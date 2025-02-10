@@ -170,50 +170,34 @@
             animation-play-state:paused; /* Pauses on hover */
         }
 
-.get-started-container {
-    display: flex;
-    justify-content: center;
-    margin: 60px 0;
-    position: relative;
-}
+        .get-started-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding-top: 60px;
+        }
 
-.get-started {
-    background-color: purple;
-    color: white;
-    font-size:xx-large;
-    padding:0cm;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-    z-index: 10; /* Keeps button on top */
-}
+        .buttons a {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            background-color: #1ed6e0;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 2px 2px 10px rgba(30, 214, 224, 0.5);
+        }
 
-/* Screen Blur on Hover */
-.get-started:hover ~ * {
-    filter: blur(5px);
-}
+        .buttons a:hover {
+            background-color: #14a6b1;
+            transform: scale(1.05);
+        }
 
-/* White Dots Animation */
-.dot {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: white;
-    border-radius: 50%;
-    opacity: 1;
-    animation: dotExpand 1.5s ease-out forwards;
-}
-
-@keyframes dotExpand {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(3); opacity: 0.5; }
-    100% { transform: scale(5); opacity: 0; }
-}
-
-
+        .buttons a:active {
+            transform: scale(0.95);
+        }
 
         .features {
             padding: 50px;
@@ -283,43 +267,81 @@
         .feature-box:nth-child(3) { background-color: #5c5e5e7a; }
         .feature-box:nth-child(4) { background-color: #5c5e5e7a; } 
         .feature-box:nth-child(5) { background-color: #5c5e5e7a; } 
-
+ 
+        
+        
         .creators {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .creators h2 {
-            margin-bottom: 20px;
-            color: #1ed6e0;
-            font-size: 40px;
-        }
-
-        .creator-container {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            align-items: center;
+            gap: 100px; /* Space between cards */
+            flex-wrap: wrap; /* Wraps if needed on small screens */
             width: 100%;
+            padding-bottom: 80px;
         }
 
         .creator {
-            background-color: rgba(41, 39, 39, 0.824);
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.404);
-            width: 300px;
+            flex: 1 1 250px; /* Cards will shrink & grow as needed */
+            max-width: 250px; /* Prevents over-expansion */
+            height: 270px;
+            perspective: 1000px;
+            min-width: 0; /* Prevents flex overflow issue */
+        }
+
+        .creator .creator-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
             text-align: center;
-            font-size: 23px;
-            color: #f9f9f9;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .creator:hover .creator-inner {
+            transform: rotateY(180deg);
+        }
+
+        .creator-front, .creator-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1rem;
+            box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.2);
+            padding: 15px;
+        }
+
+        .creator-front {
+            background: linear-gradient(120deg, rgb(196, 253, 255) 60%, #1ed6e0 40%);
+            color: #0026ff;
+            font-size: 20px;
+        }
+
+        .creator-back {
+            background: linear-gradient(120deg, #1ed6e0 60%, rgb(196, 253, 255) 40%);
+            color: #0026ff;
+            transform: rotateY(180deg);
         }
 
         .creator img {
-            width: 100px;
+            width: 200px;
+            height: 400px;
             border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
         }
 
-        .creator p {
-            margin-top: 10px;
+        /* Responsive Fix */
+        @media (max-width: 800px) {
+            .creators {
+                flex-wrap: wrap; /* Cards will stack on smaller screens */
+                justify-content: center;
+            }
         }
 
 
@@ -328,6 +350,65 @@
             padding: 10px;
             background-color: #1ed6e09c;
             color: white;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .login-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #1ed6e0;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #14a6b1;
+        }
+
+        .close-btn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: #888;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #555;
         }
     </style>
 </head>
@@ -423,33 +504,77 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>  
     
+    <div id="loginPopup" class="popup">
+        <div class="popup-content">
+            <p>⚠️ You need to log in to access this feature!</p>
+            <a href="accounts/login/" class="login-btn">Login</a>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
     <div class="creators">
-        <h2>Creators of the Site</h2>
-        <div class="creator-container">
-            <div class="creator">
-                <img src="yash.jpg" alt="Yash S. Dhadve"><br>
-                <p id="1" style="font-size: 26px;"><b>Mr. Yash Suresh Dhadve</b><br><br></p>
-                <p id="2">T.Y. BSc (Computer Science) Student<br> Roll No.2 <br> Kaveri College of Arts,Science and commerce</p>
+        <div class="creator">
+            <div class="creator-inner">
+                <div class="creator-front">
+                    <img src="yash.jpg" alt="Yash">
+                    <p><b>Mr.Yash Suresh Dhadve</b></p>
+                </div>
+                <div class="creator-back">
+                    <p>T.Y. BSc (Computer Science) Student<br> Roll no.2 <br> Kaveri College of Arts, Science and Commerce</p>
+                </div>
             </div>
-            <div class="creator">
-                <img src="phalguni.jpg" alt="Phalguni R. Ubhe"><br>
-                <p id="1" style="font-size: 26px;" ><b>Ms. Phalguni Rajaram Ubhe</b><br></p>
-                <p id="2"> T.Y. BSc (Computer Science) Student<br> Roll No.3 <br> Kaveri College of Arts,Science and commerce</p>
+        </div>
+    
+        <div class="creator">
+            <div class="creator-inner">
+                <div class="creator-front">
+                    <img src="phalguni.jpg" alt="Phalguni">
+                    <p><b>Ms. Phalguni Rajaram Ubhe</b></p>
+                </div>
+                <div class="creator-back">
+                    <p>T.Y. BSc (Computer Science) Student<br> Roll no.3 <br> Kaveri College of Arts, Science and Commerce</p>
+                </div>
             </div>
-            <div class="creator">
-                <img src="omkar.jpg" alt="Omkar r. Ghule"><br>
-                <p id="1" style="font-size: 26px;"><b>Mr. Omkar Rajaram Ghule</b><br></p>
-                <p id="2"> T.Y. BSc (Computer Science) Student<br> Roll No.4 <br> Kaveri College of Arts,Science and commerce</p>
+        </div>
+    
+        <div class="creator">
+            <div class="creator-inner">
+                <div class="creator-front">
+                    <img src="omkar.jpg" alt="Omkar">
+                    <p><b>Mr. Omkar Rajaram Ghule</b></p>
+                </div>
+                <div class="creator-back">
+                    <p>T.Y. BSc (Computer Science) Student<br> Roll no.4 <br> Kaveri College of Arts, Science and Commerce</p>
+                </div>
             </div>
         </div>
     </div>
+    
     <footer>
         <p>&copy; 2025 StockStats. Contact us at info@stockstats.com</p>
     </footer>
     <script>
-
-    </script>                      
+        function showLoginMessage() {
+            document.getElementById("loginPopup").style.display = "flex";
+        }
+    
+        function closePopup() {
+            document.getElementById("loginPopup").style.display = "none";
+        }
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            // Attach event to all stock boxes
+            document.querySelectorAll(".stock-box .box").forEach(box => {
+                box.addEventListener("click", showLoginMessage);
+            });
+    
+            // Attach event to all feature boxes
+            document.querySelectorAll(".feature-box").forEach(box => {
+                box.addEventListener("click", showLoginMessage);
+            });
+        });
+    </script>                           
 </body>
 </html>
