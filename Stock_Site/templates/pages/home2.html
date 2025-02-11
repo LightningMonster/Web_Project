@@ -512,9 +512,11 @@
             <div class="stock-grid">
                 {% for stock in top_gainers %}
                 <div class="stock-card">
+                    <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                     <h4>{{ stock.symbol }}</h4>
                     <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
                     <p>Change: <span class="positive">+{{ stock.change }}%</span></p>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -528,9 +530,11 @@
             <div class="stock-grid">
                 {% for stock in top_losers %}
                 <div class="stock-card">
+                    <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                     <h4>{{ stock.symbol }}</h4>
                     <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
                     <p>Change: <span class="negative">{{ stock.change }}%</span></p>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
