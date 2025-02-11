@@ -379,3 +379,16 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def profile(request):
     return render(request, 'pages/profile.html')
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def search_stocks(request):
+    query = request.GET.get("q", "").strip()
+    if not query:
+        return JsonResponse({"stocks": []})
+
+    results = StockData.objects.filter(company_name__icontains=query).values("company_name", "stock_symbol")[:1]  # Limit results
+
+    return JsonResponse({"stocks": list(results)})

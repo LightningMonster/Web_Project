@@ -475,10 +475,9 @@
         <div class="container">
             <h2>Track Your Favorite Indian Stocks</h2>
             <p>Stay ahead with real-time stock insights and news.</p>
-            <form id="search-form">
-                <input type="text" id="stock-search" placeholder="Search for a stock (e.g., TCS, RELIANCE)" required>
-                <button type="submit">Search</button>
-            </form>
+            <h2>Stock Search</h2>
+            <input type="text" id="searchInput" placeholder="Search company name..." onkeyup="searchStocks()">
+            <ul id="results"></ul>
         </div>
     </section>
 
@@ -589,5 +588,34 @@
             }
         });
     </script>
+
+<script>
+    async function searchStocks() {
+        let query = document.getElementById("searchInput").value.trim();
+        let resultsList = document.getElementById("results");
+
+        if (query.length < 2) { 
+            resultsList.innerHTML = "";
+            return; 
+        }
+
+        try {
+            let response = await fetch(`/search/?q=${query}`);
+            let data = await response.json();
+            
+            resultsList.innerHTML = "";
+            data.stocks.forEach(stock => {
+                let li = document.createElement("li");
+                li.textContent = stock.company_name;
+                li.onclick = () => {
+                    window.location.href = `/stocks/${stock.stock_symbol}/`;  // Redirect on click
+                };
+                resultsList.appendChild(li);
+            });
+        } catch (error) {
+            console.error("Error fetching stocks:", error);
+        }
+    }
+</script>
 </body>
 </html>

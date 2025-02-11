@@ -14,5 +14,5 @@ urlpatterns = [
     path('remove-from-watchlist/', views.remove_from_watchlist, name='remove_from_watchlist'),
     path('fetch-live-price/', views.fetch_live_stock_price, name='fetch_live_price'),
     path('profile/', views.profile, name='profile'),
-
+    path("search/", views.search_stocks, name="search_stocks"),
 ]
