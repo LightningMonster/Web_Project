@@ -1,50 +1,60 @@
+# Install Django
 $ sudo apt install python3-django
 
-#Installing postgreSql
-
+# Install PostgreSQL
 $ sudo apt install postgresql postgresql-contrib
 
+# Start and enable PostgreSQL service
 $ sudo systemctl start postgresql
 $ sudo systemctl enable postgresql
 
+# Install psycopg2-binary
 $ pip install psycopg2-binary
 
-*if error in installing package use virtual environment
-    python3 -m venv myenv
-    source myenv/bin/activate
+# If there is an error in installing the package, use a virtual environment
+$ python3 -m venv myenv
+$ source myenv/bin/activate
 
-#setting DATABASE
+# Setting up the DATABASE
 
+# Switch to the postgres user
 $ sudo -u postgres psql
 
+# Create a new database
 postgres=# CREATE DATABASE stock_analysis;
+
+# Create a new user
 postgres=# CREATE USER yash WITH PASSWORD '1234';
 
-$ sudo -u postgres psql -d stock_analysis (switch to newly created database)
+# Switch to the newly created database
+$ sudo -u postgres psql -d stock_analysis
 
+# Grant permissions to the new user
 stock_analysis=# GRANT CREATE ON schema public TO yash;
 stock_analysis=# SELECT nspname FROM pg_namespace WHERE nspname = 'public';
 stock_analysis=# ALTER SCHEMA public OWNER TO yash;
 
-stock_analysis=# psql -U yash -d stock_analysis
+# Connect to the database as the new user
+$ psql -U yash -d stock_analysis
 
 --------------------------------------------------------------------------------
-# create stock_data table 
+# Create stock_data table
 
-stock_analysis=#    CREATE TABLE stock_data (
-        id SERIAL PRIMARY KEY,
-        stock_symbol VARCHAR(50),
-        date DATE,
-        open NUMERIC,
-        high NUMERIC,
-        low NUMERIC,
-        close NUMERIC,
-        volume NUMERIC,
-        dividends NUMERIC,
-        stock_splits NUMERIC
-    );
+stock_analysis=# CREATE TABLE stock_data (
+    id SERIAL PRIMARY KEY,
+    stock_symbol VARCHAR(50),
+    date DATE,
+    open NUMERIC,
+    high NUMERIC,
+    low NUMERIC,
+    close NUMERIC,
+    volume NUMERIC,
+    dividends NUMERIC,
+    stock_splits NUMERIC
+);
 
-stock_analysis=#    ALTER TABLE stock_data 
+# Alter stock_data table to add additional columns
+stock_analysis=# ALTER TABLE stock_data 
     ADD COLUMN company_name VARCHAR(255),
     ADD COLUMN industry VARCHAR(255),
     ADD COLUMN sector VARCHAR(100),
@@ -58,16 +68,16 @@ stock_analysis=#    ALTER TABLE stock_data
     ADD COLUMN fifty_two_week_high NUMERIC,
     ADD COLUMN fifty_two_week_low NUMERIC;
 
-# run following commands where manage.py is present
+--------------------------------------------------------------------------------
+# Run the following commands where manage.py is present
 
-    python manage.py collect_data
-    python manage.py import_data
+$ python manage.py collect_data
+$ python manage.py import_data
 
-    (Wait for process)
+# Wait for the process to complete
 
-# Check in database where new fields are added or not!
-
+# Check in the database if new fields are added
 stock_analysis=# SELECT * FROM accounts_stockdata WHERE stock_symbol = 'ITC.NS';
 
-#clear database values
-TRUNCATE TABLE accounts_stockdata CASCADE;
+# Clear database values
+stock_analysis=# TRUNCATE TABLE accounts_stockdata CASCADE;

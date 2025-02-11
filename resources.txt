@@ -1,0 +1,31 @@
+# Python Libraries
+- Django: A high-level Python web framework that encourages rapid development and clean, pragmatic design.
+- psycopg2-binary: A PostgreSQL database adapter for Python.
+- yfinance: A library to access financial data from Yahoo Finance.
+
+# Database
+- PostgreSQL: An open-source relational database management system.
+
+# Frontend Libraries and Frameworks
+- Bootstrap: A popular CSS framework for developing responsive and mobile-first websites.
+
+# Tools
+- Git: A distributed version control system for tracking changes in source code during software development.
+- Virtualenv: A tool to create isolated Python environments.
+
+# Services
+- GitHub: A web-based platform used for version control and collaborative software development.
+- Yahoo Finance: A media property that provides financial news, data, and commentary including stock quotes, press releases, financial reports, and original content.
+
+# Django Packages
+- django.contrib.auth: Django's built-in authentication framework.
+- django.contrib.admin: Django's built-in admin interface.
+- django.contrib.sessions: Django's built-in session framework.
+- django.contrib.contenttypes: Django's built-in content types framework.
+
+# Other Resources
+- Django Documentation: https://docs.djangoproject.com/
+- PostgreSQL Documentation: https://www.postgresql.org/docs/
+- Git Documentation: https://git-scm.com/doc
+- Bootstrap Documentation: https://getbootstrap.com/docs/
+- yfinance Documentation: https://pypi.org/project/yfinance/
