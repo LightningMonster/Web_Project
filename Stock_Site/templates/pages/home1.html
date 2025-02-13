@@ -278,6 +278,8 @@
             flex-wrap: wrap; /* Wraps if needed on small screens */
             width: 100%;
             padding-bottom: 80px;
+            font-size : 30px;
+            color: #1ed6e0;
         }
 
         .creator {
@@ -318,14 +320,15 @@
 
         .creator-front {
             background: linear-gradient(120deg, rgb(196, 253, 255) 60%, #1ed6e0 40%);
-            color: #0026ff;
+            color: white;
             font-size: 20px;
         }
 
         .creator-back {
             background: linear-gradient(120deg, #1ed6e0 60%, rgb(196, 253, 255) 40%);
-            color: #0026ff;
+            color: white;
             transform: rotateY(180deg);
+            font-size : 20px;
         }
 
         .creator img {
@@ -418,7 +421,7 @@
     </nav>
     
     <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
-    <h1 class="tagline">Your Gateway to Stock Market Insights</h1>
+    <h1 class="tagline">Your Journey to Financial Freedom Starts Here!</h1>
     <div class="stock-info">
 
         {% for stock in stock_data %}
@@ -512,6 +515,10 @@
             <a href="accounts/login/" class="login-btn">Login</a>
             <button class="close-btn" onclick="closePopup()">Close</button>
         </div>
+    </div>
+
+    <div class="creators">
+        <h2><b>Our Team</b></h2>
     </div>
 
     <div class="creators">
