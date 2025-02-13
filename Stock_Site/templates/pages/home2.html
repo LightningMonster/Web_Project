@@ -7,37 +7,54 @@
     {% load humanize %}  <!-- Load humanize filters -->
 
     <style>
-        /* CSS Variables for Light Theme */
+        /* Google Font Import - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
         :root {
-            --primary-bg: #ffffff; /* White background */
-            --secondary-bg: #f5f5f5; /* Light gray */
-            --accent-color: #0a090b; /* Purple accent */
-            --text-color: #000000; /* Black text in light mode */
-            --text-secondary: #666666; /* Gray text */
-            --card-bg: #ffffff; /* White card background */
-            --card-hover: #f0f0f0; /* Light gray hover */
+            /* ===== Colors ===== */
+            --body-color: #E4E9F7;
+            --sidebar-color: #FFF;
+            --primary-color: #695CFE;
+            --primary-color-light: #F6F5FF;
+            --toggle-color: #DDD;
+            --text-color: #707070;
+            --hover-color: #f0f0f0;
             --positive: #4caf50; /* Green for positive change */
             --negative: #f44336; /* Red for negative change */
             --button-bg: #f0e7e7; /* Purple button */
             --button-hover: #18d6dd; /* Darker purple hover */
+            /* ====== Transition ====== */
+            --tran-03: all 0.2s ease;
+            --tran-04: all 0.3s ease;
+            --tran-05: all 0.3s ease;
         }
-
-        /* CSS Variables for Dark Theme */
+        body {
+            min-height: 100vh;
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+            color: var(--text-color);
+        }
+        ::selection {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
         body.dark-mode {
-            --primary-bg: #0e1010da; /* Full black background */
-            --secondary-bg: #131010; /* Darker gray */
-            --accent-color: #fef9f9; /* Purple accent */
-            --text-color: #00ffff; /* Cyan text in dark mode */
-            --text-secondary: #00ffff; /* Cyan text for secondary elements */
-            --card-bg: #040404; /* Dark card background */
-            --card-hover: #2a2a2a; /* Darker hover */
-            --button-bg: #e8e3e3; /* Purple button */
-            --button-hover: #1cafc9; /* Darker purple hover */
+            --body-color: #18191a;
+            --sidebar-color: #242526;
+            --primary-color: #695CFE;
+            --primary-color-light: #3a3b3c;
+            --toggle-color: #fff;
+            --text-color: #ccc;
+            --hover-color: #333;
         }
-
         /* General Styles */
         body {
-            font-family: 'Times New Roman', sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             color: var(--text-color);
@@ -76,7 +93,7 @@
 
         .container {
             width: 100%;
-            max-width: 1800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
             box-sizing: border-box;
@@ -86,7 +103,7 @@
 
         /* Header */
         header {
-            background: var(--secondary-bg);
+            background: var(--sidebar-color);
             padding: 8px 8px;
             box-shadow: 0 4px 6px rgba(4, 153, 222, 0.1);
             width: 100%;
@@ -98,9 +115,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1800px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0  px 15px;
+            padding: 0 15px;
         }
 
         header h1 {
@@ -132,7 +149,7 @@
         }
 
         nav ul li a:hover {
-            background-color: var(--accent-color);
+            background-color: var(--primary-color);
             color: white;
         }
 
@@ -145,7 +162,7 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: var(--card-bg);
+            background-color: var(--sidebar-color);
             min-width: 160px;
             box-shadow: 0 8px 16px rgba(112, 111, 111, 0.339);
             z-index: 1;
@@ -161,7 +178,7 @@
         }
 
         .dropdown-content a:hover {
-            background-color: var(--accent-color);
+            background-color: var(--primary-color);
             color: white;
         }
 
@@ -200,14 +217,14 @@
         .hero h2 {
             font-size: 42px;
             margin-bottom: 20px;
-            color: var(--accent-color);
+            color: var(--primary-color);
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Text shadow for better readability on video */
         }
 
         .hero p {
             font-size: 18px;
             margin-bottom: 30px;
-            color: var(--text-secondary);
+            color: var(--text-color);
         }
 
         #search-form {
@@ -222,7 +239,7 @@
             width: 300px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: var(--primary-bg);
+            background-color: var(--sidebar-color);
             color: var(--text-color);
             outline: none;
         }
@@ -231,7 +248,7 @@
             padding: 12px 24px;
             border: none;
             background-color: var(--button-bg);
-            color: var(--primary-bg);
+            color: var(--sidebar-color);
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -247,20 +264,20 @@
             width: 100%;
             position: relative;
             z-index: 1;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--sidebar-color);
             margin-top: 60px;
             margin-bottom: 60px;
         }
 
         body.dark-mode .trending-stocks {
-            background: rgba(16, 15, 15, 0.303); /* Dark overlay for dark mode */
+            background: var(--sidebar-color); /* Dark overlay for dark mode */
         }
 
         .trending-stocks h3 {
             text-align: center;
             margin-bottom: 40px;
             font-size: 28px;
-            color: var(--accent-color);
+            color: var(--primary-color);
         }
 
         .stock-grid {
@@ -271,13 +288,13 @@
         }
 
         .stock-card {
-            background: var(--card-bg);
+            background: var(--sidebar-color);
             padding: 20px;
             border-radius: 10px;
             text-align: center;
             color: var(--text-color);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
             width: 250px;
             height: 150px;
             display: flex;
@@ -289,6 +306,7 @@
         .stock-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            background-color: var(--hover-color);
         }
 
         .stock-card h4 {
@@ -316,7 +334,7 @@
         /* News Section */
         .news-section {
             padding: 80px 0;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--sidebar-color);
             width: 100%;
             position: relative;
             z-index: 1;
@@ -325,14 +343,14 @@
         }
 
         body.dark-mode .news-section {
-            background: rgba(16, 15, 15, 0.303); /* Dark overlay for dark mode */
+            background: var(--sidebar-color); /* Dark overlay for dark mode */
         }
 
         .news-section h3 {
             text-align: center;
             margin-bottom: 40px;
             font-size: 28px;
-            color: var(--accent-color);
+            color: var (--primary-color);
         }
 
         .news-grid {
@@ -342,15 +360,16 @@
         }
 
         .news-item {
-            background: var(--card-bg);
+            background: var(--sidebar-color);
             padding: 20px;
             border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
 
         .news-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 12px rgba(51, 51, 51, 0.185);
+            background-color: var(--hover-color);
         }
 
         .news-item h4 {
@@ -365,18 +384,18 @@
         }
 
         .news-item h4 a:hover {
-            color: var(--accent-color);
+            color: var(--primary-color);
         }
 
         .news-item p {
             font-size: 14px;
             margin: 10px 0 0;
-            color: var(--text-secondary);
+            color: var(--text-color);
         }
 
         /* Footer */
         footer {
-            background: var(--secondary-bg);
+            background: var(--sidebar-color);
             color: var(--text-color);
             text-align: center;
             padding: 40px 0;
@@ -419,7 +438,7 @@
         <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
     </video>
 
-    <!-- Header -->
+    
     <header>
         <div class="nav-container">
             <h1><a href="{% url 'home1' %}">StockStats</a></h1>
