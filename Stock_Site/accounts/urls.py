@@ -14,4 +14,5 @@ urlpatterns = [
     path('fetch-live-price/', views.fetch_live_stock_price, name='fetch_live_price'),
     path('profile/', views.profile, name='profile'),
     path("search/", views.search_stocks, name="search_stocks"),
+    path('admin/', views.admin, name='admin'),
 ]

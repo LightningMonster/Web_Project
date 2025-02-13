@@ -31,6 +31,11 @@ def fetch_live_stock_price(ticker):
         print(f"Error fetching live price for {ticker}: {e}")
         return None
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
 def login_user(request):
     if request.method == 'POST':
         if 'register' in request.POST:  # Registration Form Submission
@@ -69,13 +74,19 @@ def login_user(request):
                 if user is not None:
                     login(request, user)
                     messages.success(request, 'Login successful')
-                    return redirect('home2')
+
+                    # Redirect superusers to admin panel
+                    if user.is_superuser:
+                        return redirect('/admin/')
+                    else:
+                        return redirect('home2')  # Normal users go to home2
                 else:
                     messages.error(request, 'Invalid email or password')
             except User.DoesNotExist:
                 messages.error(request, 'Invalid email or password')
 
     return render(request, 'accounts/login.html')  # Single template for both
+
 
 def logout_user(request):
     logout(request)
@@ -385,4 +396,6 @@ def search_stocks(request):
     return JsonResponse({"stocks": list(results)})
 
 def admin(request):
+    if not request.user.is_superuser:
+        return redirect('home2')  # Redirect non-admin users to home2
     return render(request, 'accounts/admin.html')
