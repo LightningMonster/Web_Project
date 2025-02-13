@@ -7,283 +7,287 @@ html >
     <title>Dashboard - StockStats</title>
     <style>
         /* General Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #f4fafa;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        /* General Styles */
+body {
+    font-family: 'Times New Roman', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #f4fafa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        body.light-mode {
-            background-color: #f4f4f9;
-            color: #620770;
-        }
+body.light-mode {
+    background-color: #f4f4f9;
+    color: #620770;
+}
 
-        a {
-            color: #ffffff;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
 
-        body.light-mode a {
-            color: #6c0486;
-        }
+body.light-mode a {
+    color: #6c0486;
+}
 
-        a:hover {
-            color: #00cccc;
-        }
+a:hover {
+    color: #00cccc;
+}
 
-        body.light-mode a:hover {
-            color: #040404;
-        }
+body.light-mode a:hover {
+    color: #040404;
+}
 
-        /* Top Navbar */
-        .top-navbar {
-            background-color: #000000;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-        }
+/* Top Navbar */
+.top-navbar {
+    background-color: #000000;
+    padding: 0px 16px; /* Remove padding from top and bottom */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    height: 50px; /* Set a fixed height for the navbar */
+}
 
-        body.light-mode .top-navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #ddd;
-        }
+body.light-mode .top-navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
 
-        .profile-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Reduce the gap between elements */
+}
 
-        .profile-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #72098f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+.profile-image {
+    width: 30px; /* Reduce the size of the profile image */
+    height: 30px;
+    border-radius: 50%;
+    background-color: #72098f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px; /* Adjust font size */
+}
 
-        .theme-toggle {
-            background-color: #72098f;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+.theme-toggle {
+    background-color: #72098f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px; /* Reduce padding */
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px; /* Adjust font size */
+}
 
-        .theme-toggle:hover {
-            background-color: #852d82;
-        }
+.theme-toggle:hover {
+    background-color: #852d82;
+}
 
-        /* Main Content Layout */
-        .content-wrapper {
-            display: flex;
-            flex: 1;
-        }
+/* Main Content Layout */
+.content-wrapper {
+    display: flex;
+    flex: 1;
+}
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #000000;
-            padding: 20px;
-            border-right: 1px solid rgba(0, 255, 255, 0.2);
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #000000;
+    padding: 20px;
+    border-right: 1px solid rgba(0, 255, 255, 0.2);
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        body.light-mode .sidebar {
-            background-color: #ffffff;
-            border-right: 1px solid #ddd;
-        }
+body.light-mode .sidebar {
+    background-color: #ffffff;
+    border-right: 1px solid #ddd;
+}
 
-        .sidebar h1 {
-            margin: 0 0 20px 0;
-            font-size: 1.5em;
-        }
+.sidebar h1 {
+    margin: 0 0 20px 0;
+    font-size: 1.5em;
+}
 
-        .sidebar nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-        .sidebar nav ul li {
-            margin-bottom: 10px;
-        }
+.sidebar nav ul li {
+    margin-bottom: 10px;
+}
 
-        /* Main Content */
-        .main-container {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+/* Main Content */
+.main-container {
+    flex: 1;
+    padding: 10px 20px; /* Reduced padding from top */
+    display: flex;
+    flex-direction: column;
+}
 
-        .content {
-            display: flex;
-            gap: 20px;
-            flex: 1;
-        }
+.content {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+}
 
-        .watchlist-section, .stock-section {
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            flex: 1;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+.watchlist-section, .stock-section {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    flex: 1;
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        body.light-mode .watchlist-section, body.light-mode .stock-section {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-        }
+body.light-mode .watchlist-section, body.light-mode .stock-section {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+}
 
-        .watchlist-section h2, .stock-section h3 {
-            margin-top: 0;
-            color: #fdfdfd;
-            transition: color 0.3s;
-        }
+.watchlist-section h2, .stock-section h3 {
+    margin-top: 0;
+    color: #fdfdfd;
+    transition: color 0.3s;
+}
 
-        body.light-mode .watchlist-section h2, body.light-mode .stock-section h3 {
-            color: #6f058f;
-        }
+body.light-mode .watchlist-section h2, body.light-mode .stock-section h3 {
+    color: #6f058f;
+}
 
-        .watchlist-section ul, .stock-section ul {
-            list-style: none;
-            padding: 0;
-        }
+.watchlist-section ul, .stock-section ul {
+    list-style: none;
+    padding: 0;
+}
 
-        .watchlist-section li, .stock-section li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-            transition: border-color 0.3s;
-        }
+.watchlist-section li, .stock-section li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+    transition: border-color 0.3s;
+}
 
-        body.light-mode .watchlist-section li, body.light-mode .stock-section li {
-            border-bottom: 1px solid #ddd;
-        }
+body.light-mode .watchlist-section li, body.light-mode .stock-section li {
+    border-bottom: 1px solid #ddd;
+}
 
-        .watchlist-section li:last-child, .stock-section li:last-child {
-            border-bottom: none;
-        }
+.watchlist-section li:last-child, .stock-section li:last-child {
+    border-bottom: none;
+}
 
-        .plus-button, .minus-button {
-            background-color: #72098f;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+.plus-button, .minus-button {
+    background-color: #72098f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-        .plus-button:hover, .minus-button:hover {
-            background-color: #005555;
-        }
+.plus-button:hover, .minus-button:hover {
+    background-color: #005555;
+}
 
-        .scrollable-card {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 4px;
-            padding: 10px;
-            transition: border-color 0.3s;
-        }
+.scrollable-card {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 10px;
+    transition: border-color 0.3s;
+}
 
-        body.light-mode .scrollable-card {
-            border: 1px solid #ddd;
-        }
+body.light-mode .scrollable-card {
+    border: 1px solid #ddd;
+}
 
-        /* Forms */
-        form {
-            margin-bottom: 20px;
-        }
+/* Forms */
+form {
+    margin-bottom: 20px;
+}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #ffffff;
-            transition: color 0.3s;
-        }
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ffffff;
+    transition: color 0.3s;
+}
 
-        body.light-mode label {
-            color: #6f0589;
-        }
+body.light-mode label {
+    color: #6f0589;
+}
 
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            background-color: #2d2d2d;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: 4px;
-            color: #ffffff;
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-        }
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #2d2d2d;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+    color: #ffffff;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
 
-        body.light-mode input[type="text"] {
-            background-color: #f4f4f9;
-            border: 1px solid #ddd;
-            color: #000000;
-        }
+body.light-mode input[type="text"] {
+    background-color: #f4f4f9;
+    border: 1px solid #ddd;
+    color: #000000;
+}
 
-        button[type="submit"] {
-            background-color: #72098f;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+button[type="submit"] {
+    background-color: #72098f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-        button[type="submit"]:hover {
-            background-color: #f0f4f4;
-        }
+button[type="submit"]:hover {
+    background-color: #f0f4f4;
+}
 
-        /* Footer */
-        footer {
-            background-color: #1e1e1e;
-            padding: 20px;
-            text-align: center;
-            border-top: 1px solid rgba(0, 255, 255, 0.2);
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+/* Footer */
+footer {
+    background-color: #1e1e1e;
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
-        body.light-mode footer {
-            background-color: #ffffff;
-            border-top: 1px solid #ddd;
-        }
+body.light-mode footer {
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+}
 
-        footer p {
-            margin: 0;
-            color: #ffffff;
-            transition: color 0.3s;
-        }
+footer p {
+    margin: 0;
+    color: #ffffff;
+    transition: color 0.3s;
+}
 
-        body.light-mode footer p {
-            color: #333;
-        }
-    </style>
+body.light-mode footer p {
+    color: #333;
+}
+    </style>    
 </head>
 <body>
-    <!-- Top Navbar -->
+    <!-- Top Navbar. -->
     <nav class="top-navbar">
         <h1>StockStats Dashboard</h1>
         <div class="profile-section">

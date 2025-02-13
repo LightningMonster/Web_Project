@@ -1,1 +1,3 @@
 __pycache__/
+Stock_Site/Stock_Site/settings.py
+Stock_Site/accounts/management/commands/Collectors

@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Indian Stock Analysis</title>
+    <title>Login & Register - Indian Stock Analysis</title>
     <style>
         /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #121212; /* Dark background */
@@ -78,8 +78,8 @@
             display: none;
         }
 
-        /* Login Form Styles */
-        .login-container {
+        /* Tab Styles */
+        .tab-container {
             max-width: 400px;
             margin: 50px auto;
             padding: 20px;
@@ -88,18 +88,44 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .login-container h2 {
-            margin-top: 0;
-            text-align: center;
+        .tab-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
         }
 
-        .login-container form {
+        .tab-nav button {
+            background: none;
+            border: none;
+            color: #00ffff; /* Cyan text */
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            flex: 1;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tab-nav button.active {
+            border-bottom: 2px solid #00ffff; /* Cyan underline */
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .login-container input {
+        .form-container input {
             padding: 10px;
             border: 1px solid #333;
             border-radius: 4px;
@@ -108,11 +134,11 @@
             font-size: 16px;
         }
 
-        .login-container input::placeholder {
+        .form-container input::placeholder {
             color: #888; /* Light gray placeholder */
         }
 
-        .login-container button {
+        .form-container button {
             padding: 10px;
             background-color: #00ffff; /* Cyan button */
             color: #121212; /* Dark text */
@@ -123,7 +149,7 @@
             transition: background-color 0.3s;
         }
 
-        .login-container button:hover {
+        .form-container button:hover {
             background-color: #00cccc; /* Darker cyan on hover */
         }
 
@@ -142,7 +168,7 @@
             color: #333; /* Dark text */
         }
 
-        body.light-mode .login-container {
+        body.light-mode .tab-container {
             background-color: #ffffff; /* White container */
         }
 
@@ -158,6 +184,14 @@
 
         body.light-mode .theme-toggle:hover {
             background-color: #555; /* Darker button on hover */
+        }
+
+        body.light-mode .tab-nav button {
+            color: #333; /* Dark text */
+        }
+
+        body.light-mode .tab-nav button.active {
+            border-bottom: 2px solid #333; /* Dark underline */
         }
     </style>
 </head>
@@ -198,15 +232,39 @@
     </script>
     {% endif %}
 
-    <!-- Login Form -->
-    <div class="login-container">
-        <h2>Login</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
+    <!-- Tabbed Interface -->
+    <div class="tab-container">
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="login">Login</button>
+            <button class="tab-button" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="tab-content active">
+            <form class="form-container" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register" class="tab-content">
+            <form class="form-container" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="register" value="true">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
     </div>
 
     <!-- Dark/Light Mode Toggle Script -->
@@ -227,6 +285,24 @@
             const isLightMode = body.classList.contains('light-mode');
             themeToggle.textContent = isLightMode ? '🌙 Dark Mode' : '☀️ Light Mode';
             localStorage.setItem('theme', isLightMode ? 'light-mode' : 'dark-mode');
+        });
+
+        // Tabbed Interface Script
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to the clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            });
         });
     </script>
 </body>

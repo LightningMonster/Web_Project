@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Details - {{ stock_symbol }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* General Styles */
         :root {
@@ -17,7 +18,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Times New Roman', sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--background-color);
@@ -308,6 +309,21 @@
                 display: block;
             }
         }
+
+        #chart-container {
+            width: 1234px;
+            height: 600px;
+            margin: auto;
+            background-color : black;
+        }
+        .chart-container {
+    width: 600px;
+    height: 400px;
+    background-color: #242222; /* Light grey background for better visibility */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
     </style>
 </head>
 <body>
@@ -318,8 +334,7 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
-                    <li><a href="{% url 'nse' %}">NSE</a></li>
-                    <li><a href="{% url 'bse' %}">BSE</a></li>
+                    
                     <li><a href="{% url 'calculators' %}">Calculators</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropbtn">
@@ -369,6 +384,10 @@
                 <p><strong>EPS (Earnings Per Share):</strong> {{ eps }}</p>
                 <p><strong>Dividend Yield:</strong> {{ dividend_yield }}%</p>
             </div>
+        </div>
+
+        <div id="chart-container">
+            <canvas id="stockChart"></canvas>
         </div>
 
         <!-- Historical Data Table -->
@@ -505,5 +524,59 @@
             themeToggle.textContent = '☀️ Light Mode';
         }
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('stockChart').getContext('2d');
+        const stockChart = new Chart(ctx, {
+            type: 'line', // Change to 'bar' or 'candlestick' as needed
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Example labels
+                datasets: [{
+                    label: 'Stock Price',
+                    data: [150, 160, 170, 165, 180, 175], // Example data
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'red'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months'
+                        },
+                        grid: {
+                            display: true
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Stock Price (USD)'
+                        },
+                        grid: {
+                            display: true
+                        }
+                    }
+                }
+            }
+        });
+</script>
+
 </body>
 </html>
