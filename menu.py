@@ -36,8 +36,6 @@ def main():
             full_command = f"bash -c 'git add . && git commit -m \"{commit_message}\" && git pull; echo \"Closing in 1 minute...\"; sleep 60; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
         elif choice == "6":
-            print("Enter your commit message:")
-            commit_message = input()
             full_command = f"bash -c 'git push; echo \"Closing in 1 minute...\"; sleep 60; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
         elif choice == "7":
