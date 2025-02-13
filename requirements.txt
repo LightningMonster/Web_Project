@@ -4,6 +4,7 @@ bsedata==0.6.0
 certifi==2024.12.14
 charset-normalizer==3.4.1
 Django==5.1.4
+feedparser==6.0.11
 frozendict==2.4.6
 html5lib==1.1
 idna==3.10
@@ -17,6 +18,7 @@ psycopg==3.2.3
 python-dateutil==2.9.0.post0
 pytz==2024.2
 requests==2.32.3
+sgmllib3k==1.0.0
 six==1.17.0
 soupsieve==2.6
 sqlparse==0.5.3
