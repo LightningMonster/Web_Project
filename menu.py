@@ -24,10 +24,16 @@ def main():
         print("\t| 7. Only Push                                 |")
         print("\t| 8. Git Commit and Push                       |")
         print("\t|----------------------------------------------|")
+        print("\t|              Database Commands               |")
+        print("\t|----------------------------------------------|")
+        print("\t| 9. Open Postgres Database                    |")
+        print("\t| 10. Check User Data                          |")
+        print("\t| 11. Check Stock Data                         |")
+        print("\t|----------------------------------------------|")
         print("\t|              Other Commands                  |")
         print("\t|----------------------------------------------|")
-        print("\t| 9. Install Requirements                      |")
-        print("\t|10. Update the requirements file              |")
+        print("\t| 12. Install Requirements                     |")
+        print("\t| 13. Update the requirements file             |")
         print("\t| (only for users with all packages installed).|")
         print("\t|----------------------------------------------|")
         print("\t|                 0. Exit                      |")
@@ -73,10 +79,33 @@ def main():
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
 
         elif choice == "9":
-            full_command = f"bash -c 'pip install -r requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            print("Enter your username:")
+            user = input().strip()
+            sql_command = "SELECT * FROM auth_user;"
+            full_command = f"bash -c 'psql -U {user} -d stock_analysis; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
 
         elif choice == "10":
+            print("Enter your username:")
+            user = input().strip()
+            sql_command = "SELECT * FROM auth_user;"
+            full_command = f"gnome-terminal --maximize -- bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
+            subprocess.Popen(full_command, shell=True, start_new_session=True)
+
+        elif choice == "11":
+            print("Enter your username:")
+            user = input().strip()
+            print("Enter the stock symbol (Ex. ITC.BO):")
+            Ticker = input().strip()
+            sql_command = f"SELECT * FROM accounts_stockdata WHERE stock_symbol = '{Ticker}';"
+            full_command = f"gnome-terminal --maximize -- bash -c \"psql -U {user} -d stock_analysis -c \\\"{sql_command}\\\"; echo 'Closing in 10 Sec...'; sleep 10; exit\""
+            subprocess.Popen(full_command, shell=True, start_new_session=True)
+
+        elif choice == "12":
+            full_command = f"bash -c 'pip install -r requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+
+        elif choice == "13":
             full_command = f"bash -c 'pip freeze > requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
         
