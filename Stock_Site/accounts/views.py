@@ -31,60 +31,51 @@ def fetch_live_stock_price(ticker):
         print(f"Error fetching live price for {ticker}: {e}")
         return None
 
-def register(request):
+def login_user(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
-        email = request.POST['email']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        gender = request.POST['gender']
+        if 'register' in request.POST:  # Registration Form Submission
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm_password')
 
-        if password == confirm_password:
-            if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already exists')
+            if password != confirm_password:
+                messages.error(request, 'Passwords do not match')
             elif User.objects.filter(email=email).exists():
-                messages.error(request, 'Email already registered')
+                messages.error(request, 'Email is already registered')
+            elif User.objects.filter(username=username).exists():
+                messages.error(request, 'Username is already taken')
             else:
                 user = User.objects.create_user(
                     username=username,
-                    password=password,
+                    email=email,
                     first_name=first_name,
                     last_name=last_name,
-                    email=email,
-                    gender=gender
+                    password=password
                 )
                 user.save()
-                messages.success(request, 'Registration successful. Please login.')
-                return redirect('login')
-        else:
-            messages.error(request, 'Passwords do not match')
-    return render(request, 'accounts/register.html')
+                messages.success(request, 'Registration successful. Please log in.')
+                return redirect('home1')  # Redirect to login page after registration
 
-def login_user(request):
-    if request.method == 'POST':
-        email = request.POST['email']  # Get email from form
-        password = request.POST['password']  # Get password from form
+        else:  # Login Form Submission
+            email = request.POST.get('email')
+            password = request.POST.get('password')
 
-        # Get the username associated with the email
-        try:
-            user = User.objects.get(email=email)  # Check if email exists
-            username = user.username  # Retrieve the username
-        except User.DoesNotExist:
-            messages.error(request, 'Invalid email or password')
-            return render(request, 'accounts/login.html')
+            try:
+                user = User.objects.get(email=email)
+                user = authenticate(request, username=user.username, password=password)
+                if user is not None:
+                    login(request, user)
+                    messages.success(request, 'Login successful')
+                    return redirect('home2')
+                else:
+                    messages.error(request, 'Invalid email or password')
+            except User.DoesNotExist:
+                messages.error(request, 'Invalid email or password')
 
-        # Authenticate using the retrieved username and provided password
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, 'Login successful')
-            return redirect('home2')  # Redirect to Home 2 page
-        else:
-            messages.error(request, 'Invalid email or password')
-
-    return render(request, 'accounts/login.html')
+    return render(request, 'accounts/login.html')  # Single template for both
 
 def logout_user(request):
     logout(request)
@@ -392,3 +383,6 @@ def search_stocks(request):
     results = StockData.objects.filter(company_name__icontains=query).values("company_name", "stock_symbol")[:1]  # Limit results
 
     return JsonResponse({"stocks": list(results)})
+
+def admin(request):
+    return render(request, 'accounts/admin.html')

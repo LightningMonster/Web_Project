@@ -243,6 +243,7 @@
         <div id="login" class="tab-content active">
             <form class="form-container" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="action" value="login">
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
@@ -253,20 +254,17 @@
         <div id="register" class="tab-content">
             <form class="form-container" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="register" value="true">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="text" name="first_name" placeholder="First Name" required>
                 <input type="text" name="last_name" placeholder="Last Name" required>
-                <div>
-                    <label>Gender:</label>
-                    <label><input type="radio" name="gender" value="male" required> Male</label>
-                    <label><input type="radio" name="gender" value="female" required> Female</label>
-                </div>
                 <input type="password" name="password" placeholder="Password" required>
                 <input type="password" name="confirm_password" placeholder="Confirm Password" required>
                 <button type="submit">Register</button>
             </form>
         </div>
+
     </div>
 
     <!-- Dark/Light Mode Toggle Script -->
