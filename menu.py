@@ -6,15 +6,24 @@ manage_file = "Stock_Site/"
 
 def main():
     while True:
-        print("\nCommand Menu:")
-        print("1. Run Django Server")
-        print("2. Collect Data")
-        print("3. Import Data")
-        print("4. Stocks to tickers (In Development!)")
-        print("5. Git Commit and Pull")
-        print("6. Only Push")
-        print("7. Git Commit and Push")
-        print("0. Exit")
+        print("|----------------------------------------------|")
+        print("|              # Command Menu #                |")
+        print("|----------------------------------------------|")
+        print("|              Server Commands                 |")
+        print("|----------------------------------------------|")
+        print("| 1. Run Django Server                         |")
+        print("| 2. Collect Data                              |")
+        print("| 3. Import Data                               |")
+        print("| 4. Stocks to tickers (In Development!)       |")
+        print("|----------------------------------------------|")
+        print("|                Git Commands                  |")
+        print("|----------------------------------------------|")
+        print("| 5. Git Commit and Pull                       |")
+        print("| 6. Only Push                                 |")
+        print("| 7. Git Commit and Push                       |")
+        print("|----------------------------------------------|")
+        print("|                 0. Exit                      |")
+        print("|----------------------------------------------|")
 
         choice = input("Enter your choice: ")
 
