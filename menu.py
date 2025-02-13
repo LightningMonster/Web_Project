@@ -1,8 +1,9 @@
 import subprocess
+import time
+import webbrowser
 
 # Change this to the absolute path of your Django project
 manage_file = "Stock_Site/"
-
 
 def main():
     while True:
@@ -12,10 +13,10 @@ def main():
         print("\t|----------------------------------------------|")
         print("\t|              Server Commands                 |")
         print("\t|----------------------------------------------|")
-        print("\t| 1. Run Django Server                         |")
-        print("\t| 2. Collect Data Locally                      |")
-        print("\t| 3. Import Data into the Database             |")
-        print("\t| 4. Stocks to tickers (In Development!)       |")
+        print("\t| 1. Run Django Server  [ python3 manage.py runserver ]                        |")
+        print("\t| 2. Collect Data Locally  [ python3 manage.py collect_data ]                     |")
+        print("\t| 3. Import Data into the Database  [ python3 manage.py import_data ]           |")
+        print("\t| 4. Stocks to tickers (In Development!) [ python3 manage.py stos ]      |")
         print("\t|----------------------------------------------|")
         print("\t|                Git Commands                  |")
         print("\t|----------------------------------------------|")
@@ -26,9 +27,9 @@ def main():
         print("\t|----------------------------------------------|")
         print("\t|              Database Commands               |")
         print("\t|----------------------------------------------|")
-        print("\t| 9. Open Postgres Database                    |")
-        print("\t| 10. Check User Data                          |")
-        print("\t| 11. Check Stock Data                         |")
+        print("\t| 9. Open Postgres Database  [ psql -U user -d stock_analysis ]                  |")
+        print("\t| 10. Check User Data  [ SELECT * FROM auth_user ]                        |")
+        print("\t| 11. Check Stock Data  [ SELECT * FROM accounts_stockdata WHERE stock_symbol = 'Ticker' ]                       |")
         print("\t|----------------------------------------------|")
         print("\t|              Other Commands                  |")
         print("\t|----------------------------------------------|")
@@ -43,19 +44,24 @@ def main():
         choice = input("\tEnter your choice: ")
 
         if choice == "1":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py runserver; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            full_command = f"bash -c 'cd {manage_file} && python3 manage.py runserver; echo \"Closing in 1 minute...\"; sleep 60; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            # Wait a few seconds to ensure the server starts
+            time.sleep(2)  # Adjust if needed
+
+            # Open the Django development server in the browser
+            webbrowser.open("http://127.0.0.1:8000/")
 
         elif choice == "2":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py collect_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            full_command = f"bash -c 'cd {manage_file} && python3 manage.py collect_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
 
         elif choice == "3":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py import_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            full_command = f"bash -c 'cd {manage_file} && python3 manage.py import_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
 
         elif choice == "4":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py stos; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            full_command = f"bash -c 'cd {manage_file} && python3 manage.py stos; echo \"Closing in 1 minute...\"; sleep 60; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
 
         elif choice == "5":
@@ -81,7 +87,6 @@ def main():
         elif choice == "9":
             print("Enter your username:")
             user = input().strip()
-            sql_command = "SELECT * FROM auth_user;"
             full_command = f"bash -c 'psql -U {user} -d stock_analysis; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
             subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
 

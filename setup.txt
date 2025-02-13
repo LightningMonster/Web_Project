@@ -68,6 +68,21 @@ stock_analysis=# ALTER TABLE stock_data
     ADD COLUMN fifty_two_week_high NUMERIC,
     ADD COLUMN fifty_two_week_low NUMERIC;
 
+# for admin
+
+CREATE TABLE django_admin_log (
+    id SERIAL PRIMARY KEY,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr varchar(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_content_type_id_fkey FOREIGN KEY (content_type_id) REFERENCES django_content_type (id) DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT django_admin_log_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user (id) DEFERRABLE INITIALLY DEFERRED
+);
+
 --------------------------------------------------------------------------------
 # Run the following commands where manage.py is present
 
