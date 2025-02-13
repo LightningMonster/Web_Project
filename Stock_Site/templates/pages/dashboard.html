@@ -1,437 +1,509 @@
-<!DOCTYPE
-html >
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - StockStats</title>
+    <title>StockStats.com | Dashboard</title>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        /* General Styles */
-        /* General Styles */
-body {
-    font-family: 'Times New Roman', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #121212;
-    color: #f4fafa;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    transition: background-color 0.3s, color 0.3s;
-}
+        /* Google Font Import - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        :root {
+            /* ===== Colors ===== */
+            --body-color: #E4E9F7;
+            --sidebar-color: #FFF;
+            --primary-color: #695CFE;
+            --primary-color-light: #F6F5FF;
+            --toggle-color: #DDD;
+            --text-color: #707070;
+            --hover-color: #f0f0f0;
+            /* ====== Transition ====== */
+            --tran-03: all 0.2s ease;
+            --tran-04: all 0.3s ease;
+            --tran-05: all 0.3s ease;
+        }
+        body {
+            min-height: 100vh;
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
+        ::selection {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        body.dark {
+            --body-color: #18191a;
+            --sidebar-color: #242526;
+            --primary-color: #695CFE;
+            --primary-color-light: #3a3b3c;
+            --toggle-color: #fff;
+            --text-color: #ccc;
+            --hover-color: #333;
+        }
+        /* ===== Sidebar ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 10px 14px;
+            background: var(--sidebar-color);
+            transition: var(--tran-05);
+            z-index: 100;
+        }
+        .sidebar.close {
+            width: 88px;
+        }
+        /* ===== Reusable code - Here ===== */
+        .sidebar li {
+            height: 50px;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .sidebar header .image,
+        .sidebar .icon {
+            min-width: 60px;
+            border-radius: 6px;
+        }
+        .sidebar .icon {
+            min-width: 60px;
+            border-radius: 6px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .sidebar .text,
+        .sidebar .icon {
+            color: var(--text-color);
+            transition: var(--tran-03);
+        }
+        .sidebar .text {
+            font-size: 17px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 1;
+        }
+        .sidebar.close .text {
+            opacity: 0;
+        }
+        /* =========================== */
+        .sidebar header {
+            position: relative;
+        }
+        .sidebar header .image-text {
+            display: flex;
+            align-items: center;
+        }
+        .sidebar header .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        header .image-text .name {
+            margin-top: 2px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        header .image-text .profession {
+            font-size: 16px;
+            margin-top: -2px;
+            display: block;
+        }
+        .sidebar header .image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar header .image img {
+            width: 40px;
+            border-radius: 6px;
+        }
+        .sidebar header .toggle {
+            position: absolute;
+            top: 50%;
+            right: -25px;
+            transform: translateY(-50%) rotate(180deg);
+            height: 25px;
+            width: 25px;
+            background-color: var(--primary-color);
+            color: var(--sidebar-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--tran-05);
+        }
+        body.dark .sidebar header .toggle {
+            color: var(--text-color);
+        }
+        .sidebar.close .toggle {
+            transform: translateY(-50%) rotate(0deg);
+        }
+        .sidebar .menu {
+            margin-top: 40px;
+        }
+        .sidebar li a {
+            list-style: none;
+            height: 100%;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: var(--tran-03);
+        }
+        .sidebar li a:hover {
+            background-color: var(--primary-color);
+        }
+        .sidebar li a:hover .icon,
+        .sidebar li a:hover .text {
+            color: var(--sidebar-color);
+        }
+        body.dark .sidebar li a:hover .icon,
+        body.dark .sidebar li a:hover .text {
+            color: var(--text-color);
+        }
+        .sidebar .menu-bar {
+            height: calc(100% - 55px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: scroll;
+        }
+        .menu-bar::-webkit-scrollbar {
+            display: none;
+        }
+        .sidebar .menu-bar .mode {
+            border-radius: 6px;
+            background-color: var(--primary-color-light);
+            position: relative;
+            transition: var(--tran-05);
+        }
+        .menu-bar .mode .sun-moon {
+            height: 50px;
+            width: 60px;
+        }
+        .mode .sun-moon i {
+            position: absolute;
+        }
+        .mode .sun-moon i.sun {
+            opacity: 0;
+        }
+        body.dark .mode .sun-moon i.sun {
+            opacity: 1;
+        }
+        body.dark .mode .sun-moon i.moon {
+            opacity: 0;
+        }
+        .menu-bar .bottom-content .toggle-switch {
+            position: absolute;
+            right: 0;
+            height: 100%;
+            min-width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .toggle-switch .switch {
+            position: relative;
+            height: 22px;
+            width: 40px;
+            border-radius: 25px;
+            background-color: var(--toggle-color);
+            transition: var(--tran-05);
+        }
+        .switch::before {
+            content: '';
+            position: absolute;
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            background-color: var(--sidebar-color);
+            transition: var(--tran-04);
+        }
+        body.dark .switch::before {
+            left: 20px;
+        }
+        .home {
+            position: absolute;
+            top: 0;
+            left: 250px;
+            height: 100vh;
+            width: calc(100% - 250px);
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
+        .home .text {
+            font-size: 30px;
+            font-weight: 500;
+            color: var(--text-color);
+            padding: 12px 60px;
+        }
+        .sidebar.close ~ .home {
+            left: 78px;
+            height: 100vh;
+            width: calc(100% - 78px);
+        }
+        body.dark .home .text {
+            color: var(--text-color);
+        }
 
-body.light-mode {
-    background-color: #f4f4f9;
-    color: #620770;
-}
+        /* ===== Notification Styles ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--sidebar-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+        }
+        .notification.show {
+            display: block;
+        }
 
-a {
-    color: #ffffff;
-    text-decoration: none;
-    transition: color 0.3s;
-}
+        /* ===== Main Content Styles ===== */
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .watchlist-section, .stock-section {
+            margin-bottom: 30px;
+            background-color: var(--sidebar-color);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 48%;
+        }
+        .watchlist-section h2, .stock-section h3 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        .watchlist-section ul, .stock-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .watchlist-section li, .stock-section li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            transition: var(--tran-03);
+        }
+        .watchlist-section li:hover, .stock-section li:hover {
+            background-color: var(--hover-color);
+        }
+        .watchlist-section li button, .stock-section li button {
+            margin-right: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: var(--sidebar-color);
+        }
+        .watchlist-section li a, .stock-section li a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+        .scrollable-card {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--toggle-color);
+            border-radius: 6px;
+            padding: 10px;
+        }
 
-body.light-mode a {
-    color: #6c0486;
-}
-
-a:hover {
-    color: #00cccc;
-}
-
-body.light-mode a:hover {
-    color: #040404;
-}
-
-/* Top Navbar */
-.top-navbar {
-    background-color: #000000;
-    padding: 0px 16px; /* Remove padding from top and bottom */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-    height: 50px; /* Set a fixed height for the navbar */
-}
-
-body.light-mode .top-navbar {
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
-}
-
-.profile-section {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Reduce the gap between elements */
-}
-
-.profile-image {
-    width: 30px; /* Reduce the size of the profile image */
-    height: 30px;
-    border-radius: 50%;
-    background-color: #72098f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px; /* Adjust font size */
-}
-
-.theme-toggle {
-    background-color: #72098f;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px; /* Reduce padding */
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 14px; /* Adjust font size */
-}
-
-.theme-toggle:hover {
-    background-color: #852d82;
-}
-
-/* Main Content Layout */
-.content-wrapper {
-    display: flex;
-    flex: 1;
-}
-
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    background-color: #000000;
-    padding: 20px;
-    border-right: 1px solid rgba(0, 255, 255, 0.2);
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-body.light-mode .sidebar {
-    background-color: #ffffff;
-    border-right: 1px solid #ddd;
-}
-
-.sidebar h1 {
-    margin: 0 0 20px 0;
-    font-size: 1.5em;
-}
-
-.sidebar nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar nav ul li {
-    margin-bottom: 10px;
-}
-
-/* Main Content */
-.main-container {
-    flex: 1;
-    padding: 10px 20px; /* Reduced padding from top */
-    display: flex;
-    flex-direction: column;
-}
-
-.content {
-    display: flex;
-    gap: 20px;
-    flex: 1;
-}
-
-.watchlist-section, .stock-section {
-    background-color: #1e1e1e;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    flex: 1;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-body.light-mode .watchlist-section, body.light-mode .stock-section {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-}
-
-.watchlist-section h2, .stock-section h3 {
-    margin-top: 0;
-    color: #fdfdfd;
-    transition: color 0.3s;
-}
-
-body.light-mode .watchlist-section h2, body.light-mode .stock-section h3 {
-    color: #6f058f;
-}
-
-.watchlist-section ul, .stock-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-.watchlist-section li, .stock-section li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-    transition: border-color 0.3s;
-}
-
-body.light-mode .watchlist-section li, body.light-mode .stock-section li {
-    border-bottom: 1px solid #ddd;
-}
-
-.watchlist-section li:last-child, .stock-section li:last-child {
-    border-bottom: none;
-}
-
-.plus-button, .minus-button {
-    background-color: #72098f;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.plus-button:hover, .minus-button:hover {
-    background-color: #005555;
-}
-
-.scrollable-card {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    border-radius: 4px;
-    padding: 10px;
-    transition: border-color 0.3s;
-}
-
-body.light-mode .scrollable-card {
-    border: 1px solid #ddd;
-}
-
-/* Forms */
-form {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #ffffff;
-    transition: color 0.3s;
-}
-
-body.light-mode label {
-    color: #6f0589;
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    background-color: #2d2d2d;
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    border-radius: 4px;
-    color: #ffffff;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-}
-
-body.light-mode input[type="text"] {
-    background-color: #f4f4f9;
-    border: 1px solid #ddd;
-    color: #000000;
-}
-
-button[type="submit"] {
-    background-color: #72098f;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-button[type="submit"]:hover {
-    background-color: #f0f4f4;
-}
-
-/* Footer */
-footer {
-    background-color: #1e1e1e;
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid rgba(0, 255, 255, 0.2);
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-body.light-mode footer {
-    background-color: #ffffff;
-    border-top: 1px solid #ddd;
-}
-
-footer p {
-    margin: 0;
-    color: #ffffff;
-    transition: color 0.3s;
-}
-
-body.light-mode footer p {
-    color: #333;
-}
-    </style>    
+        /* Date and Time Card */
+        .datetime-card {
+            background: var(--primary-color);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+        }
+        .datetime-card .date {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .datetime-card .time {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+    </style>
 </head>
-<body>
-    <!-- Top Navbar -->
-    <nav class="top-navbar">
-        <h1>StockStats Dashboard</h1>
-        <div class="profile-section">
-            <div class="profile-image">
-                {% if user.is_authenticated %}
-                    {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
-                {% else %}
-                    G
-                {% endif %}
+<body class="dark">
+    <nav class="sidebar">
+        <header>
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Date and Time Card -->
+                <div class="datetime-card">
+                    <div class="date" id="date"></div>
+                    <div class="time" id="time"></div>
+                </div>
             </div>
-            <span>
-                {% if user.is_authenticated %}
-                    {{ user.first_name }} {{ user.last_name }}
-                {% else %}
-                    Guest
-                {% endif %}
-            </span>
-            <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+            <div class="bottom-content">
+                <li class="">
+                    <a href="#">
+                        <i class='bx bx-log-out icon'></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class='bx bx-moon icon moon'></i>
+                        <i class='bx bx-sun icon sun'></i>
+                    </div>
+                    <span class="mode-text text">Light mode</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </div>
         </div>
     </nav>
-
-    <div class="content-wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <nav>
-                <ul>
-                    <li><a href="{% url 'home2' %}">Home</a></li>
-                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
-                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                    <li><a href="#">Tools</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-
+    <section class="home">
+        <div class="text">StockStats.com | Dashboard</div>
         <!-- Main Content -->
         <div class="main-container">
-            <div class="content">
-                <!-- Watchlist Section -->
-                <div class="watchlist-section">
-                    <h2>Your Watchlist</h2>
-                    <ul id="watchlist">
-                        {% for item in watchlist %}
+            <!-- Stock Section -->
+            <div class="stock-section">
+                <h3>Add a Stock to Watchlist</h3>
+                <form method="post" action="{% url 'add_to_watchlist' %}">
+                    {% csrf_token %}
+                    <label for="stock_symbol">Stock Symbol:</label>
+                    <input type="text" id="stock_symbol" name="stock_symbol" required>
+                    <button type="submit">Add</button>
+                </form>
+
+                <h3>Available Stocks</h3>
+                <div class="scrollable-card">
+                    <ul>
+                        {% for stock in available_stocks %}
                         <li>
-                            <button class="minus-button" onclick="removeStockFromWatchlist('{{ item.stock_data__stock_symbol }}')">-</button>
-                            <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
-                                {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
+                            <form method="post" action="{% url 'add_to_watchlist' %}" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="stock_symbol" value="{{ stock.stock_symbol }}">
+                                <button type="submit" class="plus-button">+</button>
+                            </form>
+                            <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
+                                {{ stock.stock_symbol }}
                             </a>
                         </li>
-                        {% empty %}
-                        <li>No stocks in your watchlist.</li>
                         {% endfor %}
                     </ul>
                 </div>
-
-                <!-- Stock Section -->
-                <div class="stock-section">
-                    <h3>Add a Stock to Watchlist</h3>
-                    <form method="post" action="{% url 'add_to_watchlist' %}">
-                        {% csrf_token %}
-                        <label for="stock_symbol">Stock Symbol:</label>
-                        <input type="text" id="stock_symbol" name="stock_symbol" required>
-                        <button type="submit">Add</button>
-                    </form>
-
-                    <h3>Available Stocks</h3>
-                    <div class="scrollable-card">
-                        <ul>
-                            {% for stock in available_stocks %}
-                            <li>
-                                <button class="plus-button" onclick="addStockToWatchlist('{{ stock.stock_symbol }}')">+</button>
-                                <a class="stock-link" href="{% url 'stock_detail' stock.stock_symbol %}">
-                                    {{ stock.stock_symbol }}
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
             </div>
 
-            <!-- Footer -->
-            <footer>
-                <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
-            </footer>
+            <!-- Watchlist Section -->
+            <div class="watchlist-section">
+                <h2>Your Watchlist</h2>
+                <ul id="watchlist">
+                    {% for item in watchlist %}
+                    <li>
+                        <form method="post" action="{% url 'remove_from_watchlist' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="stock_symbol" value="{{ item.stock_data__stock_symbol }}">
+                            <button type="submit" class="minus-button">-</button>
+                        </form>
+                        <a class="stock-link" href="{% url 'stock_detail' item.stock_data__stock_symbol %}">
+                            {{ item.stock_data__stock_symbol }} - {{ item.latest_date|date:"M. d, Y" }}
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li>No stocks in your watchlist.</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
+    </section>
+
+    <!-- Notification -->
+    {% if messages %}
+    <div class="notification" id="notification">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
     </div>
+    <script>
+        // Display notification and auto-hide after 3 seconds
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+    {% endif %}
 
     <script>
-        // Function to add stock to watchlist
-        function addStockToWatchlist(stockSymbol) {
-            fetch("{% url 'add_to_watchlist' %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: `stock_symbol=${stockSymbol}`
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload(); // Reload the page to reflect the changes
-                } else {
-                    alert('Failed to add stock to watchlist.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
+        const body = document.querySelector('body'),
+              sidebar = body.querySelector('nav'),
+              toggle = body.querySelector(".toggle"),
+              modeSwitch = body.querySelector(".toggle-switch"),
+              modeText = body.querySelector(".mode-text");
 
-        // Function to remove stock from watchlist
-        function removeStockFromWatchlist(stockSymbol) {
-            fetch("{% url 'remove_from_watchlist' %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: `stock_symbol=${stockSymbol}`
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload(); // Reload the page to reflect the changes
-                } else {
-                    alert('Failed to remove stock from watchlist.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        // Dark/Light Mode Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            themeToggle.textContent = document.body.classList.contains('light-mode') ? '🌙 Dark Mode' : '🌞 Light Mode';
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
         });
+
+        modeSwitch.addEventListener("click", () => {
+            body.classList.toggle("dark");
+
+            if (body.classList.contains("dark")) {
+                modeText.innerText = "Light mode";
+            } else {
+                modeText.innerText = "Dark mode";
+            }
+        });
+
+        // Update Date and Time
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('date').innerText = now.toDateString();
+            document.getElementById('time').innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
     </script>
 </body>
 </html>
-
