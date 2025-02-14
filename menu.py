@@ -45,57 +45,57 @@ def main():
 
         if choice == "1":
             full_command = f"bash -c 'cd {manage_file} && python3 manage.py runserver; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Django Server", "--", "bash", "-c", full_command], start_new_session=True)
             # Wait a few seconds to ensure the server starts
-            time.sleep(2)  # Adjust if needed
+            time.sleep(4)  # Adjust if needed
 
             # Open the Django development server in the browser
             webbrowser.open("http://127.0.0.1:8000/")
 
         elif choice == "2":
-            full_command = f"bash -c 'cd {manage_file} && python3 manage.py collect_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            command = f"cd {manage_file} && python3 manage.py collect_data; echo 'Closing in 1 minute...'; sleep 60; exit"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Data Collection", "--", "bash", "-c", command], start_new_session=True)
 
         elif choice == "3":
             full_command = f"bash -c 'cd {manage_file} && python3 manage.py import_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Import Data", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "4":
             full_command = f"bash -c 'cd {manage_file} && python3 manage.py stos; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "STOS", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "5":
             full_command = f"bash -c 'git pull; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Pull", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "6":
             print("Enter your commit message:")
             commit_message = input()
             full_command = f"bash -c 'git add . && git commit -m \"{commit_message}\" && git pull; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Commit & Pull", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "7":
             full_command = f"bash -c 'git push; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Push", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "8":
             print("Enter your commit message:")
             commit_message = input()
             full_command = f"bash -c 'git add . && git commit -m \"{commit_message}\" && git push; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Commit & Push", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "9":
             print("Enter your username:")
             user = input().strip()
             full_command = f"bash -c 'psql -U {user} -d stock_analysis; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "PSQL Shell", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "10":
             print("Enter your username:")
             user = input().strip()
             sql_command = "SELECT * FROM auth_user;"
-            full_command = f"gnome-terminal --maximize -- bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
-            subprocess.Popen(full_command, shell=True, start_new_session=True)
+            full_command = f"bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "PSQL Query: Auth Users", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "11":
             print("Enter your username:")
@@ -103,16 +103,16 @@ def main():
             print("Enter the stock symbol (Ex. ITC.BO):")
             Ticker = input().strip()
             sql_command = f"SELECT * FROM accounts_stockdata WHERE stock_symbol = '{Ticker}';"
-            full_command = f"gnome-terminal --maximize -- bash -c \"psql -U {user} -d stock_analysis -c \\\"{sql_command}\\\"; echo 'Closing in 10 Sec...'; sleep 10; exit\""
-            subprocess.Popen(full_command, shell=True, start_new_session=True)
+            full_command = f"bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", f"PSQL Query: {Ticker}", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "12":
             full_command = f"bash -c 'pip install -r requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Install Requirements", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "13":
             full_command = f"bash -c 'pip freeze > requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Freeze Requirements", "--", "bash", "-c", full_command], start_new_session=True)
         
         elif choice == "0":
             break
