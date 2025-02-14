@@ -1,20 +1,3 @@
-# Install Django
-$ sudo apt install python3-django
-
-# Install PostgreSQL
-$ sudo apt install postgresql postgresql-contrib
-
-# Start and enable PostgreSQL service
-$ sudo systemctl start postgresql
-$ sudo systemctl enable postgresql
-
-# Install psycopg2-binary
-$ pip install psycopg2-binary
-
-# If there is an error in installing the package, use a virtual environment
-$ python3 -m venv myenv
-$ source myenv/bin/activate
-
 # Setting up the DATABASE
 
 # Switch to the postgres user
@@ -32,7 +15,6 @@ $ sudo -u postgres psql -d stock_analysis
 # Grant permissions to the new user
 stock_analysis=# GRANT CREATE ON schema public TO yash;
 stock_analysis=# SELECT nspname FROM pg_namespace WHERE nspname = 'public';
-stock_analysis=# ALTER SCHEMA public OWNER TO yash;
 
 # Connect to the database as the new user
 $ psql -U yash -d stock_analysis
@@ -68,20 +50,11 @@ stock_analysis=# ALTER TABLE stock_data
     ADD COLUMN fifty_two_week_high NUMERIC,
     ADD COLUMN fifty_two_week_low NUMERIC;
 
-# for admin
+# make migrations
 
-CREATE TABLE django_admin_log (
-    id SERIAL PRIMARY KEY,
-    action_time timestamp with time zone NOT NULL,
-    object_id text,
-    object_repr varchar(200) NOT NULL,
-    action_flag smallint NOT NULL,
-    change_message text NOT NULL,
-    content_type_id integer,
-    user_id integer NOT NULL,
-    CONSTRAINT django_admin_log_content_type_id_fkey FOREIGN KEY (content_type_id) REFERENCES django_content_type (id) DEFERRABLE INITIALLY DEFERRED,
-    CONSTRAINT django_admin_log_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user (id) DEFERRABLE INITIALLY DEFERRED
-);
+$ python manage.py makemigrations
+$ python manage.py makemigrations accounts
+$ python manage.py migrate
 
 --------------------------------------------------------------------------------
 # Run the following commands where manage.py is present

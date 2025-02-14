@@ -11,8 +11,6 @@ class StockData(models.Model):
     volume = models.DecimalField(max_digits=20, decimal_places=2)
     dividends = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stock_splits = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
-    # New fields
     company_name = models.CharField(max_length=255, null=True, blank=True)
     industry = models.CharField(max_length=255, null=True, blank=True)
     sector = models.CharField(max_length=100, null=True, blank=True)
