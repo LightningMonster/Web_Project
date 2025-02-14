@@ -103,8 +103,12 @@ def main():
             print("Enter the stock symbol (Ex. ITC.BO):")
             Ticker = input().strip()
             sql_command = f"SELECT * FROM accounts_stockdata WHERE stock_symbol = '{Ticker}';"
-            full_command = f"bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
-            subprocess.Popen(["gnome-terminal", "--tab", "--title", f"PSQL Query: {Ticker}", "--", "bash", "-c", full_command], start_new_session=True)
+            full_command = (
+                f"gnome-terminal --tab --title='PSQL Query: {Ticker}' -- bash -c "
+                f"\"psql -U {user} -d stock_analysis -c \\\"{sql_command}\\\"; "
+                f"echo 'Closing in 10 Sec...'; sleep 10; exit\""
+            )
+            subprocess.Popen(full_command, shell=True, start_new_session=True)
 
         elif choice == "12":
             full_command = f"bash -c 'pip install -r requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
