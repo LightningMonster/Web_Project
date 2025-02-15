@@ -425,4 +425,8 @@ def search_stocks(request):
 def admin(request):
     if not request.user.is_superuser:
         return redirect('home2')  # Redirect non-admin users to home2
-    return render(request, 'accounts/admin.html')
+
+    users = CustomUser.objects.all()
+    return render(request, 'accounts/admin.html', {'users': users})
+
+

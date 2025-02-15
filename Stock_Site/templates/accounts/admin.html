@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Sidebar Menu</title>
+    <title>Admin Panel</title>
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <style>
         /* Google Font Import - Poppins */
@@ -23,6 +23,7 @@
             --primary-color-light: #F6F5FF;
             --toggle-color: #DDD;
             --text-color: #707070;
+            --text: #18191a;
             /* ====== Transition ====== */
             --tran-03: all 0.2s ease;
             --tran-04: all 0.3s ease;
@@ -44,6 +45,30 @@
             --primary-color-light: #3a3b3c;
             --toggle-color: #fff;
             --text-color: #ccc;
+            --text: #fff;
+        }
+        /* ===== Navbar ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 250px;
+            width: calc(100% - 250px);
+            height: 50px;
+            background-color: var(--sidebar-color);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 99;
+            transition: var(--tran-05);
+        }
+        .navbar .text {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        .sidebar.close ~ .navbar {
+            left: 78px;
+            width: calc(100% - 78px);
         }
         /* ===== Sidebar ===== */
         .sidebar {
@@ -114,7 +139,7 @@
             font-weight: 600;
         }
         header .image-text .profession {
-            font-size: 16px;
+            font-size: 12.5px;
             margin-top: -2px;
             display: block;
         }
@@ -126,29 +151,6 @@
         .sidebar header .image img {
             width: 40px;
             border-radius: 6px;
-        }
-        .sidebar header .toggle {
-            position: absolute;
-            top: 50%;
-            right: -25px;
-            transform: translateY(-50%) rotate(180deg);
-            height: 25px;
-            width: 25px;
-            background-color: var(--primary-color);
-            color: var(--sidebar-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            cursor: pointer;
-            transition: var(--tran-05);
-        }
-        body.dark .sidebar header .toggle {
-            color: var(--text-color);
-        }
-        .sidebar.close .toggle {
-            transform: translateY(-50%) rotate(0deg);
         }
         .sidebar .menu {
             margin-top: 40px;
@@ -262,42 +264,67 @@
         }
         .home {
             position: absolute;
-            top: 0;
+            top: 50px; /* Adjusted to account for navbar height */
             left: 250px;
-            height: 100vh;
+            height: calc(100vh - 50px); /* Adjusted to account for navbar height */
             width: calc(100% - 250px);
             background-color: var(--body-color);
             transition: var(--tran-05);
+            padding-top: 20px;   /* Top padding */
+            padding-bottom: 20px;/* Bottom padding */
+            padding-left: 20px;  /* Left padding */
+            padding-right: 20px; /* Right padding */
         }
-        .home .text {
-            font-size: 30px;
-            font-weight: 500;
-            color: var(--text-color);
-            padding: 12px 60px;
-        }
+
         .sidebar.close ~ .home {
             left: 78px;
-            height: 100vh;
+            height: calc(100vh - 50px); /* Adjusted to account for navbar height */
             width: calc(100% - 78px);
         }
         body.dark .home .text {
             color: var(--text-color);
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            border: 1px solid var(--text);;
+            padding: 8px;
+            text-align: left;
+            color: var(--text);
+        }
+        table th {
+            background-color: var(--primary-color);
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
     </style>
 </head>
 <body>
-    <nav class="sidebar close">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="text">Admin Panel</div>
+    </nav>
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
         <header>
+            {% load static %}
             <div class="image-text">
                 <span class="image">
-                    <!--<img src="logo.png" alt="">-->
+                    <img src="{% static 'icons/admin_icon1.png' %}" alt="Admin Icon">
                 </span>
                 <div class="text logo-text">
-                    <span class="name">Codinglab</span>
-                    <span class="profession">Web developer</span>
+                    <span class="name">{{ user.username }}</span>
+                    <span class="profession">{{ user.email }}</span>
                 </div>
             </div>
-            <i class='bx bx-chevron-right toggle'></i>
         </header>
         <div class="menu-bar">
             <div class="menu">
@@ -307,46 +334,28 @@
                 </li>
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="#" id="dashboard-link">
                             <i class='bx bx-home-alt icon'></i>
                             <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="#" id="users-link">
                             <i class='bx bx-bar-chart-alt-2 icon'></i>
-                            <span class="text nav-text">Revenue</span>
+                            <span class="text nav-text">Users</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="#" id="notifications-link">
                             <i class='bx bx-bell icon'></i>
                             <span class="text nav-text">Notifications</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-pie-chart-alt icon'></i>
-                            <span class="text nav-text">Analytics</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-heart icon'></i>
-                            <span class="text nav-text">Likes</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-wallet icon'></i>
-                            <span class="text nav-text">Wallets</span>
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="bottom-content">
                 <li class="">
-                    <a href="#">
+                    <a href="{% url 'logout' %}">
                         <i class='bx bx-log-out icon'></i>
                         <span class="text nav-text">Logout</span>
                     </a>
@@ -364,20 +373,58 @@
             </div>
         </div>
     </nav>
-    <section class="home">
-        <div class="text">Dashboard Sidebar</div>
-    </section>
+    
+    <!-- Main Content -->
+    <div class="home">
+        <!-- Dynamic Content Section -->
+        <div id="dashboard-content">
+            <div class="title">Welcome to the Admin Dashboard</div>
+        </div>
+        <div id="users-content" style="display: none;">
+            <div class="title">Users List</div>
+            <table id="users-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile Number</th>
+                        <th>Birthdate</th>
+                        <th>Gender</th>
+                        <th>Last Login</th>
+                        <th>Date Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.first_name}} {{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.phone_number }}</td>
+                            <td>{{ user.birthdate }}</td>
+                            <td>{{ user.gender }}</td>
+                            <td>{{ user.last_login }}</td>
+                            <td>{{ user.date_joined }}</td>
+                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="notifications-content" style="display: none;">
+            <div class="title">No notifications yet!</div>
+        </div>
+    </div>
+
     <script>
         const body = document.querySelector('body'),
               sidebar = body.querySelector('nav'),
-              toggle = body.querySelector(".toggle"),
               searchBtn = body.querySelector(".search-box"),
               modeSwitch = body.querySelector(".toggle-switch"),
               modeText = body.querySelector(".mode-text");
-
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-        });
 
         searchBtn.addEventListener("click", () => {
             sidebar.classList.remove("close");
@@ -391,6 +438,33 @@
             } else {
                 modeText.innerText = "Dark mode";
             }
+        });
+
+        // Show appropriate content based on navigation clicks
+        const dashboardLink = document.getElementById('dashboard-link');
+        const usersLink = document.getElementById('users-link');
+        const notificationsLink = document.getElementById('notifications-link');
+
+        const dashboardContent = document.getElementById('dashboard-content');
+        const usersContent = document.getElementById('users-content');
+        const notificationsContent = document.getElementById('notifications-content');
+
+        dashboardLink.addEventListener('click', () => {
+            dashboardContent.style.display = 'block';
+            usersContent.style.display = 'none';
+            notificationsContent.style.display = 'none';
+        });
+
+        usersLink.addEventListener('click', () => {
+            dashboardContent.style.display = 'none';
+            usersContent.style.display = 'block';
+            notificationsContent.style.display = 'none';
+        });
+
+        notificationsLink.addEventListener('click', () => {
+            dashboardContent.style.display = 'none';
+            usersContent.style.display = 'none';
+            notificationsContent.style.display = 'block';
         });
     </script>
 </body>
