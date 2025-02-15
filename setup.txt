@@ -19,44 +19,16 @@ stock_analysis=# SELECT nspname FROM pg_namespace WHERE nspname = 'public';
 # Connect to the database as the new user
 $ psql -U yash -d stock_analysis
 
---------------------------------------------------------------------------------
-# Create stock_data table
+# Add models in models.py
 
-stock_analysis=# CREATE TABLE stock_data (
-    id SERIAL PRIMARY KEY,
-    stock_symbol VARCHAR(50),
-    date DATE,
-    open NUMERIC,
-    high NUMERIC,
-    low NUMERIC,
-    close NUMERIC,
-    volume NUMERIC,
-    dividends NUMERIC,
-    stock_splits NUMERIC
-);
-
-# Alter stock_data table to add additional columns
-stock_analysis=# ALTER TABLE stock_data 
-    ADD COLUMN company_name VARCHAR(255),
-    ADD COLUMN industry VARCHAR(255),
-    ADD COLUMN sector VARCHAR(100),
-    ADD COLUMN ceo VARCHAR(255),
-    ADD COLUMN headquarters VARCHAR(255),
-    ADD COLUMN website VARCHAR(255),
-    ADD COLUMN market_cap NUMERIC,
-    ADD COLUMN pe_ratio NUMERIC,
-    ADD COLUMN eps NUMERIC,
-    ADD COLUMN dividend_yield NUMERIC,
-    ADD COLUMN fifty_two_week_high NUMERIC,
-    ADD COLUMN fifty_two_week_low NUMERIC;
-
-# make migrations
+# make migrations to create tables according 
 
 $ python manage.py makemigrations
 $ python manage.py makemigrations accounts
 $ python manage.py migrate
 
 --------------------------------------------------------------------------------
+
 # Run the following commands where manage.py is present
 
 $ python manage.py collect_data

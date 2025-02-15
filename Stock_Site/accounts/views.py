@@ -1,18 +1,21 @@
 # accounts/views.py
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.models import StockData
 from decimal import Decimal
-from django.db.models import Subquery, OuterRef
 from django.core.paginator import Paginator
 from django.db.models import Max, Min
 from .models import StockData, Watchlist
 import feedparser
 from urllib.parse import quote 
 import yfinance as yf
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
 
 # Function to fetch live stock price
 def fetch_live_stock_price(ticker):
@@ -30,11 +33,6 @@ def fetch_live_stock_price(ticker):
         # Handle errors (e.g., ticker not found)
         print(f"Error fetching live price for {ticker}: {e}")
         return None
-
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.shortcuts import render, redirect
 
 def login_user(request):
     if request.method == 'POST':
