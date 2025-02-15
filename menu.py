@@ -93,7 +93,7 @@ def main():
         elif choice == "10":
             print("Enter your username:")
             user = input().strip()
-            sql_command = "SELECT * FROM auth_user;"
+            sql_command = "SELECT * FROM accounts_customuser;"
             full_command = f"bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
             subprocess.Popen(["gnome-terminal", "--tab", "--title", "PSQL Query: Auth Users", "--", "bash", "-c", full_command], start_new_session=True)
 

@@ -35,6 +35,11 @@ def fetch_live_stock_price(ticker):
         print(f"Error fetching live price for {ticker}: {e}")
         return None
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from .models import CustomUser  # Assuming your model is in the same app
+
 def login_user(request):
     if request.method == 'POST':
         if 'register' in request.POST:  # Registration Form Submission
@@ -43,7 +48,7 @@ def login_user(request):
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             phone_number = request.POST.get('phone_number')
-            age = request.POST.get('age')
+            birthdate = request.POST.get('birthdate') 
             gender = request.POST.get('gender')
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm_password')
@@ -63,12 +68,12 @@ def login_user(request):
                     last_name=last_name,
                     password=password,
                     phone_number=phone_number,
-                    age=age,
+                    birthdate=birthdate,  # Save the birthdate field
                     gender=gender
                 )
                 user.save()
                 messages.success(request, 'Registration successful. Please log in.')
-                return redirect('login')  
+                return redirect('login')  # Redirect to login after registration
 
         else:  # Login Form Submission
             email = request.POST.get('email')
@@ -92,7 +97,6 @@ def login_user(request):
                 messages.error(request, 'Invalid email or password')
 
     return render(request, 'accounts/login.html')  # Single template for both
-
 
 
 def logout_user(request):
@@ -387,7 +391,23 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def profile(request):
-    return render(request, 'pages/profile.html')
+    user = request.user
+    
+    if request.method == 'POST':
+        # Handle AJAX request
+        import json
+        data = json.loads(request.body)
+        field = data.get('field')
+        new_value = data.get('new_value')
+
+        if field and new_value:
+            # Dynamically update the user's field
+            setattr(user, field, new_value)
+            user.save()
+            return JsonResponse({'success': True})  # Return success response
+        return JsonResponse({'success': False})
+
+    return render(request, 'accounts/profile.html')
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt

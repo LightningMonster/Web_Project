@@ -52,7 +52,7 @@ class CustomUser(AbstractUser):
     ]
 
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    age = models.PositiveIntegerField(blank=True, null=True)
+    birthdate = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
 
     def __str__(self):

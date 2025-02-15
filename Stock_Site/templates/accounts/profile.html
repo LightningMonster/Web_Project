@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        /* Basic styling for modal */
+        .modal {
+            display: none;  /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: auto;
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* Close button for modal */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Profile</h1>
+    
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>First Name:</strong> <span id="first_name">{{ user.first_name }}</span> <button class="edit-btn" onclick="openModal('first_name')">Edit</button></p>
+    <p><strong>Last Name:</strong> <span id="last_name">{{ user.last_name }}</span> <button class="edit-btn" onclick="openModal('last_name')">Edit</button></p>
+    <p><strong>Phone Number:</strong> <span id="phone_number">{{ user.phone_number }}</span> <button class="edit-btn" onclick="openModal('phone_number')">Edit</button></p>
+    <p><strong>Gender:</strong> {{ user.get_gender_display }}</p>
+    <p><strong>Birthdate:</strong> {{ user.birthdate }}</p>
+    <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+
+    <a href="{% url 'logout' %}">Logout</a>
+
+    <!-- Modal for editing user fields -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Edit User Field</h2>
+            <form id="editForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="field" id="field" value="">
+                <label for="new_value">New Value:</label>
+                <input type="text" name="new_value" id="new_value" required>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Open modal for editing
+        function openModal(field) {
+            // Set the field to be updated
+            document.getElementById("field").value = field;
+            // Pre-fill the input with the current value
+            document.getElementById("new_value").value = document.getElementById(field).innerText;
+            document.getElementById("editModal").style.display = "block";
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        // Handle form submission via AJAX
+        document.getElementById('editForm').onsubmit = function(event) {
+            event.preventDefault();  // Prevent page reload
+            const field = document.getElementById("field").value;
+            const newValue = document.getElementById("new_value").value;
+
+            // CSRF token for AJAX request
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("{% url 'profile' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken  // Add CSRF token in header
+                },
+                body: JSON.stringify({ field, new_value: newValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the field in the page
+                    document.getElementById(field).innerText = newValue;
+                    closeModal();
+                } else {
+                    alert('Failed to update field');
+                }
+            });
+        };
+    </script>
+</body>
+</html>
