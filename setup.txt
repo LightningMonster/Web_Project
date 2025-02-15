@@ -22,7 +22,7 @@ $ psql -U yash -d stock_analysis
 # Add models in models.py
 
 # make migrations to create tables according 
-
+$ rm accounts/migrations/000*
 $ python manage.py makemigrations
 $ python manage.py makemigrations accounts
 $ python manage.py migrate

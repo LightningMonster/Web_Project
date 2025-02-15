@@ -16,6 +16,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from accounts.models import CustomUser 
 
 # Function to fetch live stock price
 def fetch_live_stock_price(ticker):
@@ -41,33 +42,40 @@ def login_user(request):
             email = request.POST.get('email')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
+            phone_number = request.POST.get('phone_number')
+            age = request.POST.get('age')
+            gender = request.POST.get('gender')
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm_password')
 
             if password != confirm_password:
                 messages.error(request, 'Passwords do not match')
-            elif User.objects.filter(email=email).exists():
+            elif CustomUser.objects.filter(email=email).exists():
                 messages.error(request, 'Email is already registered')
-            elif User.objects.filter(username=username).exists():
+            elif CustomUser.objects.filter(username=username).exists():
                 messages.error(request, 'Username is already taken')
             else:
-                user = User.objects.create_user(
+                # Create the user using the CustomUser model
+                user = CustomUser.objects.create_user(
                     username=username,
                     email=email,
                     first_name=first_name,
                     last_name=last_name,
-                    password=password
+                    password=password,
+                    phone_number=phone_number,
+                    age=age,
+                    gender=gender
                 )
                 user.save()
                 messages.success(request, 'Registration successful. Please log in.')
-                return redirect('home1')  # Redirect to login page after registration
+                return redirect('login')  
 
         else:  # Login Form Submission
             email = request.POST.get('email')
             password = request.POST.get('password')
 
             try:
-                user = User.objects.get(email=email)
+                user = CustomUser.objects.get(email=email)
                 user = authenticate(request, username=user.username, password=password)
                 if user is not None:
                     login(request, user)
@@ -80,10 +88,11 @@ def login_user(request):
                         return redirect('home2')  # Normal users go to home2
                 else:
                     messages.error(request, 'Invalid email or password')
-            except User.DoesNotExist:
+            except CustomUser.DoesNotExist:
                 messages.error(request, 'Invalid email or password')
 
     return render(request, 'accounts/login.html')  # Single template for both
+
 
 
 def logout_user(request):
