@@ -299,14 +299,16 @@ def add_to_watchlist(request):
 
 def stock_detail(request, stock_symbol):
     # Fetch stock data
-    stock_data = StockData.objects.filter(stock_symbol=stock_symbol).order_by('-date')
+    stock_data = StockData.objects.filter(stock_symbol=stock_symbol).order_by('-date') # Order by date in descending order
     if not stock_data.exists():
         return render(request, 'error.html', {'message': f"No data found for stock symbol: {stock_symbol}"})
 
+    latest_data = stock_data.first() # Get the latest data
+
     # Compute 52-week high/low
-    high_52week = stock_data.aggregate(Max('high'))['high__max']
-    low_52week = stock_data.aggregate(Min('low'))['low__min']
-    latest_data = stock_data.first()
+    high_52week = stock_data.aggregate(Max('high'))['high__max'] # Get the maximum high value
+    low_52week = stock_data.aggregate(Min('low'))['low__min'] # Get the minimum low value
+    
 
     # Fetch additional company details (assuming they are stored in the latest_data object)
     company_name = latest_data.company_name
