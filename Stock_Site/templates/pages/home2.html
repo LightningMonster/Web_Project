@@ -4,144 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indian Stock Analysis - Home</title>
-    {% load humanize %}  <!-- Load humanize filters -->
-
+    {% load humanize %}
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        /* CSS Variables for Light Theme */
+        /* Google Font Import - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
         :root {
-            --primary-bg: #ffffff; /* White background */
-            --secondary-bg: #f5f5f5; /* Light gray */
-            --accent-color: #0a090b; /* Purple accent */
-            --text-color: #000000; /* Black text in light mode */
-            --text-secondary: #666666; /* Gray text */
-            --card-bg: #ffffff; /* White card background */
-            --card-hover: #f0f0f0; /* Light gray hover */
-            --positive: #4caf50; /* Green for positive change */
-            --negative: #f44336; /* Red for negative change */
-            --button-bg: #f0e7e7; /* Purple button */
-            --button-hover: #18d6dd; /* Darker purple hover */
+            /* ===== Colors ===== */
+            --body-color: #ffffff;
+            --sidebar-color: #FFF;
+            --primary-color: #695CFE;
+            --primary-color-light: #3e33a8;
+            --toggle-color: #ffffff;
+            --text2-color:#695CFE;
+            --text-color: #010101;
+            --text: #0c0c0c;
+            /* ====== Transition ====== */
+            --tran-03: all 0.2s ease;
+            --tran-04: all 0.3s ease;
+            --tran-05: all 0.3s ease;
+            /* Light Theme Variables */
+            --primary-bg: #ffffff;
+            --secondary-bg: #f5f5f5;
+            --accent-color: #695CFE;/*hover color of light theme*/
+            --text-secondary: #695CFE;
+            --card-bg: #ffffff;
+            --card-hover: #695CFE;
+            --positive: #4caf50;
+            --negative: #f44336;
+            --button-bg: #ffffff;
+            --button-hover: #695CFE;
         }
-
-        /* CSS Variables for Dark Theme */
-        body.dark-mode {
-            --primary-bg: #0e1010da; /* Full black background */
-            --secondary-bg: #131010; /* Darker gray */
-            --accent-color: #fef9f9; /* Purple accent */
-            --text-color: #00ffff; /* Cyan text in dark mode */
-            --text-secondary: #00ffff; /* Cyan text for secondary elements */
-            --card-bg: #040404; /* Dark card background */
-            --card-hover: #2a2a2a; /* Darker hover */
-            --button-bg: #e8e3e3; /* Purple button */
-            --button-hover: #1cafc9; /* Darker purple hover */
-        }
-
-        /* General Styles */
         body {
+            min-height: 100vh;
+            background-color: var(--body-color);
+            transition: var(--tran-05);
             font-family: 'Times New Roman', sans-serif;
             margin: 0;
             padding: 0;
             color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
-
-        /* Video Background */
-        #video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1; /* Place behind other content */
+        ::selection { /* Highlight color */
+            background-color: var(--primary-color);
+            color: #0e0d0d;
+        }
+        body.dark {
+            --body-color: #040405;
+            --sidebar-color: #050506;
+            --primary-color: #695CFE;
+            --primary-color-light: #3a3b3c;
+            --toggle-color: #010101;
+            --text-color: #ccc;
+            --text: #fff;
+        }
+        body.dark-mode {
+            --body-color: #040405;
+            --primary-bg: #0e1010da;
+            --secondary-bg: #131010;
+            --accent-color: #695CFE;
+            --text2-color: #695CFE;
+            --text-color: #fbfbff;
+            --text-secondary: #695CFE;
+            --card-bg: #040404;
+            --card-hover: #695CFE;
+            --button-bg: #e8e3e3;
+            --button-hover: #695CFE;
         }
 
-        /* Overlay to improve readability */
+        
         body::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.111); /* Lighter transparency for light mode */
+            width: 50%;
+            height: 50%;
+            background: rgba(255, 255, 255, 0);
             z-index: -1;
         }
-
         body.dark-mode::before {
-            background: rgba(248, 245, 245, 0.5); /* Darker transparency for dark mode */
+            background: rgba(248, 245, 245, 0);
         }
 
+        /* Main Content Container - shifted right to accommodate the vertical navbar */
         .container {
             width: 100%;
-            max-width: 1800px;
+            max-width: 1500px;
             margin: 0 auto;
             padding: 0 20px;
             box-sizing: border-box;
             position: relative;
             z-index: 1;
+            margin-left: 250px;  /* <-- added margin */
         }
 
-        /* Header */
+        /* ========= Vertical Navbar ========= */
         header {
             background: var(--secondary-bg);
-            padding: 8px 8px;
-            box-shadow: 0 4px 6px rgba(4, 153, 222, 0.1);
-            width: 100%;
-            position: relative;
-            z-index: 2;
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            box-shadow: 2px 0 6px rgba(4, 153, 222, 0);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1000;
         }
-
         header .nav-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 0  px 15px;
+            flex-direction: column;
+            gap: 20px;
         }
-
         header h1 {
             margin: 0;
             font-size: 24px;
-            color: var(--text-color); /* Use --text-color for header text */
+            color: var(--text2-color);
         }
-
         header h1 a {
             text-decoration: none;
             color: inherit;
         }
-
         nav ul {
             list-style: none;
             display: flex;
+            flex-direction: column;
             gap: 20px;
             padding: 0;
             margin: 0;
         }
-
         nav ul li a {
             text-decoration: none;
             color: var(--text-color);
-            font-size: 14px;
+            font-size: 16px;
             padding: 6px 12px;
             border-radius: 5px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         nav ul li a:hover {
             background-color: var(--accent-color);
             color: white;
         }
-
-        /* Dropdown styles */
         .dropdown {
             position: relative;
             display: inline-block;
         }
-
         .dropdown-content {
             display: none;
             position: absolute;
@@ -151,7 +168,6 @@
             z-index: 1;
             border-radius: 5px;
         }
-
         .dropdown-content a {
             color: var(--text-color);
             padding: 12px 16px;
@@ -159,18 +175,16 @@
             display: block;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         .dropdown-content a:hover {
             background-color: var(--accent-color);
             color: white;
         }
-
         .dropdown:hover .dropdown-content {
             display: block;
         }
-
-        /* Toggle Button */
         .theme-toggle {
+            position: absolute;
+            bottom: 20px;
             background-color: var(--button-bg);
             color: rgb(12, 12, 12);
             border: none;
@@ -180,12 +194,11 @@
             font-size: 14px;
             transition: background-color 0.3s ease;
         }
-
         .theme-toggle:hover {
             background-color: var(--button-hover);
         }
 
-        /* Hero Section */
+        /* ========= Hero Section ========= */
         .hero {
             padding: 100px 0;
             text-align: center;
@@ -196,27 +209,23 @@
             margin-top: 60px;
             margin-bottom: 60px;
         }
-
         .hero h2 {
-            font-size: 42px;
+            font-size: 38px;
             margin-bottom: 20px;
             color: var(--accent-color);
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Text shadow for better readability on video */
+            /*text-shadow: 2px 2px 10px rgba(0, 0, 0, 0);*/
         }
-
         .hero p {
             font-size: 18px;
             margin-bottom: 30px;
             color: var(--text-secondary);
         }
-
         #search-form {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 10px;
         }
-
         #stock-search {
             padding: 12px;
             width: 300px;
@@ -226,7 +235,6 @@
             color: var(--text-color);
             outline: none;
         }
-
         #search-form button {
             padding: 12px 24px;
             border: none;
@@ -236,40 +244,35 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         #search-form button:hover {
             background-color: var(--button-hover);
         }
 
-        /* Trending Stocks */
+        /* ========= Trending Stocks ========= */
         .trending-stocks {
             padding: 80px 0;
             width: 100%;
             position: relative;
             z-index: 1;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.97);
             margin-top: 60px;
             margin-bottom: 60px;
         }
-
         body.dark-mode .trending-stocks {
-            background: rgba(16, 15, 15, 0.303); /* Dark overlay for dark mode */
+            background: rgba(16, 15, 15, 0.597);
         }
-
         .trending-stocks h3 {
             text-align: center;
             margin-bottom: 40px;
             font-size: 28px;
             color: var(--accent-color);
         }
-
         .stock-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             justify-items: center;
         }
-
         .stock-card {
             background: var(--card-bg);
             padding: 20px;
@@ -285,35 +288,29 @@
             justify-content: center;
             align-items: center;
         }
-
         .stock-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
-
         .stock-card h4 {
             font-size: 20px;
             margin: 0 0 10px;
         }
-
         .stock-card p {
             font-size: 18px;
             margin: 10px 0;
         }
-
         .stock-card .change {
             font-size: 16px;
         }
-
         .stock-card .positive {
             color: var(--positive);
         }
-
         .stock-card .negative {
             color: var(--negative);
         }
 
-        /* News Section */
+        /* ========= News Section ========= */
         .news-section {
             padding: 80px 0;
             background: rgba(255, 255, 255, 0.7);
@@ -323,76 +320,66 @@
             margin-top: 60px;
             margin-bottom: 60px;
         }
-
         body.dark-mode .news-section {
-            background: rgba(16, 15, 15, 0.303); /* Dark overlay for dark mode */
+            background: rgba(16, 15, 15, 0.303);
         }
-
         .news-section h3 {
             text-align: center;
             margin-bottom: 40px;
             font-size: 28px;
             color: var(--accent-color);
         }
-
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
-
         .news-item {
             background: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .news-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 12px rgba(51, 51, 51, 0.185);
         }
-
         .news-item h4 {
             margin: 0;
             font-size: 18px;
             color: var(--text-color);
         }
-
         .news-item h4 a {
             text-decoration: none;
             color: inherit;
         }
-
         .news-item h4 a:hover {
             color: var(--accent-color);
         }
-
         .news-item p {
             font-size: 14px;
             margin: 10px 0 0;
             color: var(--text-secondary);
         }
 
-        /* Footer */
+        /* ========= Footer ========= */
         footer {
             background: var(--secondary-bg);
             color: var(--text-color);
             text-align: center;
-            padding: 40px 0;
+            padding: 20px 0;
             margin-top: 80px;
             width: 100%;
             position: relative;
             z-index: 1;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
         }
-
         footer p {
             margin: 0;
-            font-size: 14px;
+            font-size: 18px;
         }
 
-        /* Notification */
+        /* ========= Notification ========= */
         .notification {
             position: fixed;
             top: 20px;
@@ -406,23 +393,17 @@
             display: none;
             z-index: 1000;
         }
-
         .notification.error {
             background-color: var(--negative);
         }
     </style>
 </head>
 <body>
-    <!-- Video Background -->
-    {% load static %}
-    <video id="video-background" autoplay muted loop>
-        <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
-    </video>
 
-    <!-- Header -->
+    <!-- Left Vertical Navbar -->
     <header>
         <div class="nav-container">
-            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+            <h1><a href="{% url 'home1' %}">STOCKLENS</a></h1>
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
@@ -430,7 +411,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropbtn">
                             {% if user.is_authenticated %}
-                            Hi, {{ user.first_name }} {{ user.last_name }}!
+                                Hi, {{ user.first_name }} {{ user.last_name }}!
                             {% else %}
                                 Guest
                             {% endif %}
@@ -456,11 +437,10 @@
     {% if messages %}
     <div class="notification" id="notification">
         {% for message in messages %}
-        {{ message }}
+            {{ message }}
         {% endfor %}
     </div>
     <script>
-        // Display notification and auto-hide after 3 seconds
         const notification = document.getElementById('notification');
         if (notification) {
             notification.style.display = 'block';
@@ -481,7 +461,7 @@
         </div>
     </section>
 
-   <!-- Trending Stocks Section -->
+    <!-- Trending Stocks Section -->
     <section class="trending-stocks">
         <div class="container">
             <h3>Trending Indian Stocks</h3>
@@ -489,7 +469,7 @@
                 {% for stock in stock_data %}
                 <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                     <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
+                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
                     <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
                         {% if stock.change > 0 %}
                             +{{ stock.change }}%
@@ -503,8 +483,6 @@
         </div>
     </section>
 
-
-
     <!-- Top Gainers Section -->
     <section class="trending-stocks">
         <div class="container">
@@ -513,9 +491,9 @@
                 {% for stock in top_gainers %}
                 <div class="stock-card">
                     <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
-                    <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
-                    <p>Change: <span class="positive">+{{ stock.change }}%</span></p>
+                        <h4>{{ stock.symbol }}</h4>
+                        <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
+                        <p>Change: <span class="positive">+{{ stock.change }}%</span></p>
                     </a>
                 </div>
                 {% endfor %}
@@ -531,9 +509,9 @@
                 {% for stock in top_losers %}
                 <div class="stock-card">
                     <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
-                    <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
-                    <p>Change: <span class="negative">{{ stock.change }}%</span></p>
+                        <h4>{{ stock.symbol }}</h4>
+                        <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
+                        <p>Change: <span class="negative">{{ stock.change }}%</span></p>
                     </a>
                 </div>
                 {% endfor %}
@@ -569,8 +547,6 @@
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
-
-        // Check user's preference from localStorage
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             body.classList.add('dark-mode');
@@ -579,8 +555,6 @@
             body.classList.remove('dark-mode');
             themeToggle.textContent = '🌙 Dark Mode';
         }
-
-        // Toggle theme on button click
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             if (body.classList.contains('dark-mode')) {
@@ -593,33 +567,30 @@
         });
     </script>
 
-<script>
-    async function searchStocks() {
-        let query = document.getElementById("searchInput").value.trim();
-        let resultsList = document.getElementById("results");
-
-        if (query.length < 2) { 
-            resultsList.innerHTML = "";
-            return; 
+    <script>
+        async function searchStocks() {
+            let query = document.getElementById("searchInput").value.trim();
+            let resultsList = document.getElementById("results");
+            if (query.length < 2) { 
+                resultsList.innerHTML = "";
+                return; 
+            }
+            try {
+                let response = await fetch(`/search/?q=${query}`);
+                let data = await response.json();
+                resultsList.innerHTML = "";
+                data.stocks.forEach(stock => {
+                    let li = document.createElement("li");
+                    li.textContent = stock.company_name;
+                    li.onclick = () => {
+                        window.location.href = `/stocks/${stock.stock_symbol}/`;
+                    };
+                    resultsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error fetching stocks:", error);
+            }
         }
-
-        try {
-            let response = await fetch(`/search/?q=${query}`);
-            let data = await response.json();
-            
-            resultsList.innerHTML = "";
-            data.stocks.forEach(stock => {
-                let li = document.createElement("li");
-                li.textContent = stock.company_name;
-                li.onclick = () => {
-                    window.location.href = `/stocks/${stock.stock_symbol}/`;  // Redirect on click
-                };
-                resultsList.appendChild(li);
-            });
-        } catch (error) {
-            console.error("Error fetching stocks:", error);
-        }
-    }
-</script>
+    </script>
 </body>
 </html>
