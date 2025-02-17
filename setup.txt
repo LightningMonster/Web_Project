@@ -1,3 +1,10 @@
+#Start django project
+django-admin startproject myproject
+
+# create a app 
+python manage.py startapp myapp
+
+
 # Setting up the DATABASE
 
 # Switch to the postgres user

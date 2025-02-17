@@ -396,6 +396,13 @@
         .notification.error {
             background-color: var(--negative);
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -536,6 +543,35 @@
         </div>
     </section>
 
+    <div class="container">
+        <h2>Feedback Form</h2>
+        <p>We appreciate your feedback!</p>
+
+        <form id="feedback-form">
+            {% csrf_token %}  <!-- Django CSRF token -->
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" placeholder="Write your feedback here..." rows="4" required></textarea>
+
+            <label for="rating">Rate Us:</label>
+            <select id="rating" name="rating">
+                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                <option value="4">⭐⭐⭐⭐ Good</option>
+                <option value="3">⭐⭐⭐ Average</option>
+                <option value="2">⭐⭐ Poor</option>
+                <option value="1">⭐ Very Bad</option>
+            </select>
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -591,6 +627,59 @@
                 console.error("Error fetching stocks:", error);
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("feedback-form");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const formData = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            message: document.getElementById("message").value,
+            rating: document.getElementById("rating").value,
+        };
+
+        console.log("Submitting data:", formData); // Debugging
+
+        fetch("/submit-feedback/", {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken(), // Get CSRF token for Django
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Response:", data);  // Debugging response
+            if (data.success) {
+                alert("Feedback submitted successfully!");
+                form.reset(); // Reset form after submission
+            } else {
+                alert("Error: " + (data.error || "Unknown error"));
+            }
+        })
+        .catch(error => console.error("Fetch error:", error));
+    });
+
+    // Function to get CSRF token from cookies
+    function getCSRFToken() {
+        const name = "csrftoken=";
+        const decodedCookies = decodeURIComponent(document.cookie).split(";");
+        for (let i = 0; i < decodedCookies.length; i++) {
+            let cookie = decodedCookies[i].trim();
+            if (cookie.indexOf(name) === 0) {
+                return cookie.substring(name.length, cookie.length);
+            }
+        }
+        return "";
+    }
+});
+
+
+
     </script>
 </body>
 </html>
