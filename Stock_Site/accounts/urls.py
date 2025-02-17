@@ -15,4 +15,6 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path("search/", views.search_stocks, name="search_stocks"),
     path('admin/', views.admin, name='admin'),
+    path('send-otp/', views.send_otp, name='send_otp'),
+    path('verify-otp/', views.verify_otp, name='verify_otp'),
 ]

@@ -35,6 +35,65 @@ def fetch_live_stock_price(ticker):
         print(f"Error fetching live price for {ticker}: {e}")
         return None
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+import json
+
+@csrf_exempt  # Use CSRF protection in production
+def send_otp(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            email = data.get('email')
+
+            if not email:
+                return JsonResponse({'success': False, 'message': 'Email is required'})
+
+            otp = random.randint(100000, 999999)  # Generate 6-digit OTP
+            request.session['otp'] = otp  # Store OTP in session
+            request.session['email'] = email  # Store email in session
+
+            subject = "Your OTP Code"
+            message = f"Your OTP is: {otp}. Do not share it with anyone."
+            from_email = settings.EMAIL_HOST_USER
+
+            send_mail(subject, message, from_email, [email])  # Send email
+
+            return JsonResponse({'success': True, 'message': 'OTP sent successfully'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+@csrf_exempt
+def verify_otp(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            user_otp = data.get('otp')
+
+            # Get stored OTP from session
+            stored_otp = request.session.get('otp')
+            stored_email = request.session.get('email')
+
+            if not stored_otp:
+                return JsonResponse({'success': False, 'message': 'No OTP found. Please request a new one.'})
+
+            if str(user_otp) == str(stored_otp):  # Match OTP
+                del request.session['otp']  # Clear OTP after verification
+                return JsonResponse({'success': True, 'message': 'OTP verified successfully'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Invalid OTP'})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -299,16 +358,14 @@ def add_to_watchlist(request):
 
 def stock_detail(request, stock_symbol):
     # Fetch stock data
-    stock_data = StockData.objects.filter(stock_symbol=stock_symbol).order_by('-date') # Order by date in descending order
+    stock_data = StockData.objects.filter(stock_symbol=stock_symbol).order_by('-date')
     if not stock_data.exists():
         return render(request, 'error.html', {'message': f"No data found for stock symbol: {stock_symbol}"})
 
-    latest_data = stock_data.first() # Get the latest data
-
     # Compute 52-week high/low
-    high_52week = stock_data.aggregate(Max('high'))['high__max'] # Get the maximum high value
-    low_52week = stock_data.aggregate(Min('low'))['low__min'] # Get the minimum low value
-    
+    high_52week = stock_data.aggregate(Max('high'))['high__max']
+    low_52week = stock_data.aggregate(Min('low'))['low__min']
+    latest_data = stock_data.first()
 
     # Fetch additional company details (assuming they are stored in the latest_data object)
     company_name = latest_data.company_name
@@ -430,5 +487,3 @@ def admin(request):
 
     users = CustomUser.objects.all()
     return render(request, 'accounts/admin.html', {'users': users})
-
-
