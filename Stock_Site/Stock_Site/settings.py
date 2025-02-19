@@ -136,3 +136,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Login URL
 LOGIN_URL = 'login' 
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'http://localhost:8000']
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+  
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Use your email provider's SMTP server
+EMAIL_PORT = 587  # Standard port for TLS
+EMAIL_USE_TLS = True  # TLS is generally more secure
+EMAIL_HOST_USER = 'monsterstudios.25@gmail.com'  # Your email address
+EMAIL_HOST_PASSWORD = 'vfqk znqn wlpt xyio'  # Your email account password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # The sender address for emails

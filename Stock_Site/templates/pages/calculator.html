@@ -7,18 +7,18 @@
     <style>
         /* General Styles */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Times New Roman', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #121212;
-            color: #00ffff;
+            color: #695CFE;
             min-height: 100vh;
             transition: background-color 0.3s, color 0.3s;
         }
 
         body.light-mode {
             background-color: #ffffff;
-            color: #800080;
+            color: #695CFE;
         }
 
         .container {
@@ -33,6 +33,14 @@
             color: inherit;
             margin-bottom: 40px;
         }
+        
+        h2 {
+            text-align:inline-start;
+            color: inherit;
+            margin-inline-start:-27%;
+            margin-top: auto;
+            margin-bottom: 80px;
+        }
 
         .calculators-grid {
             display: grid;
@@ -44,13 +52,13 @@
             background-color: #1e1e1e;
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            border: 1px solid #6053ee(0, 255, 255, 0.2);
             transition: background-color 0.3s, border-color 0.3s;
         }
 
         .light-mode .calculator {
             background-color: #f0f0f0;
-            border-color: rgba(128, 0, 128, 0.2);
+            border-color: #695cfe9f(128, 0, 128, 0.2);
         }
 
         .calculator h3 {
@@ -65,7 +73,7 @@
             padding: 8px;
             margin: 8px 0;
             background-color: #ece4e4;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            border: 1px solid #695CFE(0, 255, 255, 0.3);
             border-radius: 4px;
             color: #000000;
             font-size: 14px;
@@ -73,7 +81,7 @@
         }
 
         .light-mode .calculator input {
-            border-color: rgba(128, 0, 128, 0.3);
+            border-color: #04040553;
         }
 
         .calculator input::placeholder {
@@ -85,7 +93,7 @@
             width: 100%;
             padding: 10px;
             margin-top: 10px;
-            background-color: #006666;
+            background-color: #695CFE;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -95,21 +103,21 @@
         }
 
         .light-mode .calculator button {
-            background-color: #800080;
+            background-color: #695CFE;
         }
 
         .calculator button:hover {
-            background-color: #008080;
+            background-color: #695CFE;
         }
 
         .light-mode .calculator button:hover {
-            background-color: #660066;
+            background-color: #695CFE;
         }
 
         .result {
             margin-top: 15px;
             padding: 10px;
-            background-color: rgba(0, 255, 255, 0.1);
+            background-color: #695cfe6d;
             border-radius: 4px;
             text-align: center;
             font-size: 14px;
@@ -117,7 +125,7 @@
         }
 
         .light-mode .result {
-            background-color: rgba(128, 0, 128, 0.1);
+            background-color:#695cfe4a;
         }
 
         /* Toggle Button */
@@ -126,7 +134,7 @@
             top: 20px;
             right: 20px;
             padding: 10px 20px;
-            background-color: #006666;
+            background-color: #695CFE;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -136,12 +144,12 @@
         }
 
         .light-mode .theme-toggle {
-            background-color: #800080;
+            background-color: #695CFE;
         }
 
         .theme-toggle:hover {
             color:rgb(255, 255, 255);
-             background-color: #0d0e0e;
+             background-color: #695CFE;
         }
 
         .light-mode .theme-toggle:hover {
@@ -153,6 +161,8 @@
 <body>
     <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
     <div class="container">
+        <h2><a href="{% url 'home2' %}" style="text-decoration: none; color: inherit;">STOCKLENS</a></h2>
+               
         <h1>Stock Calculators</h1>
         
         <div class="calculators-grid">

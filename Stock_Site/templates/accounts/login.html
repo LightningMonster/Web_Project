@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Indian Stock Analysis</title>
+    <title>Login & Register - Indian Stock Analysis</title>
     <style>
         /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #121212; /* Dark background */
@@ -78,8 +78,8 @@
             display: none;
         }
 
-        /* Login Form Styles */
-        .login-container {
+        /* Tab Styles */
+        .tab-container {
             max-width: 400px;
             margin: 50px auto;
             padding: 20px;
@@ -88,18 +88,44 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .login-container h2 {
-            margin-top: 0;
-            text-align: center;
+        .tab-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
         }
 
-        .login-container form {
+        .tab-nav button {
+            background: none;
+            border: none;
+            color: #00ffff; /* Cyan text */
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            flex: 1;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tab-nav button.active {
+            border-bottom: 2px solid #00ffff; /* Cyan underline */
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .login-container input {
+        .form-container input {
             padding: 10px;
             border: 1px solid #333;
             border-radius: 4px;
@@ -108,11 +134,11 @@
             font-size: 16px;
         }
 
-        .login-container input::placeholder {
+        .form-container input::placeholder {
             color: #888; /* Light gray placeholder */
         }
 
-        .login-container button {
+        .form-container button {
             padding: 10px;
             background-color: #00ffff; /* Cyan button */
             color: #121212; /* Dark text */
@@ -123,7 +149,7 @@
             transition: background-color 0.3s;
         }
 
-        .login-container button:hover {
+        .form-container button:hover {
             background-color: #00cccc; /* Darker cyan on hover */
         }
 
@@ -142,7 +168,7 @@
             color: #333; /* Dark text */
         }
 
-        body.light-mode .login-container {
+        body.light-mode .tab-container {
             background-color: #ffffff; /* White container */
         }
 
@@ -158,6 +184,14 @@
 
         body.light-mode .theme-toggle:hover {
             background-color: #555; /* Darker button on hover */
+        }
+
+        body.light-mode .tab-nav button {
+            color: #333; /* Dark text */
+        }
+
+        body.light-mode .tab-nav button.active {
+            border-bottom: 2px solid #333; /* Dark underline */
         }
     </style>
 </head>
@@ -198,15 +232,55 @@
     </script>
     {% endif %}
 
-    <!-- Login Form -->
-    <div class="login-container">
-        <h2>Login</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
+    <!-- Tabbed Interface -->
+    <div class="tab-container">
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="login">Login</button>
+            <button class="tab-button" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="tab-content active">
+            <form class="form-container" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login">
+                <input type="email" name="email" id="login-email" placeholder="Email" required>
+                <input type="password" name="password" id="login-password" placeholder="Password" required>
+                <input type="text" name="otp" id="otp-login" placeholder="Enter OTP" required>
+                <button type="button" id="send-otp-login">Send OTP</button>
+                <button type="button" id="verify-otp-login">Verify OTP</button>
+                <button id="login-button" type="submit" style="display:none;">Login</button>
+            </form>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register" class="tab-content">
+            <form class="form-container" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="register" value="true">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" id="email-register" placeholder="Email" required>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="text" name="phone_number" placeholder="Phone Number" required>
+                <input type="date" name="birthdate" placeholder="Birthdate" required>
+                <select name="gender" required>
+                    <option value="" disabled selected>Gender</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <input type="text" name="otp" id="otp-register" placeholder="Enter OTP" required>
+                
+                <!-- Send OTP and Verify OTP buttons -->
+                <button type="button" id="send-otp-register">Send OTP</button>
+                <button type="button" id="verify-otp-register">Verify OTP</button>
+
+                <button id="register-button" type="submit" style="display:none;">Register</button>
+            </form>
+        </div>
     </div>
 
     <!-- Dark/Light Mode Toggle Script -->
@@ -228,6 +302,229 @@
             themeToggle.textContent = isLightMode ? '🌙 Dark Mode' : '☀️ Light Mode';
             localStorage.setItem('theme', isLightMode ? 'light-mode' : 'dark-mode');
         });
+
+        // Tabbed Interface Script
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to the clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            });
+        });
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sendOtpRegisterButton = document.getElementById('send-otp-register');
+        const verifyOtpRegisterButton = document.getElementById('verify-otp-register');
+        const sendOtpLoginButton = document.getElementById('send-otp-login');
+        const verifyOtpLoginButton = document.getElementById('verify-otp-login');
+        const registerButton = document.getElementById('register-button');
+        const loginButton = document.getElementById('login-button');
+        const otpInputRegister = document.getElementById('otp-register');
+        const otpInputLogin = document.getElementById('otp-login');
+        const emailInputRegister = document.getElementById('email-register');
+        const emailInputLogin = document.getElementById('login-email');
+        
+        // Initially hide the register and login buttons until OTP is verified
+        registerButton.style.display = 'none';
+        loginButton.style.display = 'none';
+        verifyOtpRegisterButton.style.display = 'none';
+        verifyOtpLoginButton.style.display = 'none';
+
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Switch between tabs
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const tab = this.getAttribute('data-tab');
+                const activeTabContent = document.querySelector('.tab-content.active');
+                const activeTabButton = document.querySelector('.tab-button.active');
+                
+                activeTabContent.classList.remove('active');
+                activeTabButton.classList.remove('active');
+                
+                document.getElementById(tab).classList.add('active');
+                this.classList.add('active');
+            });
+        });
+
+        // Send OTP (Register)
+        sendOtpRegisterButton.addEventListener('click', function () {
+            const email = emailInputRegister.value.trim();
+
+            if (!email) {
+                alert("Please enter your email!");
+                return;
+            }
+
+            sendOtpRegisterButton.disabled = true;  // Disable OTP button to prevent multiple clicks
+            fetch('/send-otp/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("OTP sent successfully to your email!");
+                    verifyOtpRegisterButton.style.display = 'block'; // Show the OTP verification button
+                } else {
+                    alert("Failed to send OTP: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Fetch Error:", error);
+                alert("An error occurred while sending OTP.");
+            })
+            .finally(() => {
+                sendOtpRegisterButton.disabled = false;  // Re-enable OTP button after request is complete
+            });
+        });
+
+        // Verify OTP (Register)
+        verifyOtpRegisterButton.addEventListener('click', function () {
+            const otp = otpInputRegister.value.trim();
+            const email = emailInputRegister.value.trim();
+
+            if (!email || !otp) {
+                alert("Please enter both your email and OTP!");
+                return;
+            }
+
+            verifyOtpRegisterButton.disabled = true;  // Disable OTP verify button to prevent multiple submissions
+            fetch('/verify-otp/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ email: email, otp: otp })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("OTP verified successfully!");
+                    registerButton.style.display = 'block'; // Show register button
+                } else {
+                    alert("Incorrect OTP. Please try again.");
+                    registerButton.style.display = 'none'; // Hide register button until OTP is verified
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while verifying OTP.");
+            })
+            .finally(() => {
+                verifyOtpRegisterButton.disabled = false;  // Re-enable OTP verify button after request is complete
+            });
+        });
+
+        // Send OTP (Login)
+        sendOtpLoginButton.addEventListener('click', function () {
+            const email = emailInputLogin.value.trim();
+
+            if (!email) {
+                alert("Please enter your email!");
+                return;
+            }
+
+            sendOtpLoginButton.disabled = true;  // Disable OTP button to prevent multiple clicks
+            fetch('/send-otp/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("OTP sent successfully to your email!");
+                    verifyOtpLoginButton.style.display = 'block'; // Show the OTP verification button
+                } else {
+                    alert("Failed to send OTP: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Fetch Error:", error);
+                alert("An error occurred while sending OTP.");
+            })
+            .finally(() => {
+                sendOtpLoginButton.disabled = false;  // Re-enable OTP button after request is complete
+            });
+        });
+
+        // Verify OTP (Login)
+        verifyOtpLoginButton.addEventListener('click', function () {
+            const otp = otpInputLogin.value.trim();
+            const email = emailInputLogin.value.trim();
+
+            if (!email || !otp) {
+                alert("Please enter both your email and OTP!");
+                return;
+            }
+
+            verifyOtpLoginButton.disabled = true;  // Disable OTP verify button to prevent multiple submissions
+            fetch('/verify-otp/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: JSON.stringify({ email: email, otp: otp })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("OTP verified successfully!");
+                    loginButton.style.display = 'block'; // Show login button
+                } else {
+                    alert("Incorrect OTP. Please try again.");
+                    loginButton.style.display = 'none'; // Hide login button until OTP is verified
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while verifying OTP.");
+            })
+            .finally(() => {
+                verifyOtpLoginButton.disabled = false;  // Re-enable OTP verify button after request is complete
+            });
+        });
+    });
+</script>
+
+
+
+
 </body>
 </html>
