@@ -7,32 +7,74 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
-        font-family:'Times New Roman', sans-serif;
-        background-color: #000000;
-        color: #333;
-        }
+            font-family:'Times New Roman', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-        .navbar {
-            display: flex;
-            justify-content: flex-start;
-            /*background-color: #00076b;*/
-            padding: 5px 20px;
-            color: #1ed6e0;
-            font-size:xx-large;
-        }
+.navbar {
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center;
+    padding: 5px 20px;
+    background-color: #f8f9fa;
+    color: #1ed6e0;
+    font-size: xx-large;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 100px;
+    height: 100px;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.tagline {
+    flex: 2;
+    text-align: center;
+    color: #695CFE;
+    font-size: 40px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    font-size: 1.5rem;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    transition: transform 0.3s;
+}
+
+/* Button proportional to logo */
+.theme-toggle {
+    height: 50px; /* Match logo height */
+    width: 50px;
+}
+
+/* Dark Mode Button */
+.dark-mode .theme-toggle {
+    color: white;
+}
+
+/* Hover Effect */
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
 
         .warning {
             background-color: #5c514f;
             padding: 5px;
             text-align: center;
             color:white;
-        }
-
-        .tagline {
-            text-align: center;
-            margin: 10px 5;
-            color: #1ed6e0;
-            font-size: 40px;
         }
 
         .stock-info {
@@ -47,12 +89,13 @@
         color: white;
         position: relative;
         font-family: sans-serif;
+        margin-top: 3rem;
         }
 
         .stock-box::before,
         .stock-box::after {
         content: "";
-        background-color: #1ed6e0;
+        background-color: #695CFE;
         position: absolute;
         }
 
@@ -137,45 +180,113 @@
             }
         }
 
+.start-button-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically if needed */
+    height: 100px; /* Adjust height as needed */
+    text-decoration: none; 
+    color: white; 
+    margin-top: 80px;
+}
 
-        .moving-pictures {
-            width: 100%;
-            margin: 20px auto;
-            overflow: hidden;
-            position: relative;
-            white-space: nowrap;
-        }
+.start-button {
+  position: relative;
+  font-size: 20px;  
+    padding: 15px 30px;  
+    border-radius: 8px;
+  border: none;
+  color: white; /* Ensures the text is white */
+    text-decoration: none; 
+  cursor: pointer;
+  background-color: #695CFE;
+  transition: all 0.2s ease;
+}
 
-        .moving-track {
-            display: flex;
-            gap: 10px;
-            animation: scroll 15s linear infinite;
-        }
+.start-button:active {
+  transform: scale(0.96);
+}
 
-        .moving-track img {
-            width: 2048px;
-            height: 200px;
-            border-radius: 5px;
-            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
-        }
+.start-button:before,
+.start-button:after {
+  position: absolute;
+  content: "";
+  width: 150%;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1000;
+  background-repeat: no-repeat;
+}
 
-        /* Animation for continuous scrolling */
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* Moves half of the track, allowing seamless loop */
-        }
+.start-button:hover:before {
+  top: -70%;
+  background-image: radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, #695CFE 20%, transparent 30%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #695CFE 15%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+    10% 10%, 18% 18%;
+  background-position: 50% 120%;
+  animation: greentopBubbles 0.6s ease;
+}
 
-        /* Duplicate images for seamless transition */
-        .moving-track:hover {
-            animation-play-state:paused; /* Pauses on hover */
-        }
+@keyframes greentopBubbles {
+  0% {
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+      40% 90%, 55% 90%, 70% 90%;
+  }
 
-        .get-started-container {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            padding-top: 60px;
-        }
+  50% {
+    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+      50% 50%, 65% 20%, 90% 30%;
+  }
+
+  100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+      50% 40%, 65% 10%, 90% 20%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+.start-button:hover::after {
+  bottom: -70%;
+  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+  background-position: 50% 0%;
+  animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+  0% {
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+      70% -10%, 70% 0%;
+  }
+
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+      105% 0%;
+  }
+
+  100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+      110% 10%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+
 
         .buttons a {
             display: inline-block;
@@ -184,14 +295,14 @@
             font-weight: bold;
             text-decoration: none;
             color: white;
-            background-color: #1ed6e0;
+            background-color: #695CFE;
             border-radius: 10px;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 2px 2px 10px rgba(30, 214, 224, 0.5);
+            box-shadow: 2px 2px 10px #695CFE;
         }
 
         .buttons a:hover {
-            background-color: #14a6b1;
+            background-color: #695CFE;
             transform: scale(1.05);
         }
 
@@ -207,7 +318,7 @@
         .features h2 {
             margin-bottom: 20px;
             font-size: 40px;
-            color: #1ed6e0;
+            color: #695CFE;
         }
 
         .feature-container {
@@ -226,6 +337,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            background-color: #5c5e5e7a;
         }
 
         .feature-box img {
@@ -245,7 +357,7 @@
         .feature-box h3 {
             margin-bottom: 10px;
             font-size: 30px;
-            color: #1ed6e0;
+            color: #695CFE;
         }
 
         .feature-box p {
@@ -260,15 +372,6 @@
         .feature-box:nth-child(even) {
             flex-direction: row-reverse; /* Image Right, Text Left */
         }
-
-        /* Unique Background Colors */
-        .feature-box:nth-child(1) { background-color: #5c5e5e7a; } 
-        .feature-box:nth-child(2) { background-color: #5c5e5e7a; }
-        .feature-box:nth-child(3) { background-color: #5c5e5e7a; }
-        .feature-box:nth-child(4) { background-color: #5c5e5e7a; } 
-        .feature-box:nth-child(5) { background-color: #5c5e5e7a; } 
- 
-        
         
         .creators {
             display: flex;
@@ -279,7 +382,7 @@
             width: 100%;
             padding-bottom: 80px;
             font-size : 30px;
-            color: #1ed6e0;
+            color: #695CFE;
         }
 
         .creator {
@@ -319,14 +422,14 @@
         }
 
         .creator-front {
-            background: linear-gradient(120deg, rgb(196, 253, 255) 60%, #1ed6e0 40%);
-            color: white;
+            background: linear-gradient(120deg, #a49cff 60%, #695CFE 40%);
+            color: black;
             font-size: 20px;
         }
 
         .creator-back {
-            background: linear-gradient(120deg, #1ed6e0 60%, rgb(196, 253, 255) 40%);
-            color: white;
+            background: linear-gradient(120deg, #695CFE 60%, #a49cff 40%);
+            color: black;
             transform: rotateY(180deg);
             font-size : 20px;
         }
@@ -351,7 +454,7 @@
         footer {
             text-align: center;
             padding: 10px;
-            background-color: #1ed6e09c;
+            background-color: 695CFE;
             color: white;
         }
 
@@ -389,14 +492,14 @@
             font-size: 18px;
             font-weight: bold;
             color: white;
-            background-color: #1ed6e0;
+            background-color: #695CFE;
             border-radius: 8px;
             text-decoration: none;
             transition: 0.3s;
         }
 
         .login-btn:hover {
-            background-color: #14a6b1;
+            background-color: #695CFE;
         }
 
         .close-btn {
@@ -413,17 +516,446 @@
         .close-btn:hover {
             background: #555;
         }
+
+
+        /*Dark Mode*/
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+.dark-mode .navbar {
+    background-color: #333;
+    color: #1ed6e0;
+    font-size: xx-large;
+    text-align: center;
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center;
+    padding: 5px 20px;
+}
+
+.dark-mode.logo {
+    display: flex;
+    align-items: center;
+}
+
+.dark-mode.logo img {
+    width: 100px;
+    height: 100px;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.dark-mode.tagline {
+    flex: 2;
+    text-align: center;
+    color: #695CFE;
+    font-size: 40px;
+}
+
+/* Theme Toggle Button */
+.dark-mode.theme-toggle {
+    font-size: 1.5rem;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    transition: transform 0.3s;
+}
+
+/* Button proportional to logo */
+.dark-mode.theme-toggle {
+    height: 50px; /* Match logo height */
+    width: 50px;
+}
+
+/* Dark Mode Button */
+.dark-mode .theme-toggle {
+    color: white;
+}
+
+/* Hover Effect */
+.dark-mode.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.dark-mode.warning {
+            background-color: #5c514f;
+            padding: 5px;
+            text-align: center;
+            color:white;
+        }
+
+        .dark-mode.stock-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns per row */
+            gap: 10px;
+            padding: 5px;
+            justify-content: center;
+        }
+
+        .dark-mode.stock-box {
+        color: white;
+        position: relative;
+        font-family: sans-serif;
+        margin-top: 3rem;
+        }
+
+        .dark-mode.stock-box::before,
+        .dark-mode.stock-box::after {
+        content: "";
+        background-color: #695CFE;
+        position: absolute;
+        }
+
+        .dark-mode.stock-box::before {
+        border-radius: 40%;
+        width: 4rem;
+        height: 4rem;
+        top: 30%;
+        right: 7%;
+        }
+
+        .dark-mode.stock-box::after {
+        content: "";
+        position: absolute;
+        height: 3rem;
+        top: 8%;
+        right: 5%;
+        border: 1px solid;
+        }
+
+        .dark-mode.stock-box .box {
+        width: 400px;
+        height: 100px;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.074);
+        border: 2px solid rgba(255, 255, 255, 0.222);
+        -webkit-backdrop-filter:drop-shadow(20px);
+        backdrop-filter: blur(20px);
+        border-radius: 0.7rem;
+        transition: all ease 0.3s;
+        }
+
+        .dark-mode.stock-box .box {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        }
+
+        .dark-mode.stock-box .box .title {
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        }
+
+        .dark-mode.stock-box .box div strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        }
+
+        .dark-mode.stock-box .box div p {
+        margin: 0;
+        font-size: 0.9em;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        }
+
+        .dark-mode.stock-box .box div span {
+        font-size: 0.7rem;
+        font-weight: 300;
+        }
+
+        .dark-mode.stock-box .box div span:nth-child(3) {
+        font-weight: 500;
+        margin-right: 0.2rem;
+        }
+
+        .dark-mode.stock-box .box:hover {
+        box-shadow: 0px 0px 20px 1px #ffbb763f;
+        border: 1px solid rgba(255, 255, 255, 0.454);
+        }
+
+        .dark-mode.start-button-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically if needed */
+    height: 100px; /* Adjust height as needed */
+    text-decoration: none; 
+    color: white; 
+    margin-top: 80px;
+}
+
+.dark-mode.start-button {
+  position: relative;
+  font-size: 20px;  
+    padding: 15px 30px;  
+    border-radius: 8px;
+  border: none;
+  color: white; /* Ensures the text is white */
+    text-decoration: none; 
+  cursor: pointer;
+  background-color: #695CFE;
+  transition: all 0.2s ease;
+}
+
+.dark-mode.start-button:active {
+  transform: scale(0.96);
+}
+
+.dark-mode.start-button:before,
+.dark-mode.start-button:after {
+  position: absolute;
+  content: "";
+  width: 150%;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1000;
+  background-repeat: no-repeat;
+}
+
+.dark-mode.start-button:hover:before {
+  top: -70%;
+  background-image: radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, #695CFE 20%, transparent 30%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #695CFE 15%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%),
+    radial-gradient(circle, #695CFE 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+    10% 10%, 18% 18%;
+  background-position: 50% 120%;
+  animation: greentopBubbles 0.6s ease;
+}
+
+@keyframes greentopBubbles {
+  0% {
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+      40% 90%, 55% 90%, 70% 90%;
+  }
+
+  50% {
+    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+      50% 50%, 65% 20%, 90% 30%;
+  }
+
+  100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+      50% 40%, 65% 10%, 90% 20%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+.dark-mode.start-button:hover::after {
+  bottom: -70%;
+  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+  background-position: 50% 0%;
+  animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+  0% {
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+      70% -10%, 70% 0%;
+  }
+
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+      105% 0%;
+  }
+
+  100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+      110% 10%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+
+
+.dark-mode.buttons a {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            background-color: #695CFE;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 2px 2px 10px #695CFE;
+        }
+
+        .dark-mode.buttons a:hover {
+            background-color: #695CFE;
+            transform: scale(1.05);
+        }
+
+        .dark-mode.buttons a:active {
+            transform: scale(0.95);
+        }
+
+        .dark-mode.features {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .dark-mode.features h2 {
+            margin-bottom: 20px;
+            font-size: 40px;
+            color: #695CFE;
+        }
+
+        .dark-mode.feature-container {
+            display: flex;
+            flex-direction: column; /* Stack boxes in one column */
+            align-items: center;
+            gap: 20px;
+        }
+
+        .dark-mode.feature-box {
+            padding: 10px;
+            border-radius: 15px;
+            border-color: #d9d9d9;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: #5c5e5e7a;
+        }
+
+        .dark-mode.feature-box img {
+            width:300px;
+            height: 100px;
+            border-radius: 10px;
+            background-color: #d9d9d9;
+            padding: 20px;
+        }
+
+        .dark-mode.feature-content {
+            flex: 1;
+            text-align: left;
+            padding : 20px;
+        }
+
+        .dark-mode.feature-box h3 {
+            margin-bottom: 10px;
+            font-size: 30px;
+            color: #695CFE;
+        }
+
+        .dark-mode.feature-box p {
+            font-size: 20px;
+            color: white;
+        }
+        
+        .dark-mode .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #695CFE;
+            color: white;
+        }
+
+        .dark-mode .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;/* Responsive Design: Adjust layout for smaller screens */
+        @media (max-width: 768px) {
+            .stock-info {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns per row for tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stock-info {
+                grid-template-columns: repeat(1, 1fr); /* 1 column per row for mobile */
+            }
+        }
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .dark-mode.popup-content {
+            background: black;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode.popup p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .dark-mode.login-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #695CFE;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .dark-mode.login-btn:hover {
+            background-color: #695CFE;
+        }
+
+        .dark-mode.close-btn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: #888;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dark-mode.close-btn:hover {
+            background: #555;
+        }
+
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">StockStats</div>
-    </nav>
-    
-    <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
-    <h1 class="tagline">Your Journey to Financial Freedom Starts Here!</h1>
-    <div class="stock-info">
 
+    <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
+
+    <nav class="navbar">
+        {% load static %}
+        <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "StockStats"> </div>
+        <h1 class="tagline"> Your Journey to Financial Freedom Starts Here!</h1>
+        <button id="theme-toggle" class="theme-toggle">🌙</button>
+    </nav>
+
+    <div class="stock-info">
         {% for stock in stock_data %}
         <div class="stock-box">
             
@@ -440,34 +972,11 @@
         </div>
         {% endfor %}
     </div>
-    <div class="moving-pictures">
-        <div class="moving-track">
-            {% load static %}
-            <img src="{% static 'images/stocksphoto1.jpeg' %}" alt="Stock Image 1">
-            <img src="{% static 'images/stocksphoto2.jpg' %}" alt="Stock Image 2">
-            <img src="{% static 'images/stocksphoto3.jpg' %}" alt="Stock Image 3">
-            <img src="{% static 'images/stocksphoto4.jpg' %}" alt="Stock Image 4">
-            <img src="{% static 'images/stocksphoto5.jpg' %}" alt="Stock Image 5">
-            <img src="{% static 'images/stocksphoto6.jpg' %}" alt="Stock Image 6">
-            <img src="{% static 'images/stocksphoto7.jpg' %}" alt="Stock Image 7">
-    
-            <!-- Duplicate images for smooth looping -->
-            <img src="{% static 'images/stocksphoto1.jpeg' %}" alt="Stock Image 1">
-            <img src="{% static 'images/stocksphoto2.jpg' %}" alt="Stock Image 2">
-            <img src="{% static 'images/stocksphoto3.jpg' %}" alt="Stock Image 3">
-            <img src="{% static 'images/stocksphoto4.jpg' %}" alt="Stock Image 4">
-            <img src="{% static 'images/stocksphoto5.jpg' %}" alt="Stock Image 5">
-            <img src="{% static 'images/stocksphoto6.jpg' %}" alt="Stock Image 6">
-            <img src="{% static 'images/stocksphoto7.jpg' %}" alt="Stock Image 7">
-        </div>
-    </div>
 
-    <div class="get-started-container">
-        <div class="buttons">
-            <a href="login/">Get Started</a>
-        </div>
-    </div>    
-    
+<div class="start-button-container">
+    <a href="login/"> <button class="start-button">Get Started</button> </a>
+</div>
+
     <div class="features">
         <h2>Features</h2>
         <div class="feature-container">
@@ -512,7 +1021,7 @@
     <div id="loginPopup" class="popup">
         <div class="popup-content">
             <p>⚠️ You need to log in to access this feature!</p>
-            <a href="accounts/login/" class="login-btn">Login</a>
+            <a href="login/" class="login-btn">Login</a>
             <button class="close-btn" onclick="closePopup()">Close</button>
         </div>
     </div>
@@ -581,6 +1090,13 @@
             document.querySelectorAll(".feature-box").forEach(box => {
                 box.addEventListener("click", showLoginMessage);
             });
+        });
+
+        document.getElementById("theme-toggle").addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+            
+            // Change button icon based on mode
+            this.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
         });
     </script>                           
 </body>
