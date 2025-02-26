@@ -3,450 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Stock Analysis - Home</title>
-    {% load humanize %}  <!-- Load humanize filters -->
-
+    <title>Login & Register - Indian Stock Analysis</title>
     <style>
-        /* CSS Variables for Light Theme */
-        :root {
-            --primary-bg: #ffffff; /* White background */
-            --secondary-bg: #f5f5f5; /* Light gray */
-            --accent-color: #0a090b; /* Purple accent */
-            --text-color: #000000; /* Black text in light mode */
-            --text-secondary: #666666; /* Gray text */
-            --card-bg: #ffffff; /* White card background */
-            --card-hover: #f0f0f0; /* Light gray hover */
-            --positive: #4caf50; /* Green for positive change */
-            --negative: #f44336; /* Red for negative change */
-            --button-bg: #f0e7e7; /* Purple button */
-            --button-hover: #18d6dd; /* Darker purple hover */
-        }
-
-        /* CSS Variables for Dark Theme */
-        body.dark-mode {
-            --primary-bg: #0e1010da; /* Full black background */
-            --secondary-bg: #131010; /* Darker gray */
-            --accent-color: #fef9f9; /* Purple accent */
-            --text-color: #00ffff; /* Cyan text in dark mode */
-            --text-secondary: #00ffff; /* Cyan text for secondary elements */
-            --card-bg: #040404; /* Dark card background */
-            --card-hover: #2a2a2a; /* Darker hover */
-            --button-bg: #e8e3e3; /* Purple button */
-            --button-hover: #1cafc9; /* Darker purple hover */
-        }
-
         /* General Styles */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Times New Roman', sans-serif;
             margin: 0;
             padding: 0;
-            color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            background-color: #121212; /* Dark background */
+            color: #00ffff; /* Cyan text */
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Video Background */
-        #video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1; /* Place behind other content */
+        a {
+            color: #00ffff; /* Cyan links */
+            text-decoration: none;
         }
 
-        /* Overlay to improve readability */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.111); /* Lighter transparency for light mode */
-            z-index: -1;
+        a:hover {
+            text-decoration: underline;
         }
 
-        body.dark-mode::before {
-            background: rgba(248, 245, 245, 0.5); /* Darker transparency for dark mode */
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
+        /* Header Styles */
         header {
-            background: var(--secondary-bg);
-            padding: 20px 0;
-            box-shadow: 0 4px 6px rgba(4, 153, 222, 0.1);
-            width: 100%;
-            position: relative;
-            z-index: 2;
-        }
-
-        header .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 0 20px;
+            background-color: #1e1e1e; /* Darker header background */
+            padding: 5px 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
             margin: 0;
-            font-size: 24px;
-            color: var(--text-color); /* Use --text-color for header text */
+            font-size: 25px;
         }
 
-        header h1 a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        nav ul {
+        header nav ul {
             list-style: none;
-            display: flex;
-            gap: 20px;
-            padding: 0;
             margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center; /* Vertically center items */
         }
 
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+        header nav ul li {
+            display: inline;
         }
 
-        nav ul li a:hover {
-            background-color: var(--accent-color);
-            color: white;
+        /* Push the Dark Mode toggle to the right */
+        header nav ul li:last-child {
+            margin-left: auto;
         }
 
-        /* Dropdown styles */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--card-bg);
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(112, 111, 111, 0.339);
-            z-index: 1;
-            border-radius: 5px;
-        }
-
-        .dropdown-content a {
-            color: var(--text-color);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Toggle Button */
         .theme-toggle {
-            background-color: var(--button-bg);
-            color: rgb(12, 12, 12);
+            background-color: #00ffff; /* Cyan button */
+            color: #121212; /* Dark text */
             border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
+            padding: 8px 10px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .theme-toggle:hover {
-            background-color: var(--button-hover);
+            background-color: #00cccc; /* Darker cyan on hover */
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 100px 0;
+        /* Notification Styles */
+        .notification {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
             text-align: center;
-            background: transparent;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            margin-top: 60px;
-            margin-bottom: 60px;
+            background-color: #1e1e1e; /* Dark background */
+            color: #00ffff; /* Cyan text */
+            display: none;
         }
 
-        .hero h2 {
-            font-size: 42px;
-            margin-bottom: 20px;
-            color: var(--accent-color);
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Text shadow for better readability on video */
-        }
-
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: var(--text-secondary);
-        }
-
-        #search-form {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        #stock-search {
-            padding: 12px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: var(--primary-bg);
-            color: var(--text-color);
-            outline: none;
-        }
-
-        #search-form button {
-            padding: 12px 24px;
-            border: none;
-            background-color: var(--button-bg);
-            color: var(--primary-bg);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #search-form button:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* Trending Stocks */
-        .trending-stocks {
-            padding: 80px 0;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.7);
-            margin-top: 60px;
-            margin-bottom: 60px;
-        }
-
-        body.dark-mode .trending-stocks {
-            background: rgba(16, 15, 15, 0.303); /* Dark overlay for dark mode */
-        }
-
-        .trending-stocks h3 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 28px;
-            color: var(--accent-color);
-        }
-
-        .stock-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            justify-items: center;
-        }
-
-        .stock-card {
-            background: var(--card-bg);
+        /* Tab Styles */
+        .tab-container {
+            max-width: 400px;
+            margin: 50px auto;
             padding: 20px;
-            border-radius: 10px;
+            background-color: #1e1e1e; /* Dark background */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .tab-nav button {
+            background: none;
+            border: none;
+            color: #00ffff; /* Cyan text */
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            flex: 1;
             text-align: center;
-            color: var(--text-color);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 250px;
-            height: 150px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tab-nav button.active {
+            border-bottom: 2px solid #00ffff; /* Cyan underline */
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            gap: 15px;
         }
 
-        .stock-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .stock-card h4 {
-            font-size: 20px;
-            margin: 0 0 10px;
-        }
-
-        .stock-card p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .stock-card .change {
+        .form-container input {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #333; /* Dark input background */
+            color: #00ffff; /* Cyan text */
             font-size: 16px;
         }
 
-        .stock-card .positive {
-            color: var(--positive);
+        .form-container input::placeholder {
+            color: #888; /* Light gray placeholder */
         }
 
-        .stock-card .negative {
-            color: var(--negative);
-        }
-
-        /* News Section */
-        .news-section {
-            padding: 80px 0;
-            background: rgba(255, 255, 255, 0.7);
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            margin-top: 60px;
-            margin-bottom: 60px;
-        }
-
-        body.dark-mode .news-section {
-            background: rgba(16, 15, 15, 0.303); /* Dark overlay for dark mode */
-        }
-
-        .news-section h3 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 28px;
-            color: var(--accent-color);
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .news-item {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .news-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(51, 51, 51, 0.185);
-        }
-
-        .news-item h4 {
-            margin: 0;
-            font-size: 18px;
-            color: var(--text-color);
-        }
-
-        .news-item h4 a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .news-item h4 a:hover {
-            color: var(--accent-color);
-        }
-
-        .news-item p {
-            font-size: 14px;
-            margin: 10px 0 0;
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--secondary-bg);
-            color: var(--text-color);
-            text-align: center;
-            padding: 40px 0;
-            margin-top: 80px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            margin-bottom: 20px;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 14px;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--positive);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
+        .form-container button {
+            padding: 10px;
+            background-color: #00ffff; /* Cyan button */
+            color: #121212; /* Dark text */
+            border: none;
+            border-radius: 4px;
             font-size: 16px;
-            display: none;
-            z-index: 1000;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .notification.error {
-            background-color: var(--negative);
+        .form-container button:hover {
+            background-color: #00cccc; /* Darker cyan on hover */
+        }
+
+        /* Light Mode Styles */
+        body.light-mode {
+            background-color: #f4f4f9; /* Light background */
+            color: #333; /* Dark text */
+        }
+
+        body.light-mode header {
+            background-color: #ffffff; /* White header */
+        }
+
+        body.light-mode .notification {
+            background-color: #ffffff; /* White notification */
+            color: #333; /* Dark text */
+        }
+
+        body.light-mode .tab-container {
+            background-color: #ffffff; /* White container */
+        }
+
+        body.light-mode input {
+            background-color: #f4f4f9; /* Light input background */
+            color: #333; /* Dark text */
+        }
+
+        body.light-mode .theme-toggle {
+            background-color: #333; /* Dark button */
+            color: #ffffff; /* White text */
+        }
+
+        body.light-mode .theme-toggle:hover {
+            background-color: #555; /* Darker button on hover */
+        }
+
+        body.light-mode .tab-nav button {
+            color: #333; /* Dark text */
+        }
+
+        body.light-mode .tab-nav button.active {
+            border-bottom: 2px solid #333; /* Dark underline */
         }
     </style>
 </head>
 <body>
-    <!-- Video Background -->
-    {% load static %}
-    <video id="video-background" autoplay muted loop>
-        <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
-    </video>
-
     <!-- Header -->
     <header>
-        <div class="nav-container">
-            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        <div>
+            <h1>
+                <a href="{% url 'home1' %}">Indian Stock Analysis</a>
+            </h1>
             <nav>
                 <ul>
-                    <li><a href="{% url 'home2' %}">Home</a></li>
-                    <li><a href="{% url 'nse' %}">NSE</a></li>
-                    <li><a href="{% url 'bse' %}">BSE</a></li>
-                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">
-                            {% if user.is_authenticated %}
-                            Hi, {{ user.first_name }} {{ user.last_name }}!
-                            {% else %}
-                                Guest
-                            {% endif %}
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="{% url 'dashboard' %}">Dashboard</a>
-                            <a href="#">Tools</a>
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
-                            {% else %}
-                                <a href="{% url 'login' %}">Login</a>
-                            {% endif %}
-                        </div>
-                    </li>
+                    <!-- Dark Mode toggle pushed to the right -->
                     <li>
                         <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
                     </li>
@@ -455,6 +213,7 @@
         </div>
     </header>
 
+    <!-- Notification -->
     {% if messages %}
     <div class="notification" id="notification">
         {% for message in messages %}
@@ -473,122 +232,86 @@
     </script>
     {% endif %}
 
-    <section class="hero">
-        <div class="container">
-            <h2>Track Your Favorite Indian Stocks</h2>
-            <p>Stay ahead with real-time stock insights and news.</p>
-            <form id="search-form">
-                <input type="text" id="stock-search" placeholder="Search for a stock (e.g., TCS, RELIANCE)" required>
-                <button type="submit">Search</button>
+    <!-- Tabbed Interface -->
+    <div class="tab-container">
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="login">Login</button>
+            <button class="tab-button" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="tab-content active">
+            <form class="form-container" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
             </form>
         </div>
-    </section>
 
-   <!-- Trending Stocks Section -->
-    <section class="trending-stocks">
-        <div class="container">
-            <h3>Trending Indian Stocks</h3>
-            <div class="stock-grid">
-                {% for stock in stock_data %}
-                <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
-                    <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
-                    <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
-                        {% if stock.change > 0 %}
-                            +{{ stock.change }}%
-                        {% else %}
-                            {{ stock.change }}%
-                        {% endif %}
-                    </span>
-                </a>
-                {% endfor %}
-            </div>
+        <!-- Registration Form -->
+        <div id="register" class="tab-content">
+            <form class="form-container" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="register" value="true">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="text" name="phone_number" placeholder="Phone Number" required>
+                <input type="date" name="birthdate" placeholder="Birthdate" required>  <!-- Birthdate field -->
+                <select name="gender" required>
+                    <option value="" disabled selected>Gender</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
         </div>
-    </section>
+        
 
+    </div>
 
-
-    <!-- Top Gainers Section -->
-    <section class="trending-stocks">
-        <div class="container">
-            <h3>Top Gainers</h3>
-            <div class="stock-grid">
-                {% for stock in top_gainers %}
-                <div class="stock-card">
-                    <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
-                    <p>Change: <span class="positive">+{{ stock.change }}%</span></p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    <!-- Top Losers Section -->
-    <section class="trending-stocks">
-        <div class="container">
-            <h3>Top Losers</h3>
-            <div class="stock-grid">
-                {% for stock in top_losers %}
-                <div class="stock-card">
-                    <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>  <!-- Display live price -->
-                    <p>Change: <span class="negative">{{ stock.change }}%</span></p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    <!-- News Section -->
-    <section class="news-section">
-        <div class="container">
-            <h3>Latest News</h3>
-            <div class="news-grid">
-                {% for news in news_data %}
-                <div class="news-item">
-                    <div class="news-content">
-                        <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
-                        <p>{{ news.published }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript for Dark/Light Mode Toggle -->
+    <!-- Dark/Light Mode Toggle Script -->
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
 
-        // Check user's preference from localStorage
+        // Check for saved theme in localStorage
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️ Light Mode';
-        } else {
-            body.classList.remove('dark-mode');
-            themeToggle.textContent = '🌙 Dark Mode';
+        if (savedTheme) {
+            body.classList.add(savedTheme);
+            themeToggle.textContent = savedTheme === 'light-mode' ? '🌙 Dark Mode' : '☀️ Light Mode';
         }
 
         // Toggle theme on button click
         themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                themeToggle.textContent = '☀️ Light Mode';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeToggle.textContent = '🌙 Dark Mode';
-                localStorage.setItem('theme', 'light');
-            }
+            body.classList.toggle('light-mode');
+            const isLightMode = body.classList.contains('light-mode');
+            themeToggle.textContent = isLightMode ? '🌙 Dark Mode' : '☀️ Light Mode';
+            localStorage.setItem('theme', isLightMode ? 'light-mode' : 'dark-mode');
+        });
+
+        // Tabbed Interface Script
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to the clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(tabName).classList.add('active');
+            });
         });
     </script>
 </body>

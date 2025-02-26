@@ -1,96 +1,101 @@
 import subprocess
+import time
+import webbrowser
 
 # Change this to the absolute path of your Django project
 manage_file = "Stock_Site/"
 
-
 def main():
     while True:
         print("\n")
-        print("\t|----------------------------------------------|")
-        print("\t|              # Command Menu #                |")
-        print("\t|----------------------------------------------|")
-        print("\t|              Server Commands                 |")
-        print("\t|----------------------------------------------|")
-        print("\t| 1. Run Django Server                         |")
-        print("\t| 2. Collect Data Locally                      |")
-        print("\t| 3. Import Data into the Database             |")
-        print("\t| 4. Stocks to tickers (In Development!)       |")
-        print("\t|----------------------------------------------|")
-        print("\t|                Git Commands                  |")
-        print("\t|----------------------------------------------|")
-        print("\t| 5. Only Pull                                 |")
-        print("\t| 6. Git Commit and Pull                       |")
-        print("\t| 7. Only Push                                 |")
-        print("\t| 8. Git Commit and Push                       |")
-        print("\t|----------------------------------------------|")
-        print("\t|              Database Commands               |")
-        print("\t|----------------------------------------------|")
-        print("\t| 9. Open Postgres Database                    |")
-        print("\t| 10. Check User Data                          |")
-        print("\t| 11. Check Stock Data                         |")
-        print("\t|----------------------------------------------|")
-        print("\t|              Other Commands                  |")
-        print("\t|----------------------------------------------|")
-        print("\t| 12. Install Requirements                     |")
-        print("\t| 13. Update the requirements file             |")
-        print("\t| (only for users with all packages installed).|")
-        print("\t|----------------------------------------------|")
-        print("\t|                 0. Exit                      |")
-        print("\t|----------------------------------------------|")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t|                                         # Command Menu #                                              |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t|                                         Server Commands                                               |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t| 1. Run Django Server  [ python3 manage.py runserver ]                                                 |")
+        print("\t| 2. Collect Data Locally  [ python3 manage.py collect_data ]                                           |")
+        print("\t| 3. Import Data into the Database  [ python3 manage.py import_data ]                                   |")
+        print("\t| 4. Stocks to tickers (In Development!) [ python3 manage.py stos ]                                     |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t|                                          Git Commands                                                 |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t| 5. Only Pull                                                                                          |")
+        print("\t| 6. Git Commit and Pull                                                                                |")
+        print("\t| 7. Only Push                                                                                          |")
+        print("\t| 8. Git Commit and Push                                                                                |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t|                                        Database Commands                                              |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t| 9. Open Postgres Database  [ psql -U user -d stock_analysis ]                                         |")
+        print("\t| 10. Check User Data  [ SELECT * FROM auth_user ]                                                      |")
+        print("\t| 11. Check Stock Data  [ SELECT * FROM accounts_stockdata WHERE stock_symbol = 'Ticker' ]              |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t|                                         Other Commands                                                |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t| 12. Install Requirements                                                                              |")
+        print("\t| 13. Update the requirements file                                                                      |")
+        print("\t| (only for users with all packages installed).                                                         |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
+        print("\t|  0. Exit                                                                                              |")
+        print("\t|-------------------------------------------------------------------------------------------------------|")
         print("\n")
 
         choice = input("\tEnter your choice: ")
 
         if choice == "1":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py runserver; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            full_command = f"bash -c 'cd {manage_file} && python3 manage.py runserver; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Django Server", "--", "bash", "-c", full_command], start_new_session=True)
+            # Wait a few seconds to ensure the server starts
+            time.sleep(4)  # Adjust if needed
+
+            # Open the Django development server in the browser
+            webbrowser.open("http://127.0.0.1:8000/")
 
         elif choice == "2":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py collect_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            command = f"cd {manage_file} && python3 manage.py collect_data; echo 'Closing in 1 minute...'; sleep 60; exit"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Data Collection", "--", "bash", "-c", command], start_new_session=True)
 
         elif choice == "3":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py import_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            full_command = f"bash -c 'cd {manage_file} && python3 manage.py import_data; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Import Data", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "4":
-            full_command = f"bash -c 'cd {manage_file} && python manage.py stos; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            full_command = f"bash -c 'cd {manage_file} && python3 manage.py stos; echo \"Closing in 1 minute...\"; sleep 60; exit'"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "STOS", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "5":
             full_command = f"bash -c 'git pull; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Pull", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "6":
             print("Enter your commit message:")
             commit_message = input()
             full_command = f"bash -c 'git add . && git commit -m \"{commit_message}\" && git pull; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Commit & Pull", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "7":
             full_command = f"bash -c 'git push; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Push", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "8":
             print("Enter your commit message:")
             commit_message = input()
             full_command = f"bash -c 'git add . && git commit -m \"{commit_message}\" && git push; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Git Commit & Push", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "9":
             print("Enter your username:")
             user = input().strip()
-            sql_command = "SELECT * FROM auth_user;"
             full_command = f"bash -c 'psql -U {user} -d stock_analysis; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "PSQL Shell", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "10":
             print("Enter your username:")
             user = input().strip()
-            sql_command = "SELECT * FROM auth_user;"
-            full_command = f"gnome-terminal --maximize -- bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
-            subprocess.Popen(full_command, shell=True, start_new_session=True)
+            sql_command = "SELECT * FROM accounts_customuser;"
+            full_command = f"bash -c 'psql -U {user} -d stock_analysis -c \"{sql_command}\"; echo \"Closing in 10 Sec...\"; sleep 10; exit'"
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "PSQL Query: Auth Users", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "11":
             print("Enter your username:")
@@ -98,16 +103,20 @@ def main():
             print("Enter the stock symbol (Ex. ITC.BO):")
             Ticker = input().strip()
             sql_command = f"SELECT * FROM accounts_stockdata WHERE stock_symbol = '{Ticker}';"
-            full_command = f"gnome-terminal --maximize -- bash -c \"psql -U {user} -d stock_analysis -c \\\"{sql_command}\\\"; echo 'Closing in 10 Sec...'; sleep 10; exit\""
+            full_command = (
+                f"gnome-terminal --tab --title='PSQL Query: {Ticker}' -- bash -c "
+                f"\"psql -U {user} -d stock_analysis -c \\\"{sql_command}\\\"; "
+                f"echo 'Closing in 10 Sec...'; sleep 10; exit\""
+            )
             subprocess.Popen(full_command, shell=True, start_new_session=True)
 
         elif choice == "12":
             full_command = f"bash -c 'pip install -r requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Install Requirements", "--", "bash", "-c", full_command], start_new_session=True)
 
         elif choice == "13":
             full_command = f"bash -c 'pip freeze > requirements.txt; echo \"Closing in 1 minute...\"; sleep 60; exit'"
-            subprocess.Popen(["x-terminal-emulator", "-e", full_command], start_new_session=True)
+            subprocess.Popen(["gnome-terminal", "--tab", "--title", "Freeze Requirements", "--", "bash", "-c", full_command], start_new_session=True)
         
         elif choice == "0":
             break

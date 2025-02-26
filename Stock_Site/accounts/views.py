@@ -1,18 +1,22 @@
 # accounts/views.py
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.models import StockData
 from decimal import Decimal
-from django.db.models import Subquery, OuterRef
 from django.core.paginator import Paginator
 from django.db.models import Max, Min
 from .models import StockData, Watchlist
 import feedparser
 from urllib.parse import quote 
 import yfinance as yf
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from accounts.models import CustomUser, Feedback
 
 # Function to fetch live stock price
 def fetch_live_stock_price(ticker):
@@ -31,60 +35,128 @@ def fetch_live_stock_price(ticker):
         print(f"Error fetching live price for {ticker}: {e}")
         return None
 
-def register(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
-        email = request.POST['email']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        gender = request.POST['gender']
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+import json
 
-        if password == confirm_password:
-            if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already exists')
-            elif User.objects.filter(email=email).exists():
-                messages.error(request, 'Email already registered')
+@csrf_exempt  # Use CSRF protection in production
+def send_otp(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            email = data.get('email')
+
+            if not email:
+                return JsonResponse({'success': False, 'message': 'Email is required'})
+
+            otp = random.randint(100000, 999999)  # Generate 6-digit OTP
+            request.session['otp'] = otp  # Store OTP in session
+            request.session['email'] = email  # Store email in session
+
+            subject = "Your OTP Code"
+            message = f"Your OTP is: {otp}. Do not share it with anyone."
+            from_email = settings.EMAIL_HOST_USER
+
+            send_mail(subject, message, from_email, [email])  # Send email
+
+            return JsonResponse({'success': True, 'message': 'OTP sent successfully'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+@csrf_exempt
+def verify_otp(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            user_otp = data.get('otp')
+
+            # Get stored OTP from session
+            stored_otp = request.session.get('otp')
+            stored_email = request.session.get('email')
+
+            if not stored_otp:
+                return JsonResponse({'success': False, 'message': 'No OTP found. Please request a new one.'})
+
+            if str(user_otp) == str(stored_otp):  # Match OTP
+                del request.session['otp']  # Clear OTP after verification
+                return JsonResponse({'success': True, 'message': 'OTP verified successfully'})
             else:
-                user = User.objects.create_user(
-                    username=username,
-                    password=password,
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    gender=gender
-                )
-                user.save()
-                messages.success(request, 'Registration successful. Please login.')
-                return redirect('login')
-        else:
-            messages.error(request, 'Passwords do not match')
-    return render(request, 'accounts/register.html')
+                return JsonResponse({'success': False, 'message': 'Invalid OTP'})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from .models import CustomUser  # Assuming your model is in the same app
 
 def login_user(request):
     if request.method == 'POST':
-        email = request.POST['email']  # Get email from form
-        password = request.POST['password']  # Get password from form
+        if 'register' in request.POST:  # Registration Form Submission
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            phone_number = request.POST.get('phone_number')
+            birthdate = request.POST.get('birthdate') 
+            gender = request.POST.get('gender')
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm_password')
 
-        # Get the username associated with the email
-        try:
-            user = User.objects.get(email=email)  # Check if email exists
-            username = user.username  # Retrieve the username
-        except User.DoesNotExist:
-            messages.error(request, 'Invalid email or password')
-            return render(request, 'accounts/login.html')
+            if password != confirm_password:
+                messages.error(request, 'Passwords do not match')
+            elif CustomUser.objects.filter(email=email).exists():
+                messages.error(request, 'Email is already registered')
+            elif CustomUser.objects.filter(username=username).exists():
+                messages.error(request, 'Username is already taken')
+            else:
+                # Create the user using the CustomUser model
+                user = CustomUser.objects.create_user(
+                    username=username,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    password=password,
+                    phone_number=phone_number,
+                    birthdate=birthdate,  # Save the birthdate field
+                    gender=gender
+                )
+                user.save()
+                messages.success(request, 'Registration successful. Please log in.')
+                return redirect('login')  # Redirect to login after registration
 
-        # Authenticate using the retrieved username and provided password
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, 'Login successful')
-            return redirect('home2')  # Redirect to Home 2 page
-        else:
-            messages.error(request, 'Invalid email or password')
+        else:  # Login Form Submission
+            email = request.POST.get('email')
+            password = request.POST.get('password')
 
-    return render(request, 'accounts/login.html')
+            try:
+                user = CustomUser.objects.get(email=email)
+                user = authenticate(request, username=user.username, password=password)
+                if user is not None:
+                    login(request, user)
+                    messages.success(request, 'Login successful')
+
+                    # Redirect superusers to admin panel
+                    if user.is_superuser:
+                        return redirect('/admin/')
+                    else:
+                        return redirect('home2')  # Normal users go to home2
+                else:
+                    messages.error(request, 'Invalid email or password')
+            except CustomUser.DoesNotExist:
+                messages.error(request, 'Invalid email or password')
+
+    return render(request, 'accounts/login.html')  # Single template for both
+
 
 def logout_user(request):
     logout(request)
@@ -378,7 +450,23 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def profile(request):
-    return render(request, 'pages/profile.html')
+    user = request.user
+    
+    if request.method == 'POST':
+        # Handle AJAX request
+        import json
+        data = json.loads(request.body)
+        field = data.get('field')
+        new_value = data.get('new_value')
+
+        if field and new_value:
+            # Dynamically update the user's field
+            setattr(user, field, new_value)
+            user.save()
+            return JsonResponse({'success': True})  # Return success response
+        return JsonResponse({'success': False})
+
+    return render(request, 'accounts/profile.html')
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -392,3 +480,41 @@ def search_stocks(request):
     results = StockData.objects.filter(company_name__icontains=query).values("company_name", "stock_symbol")[:1]  # Limit results
 
     return JsonResponse({"stocks": list(results)})
+
+def admin(request):
+    if not request.user.is_superuser:
+        return redirect('home2')  # Redirect non-admin users to home2
+
+    users = CustomUser.objects.all()
+    feedbacks = Feedback.objects.all()
+    return render(request, 'accounts/admin.html', {'users': users, 'feedbacks': feedbacks})
+
+
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Feedback
+
+@csrf_exempt  # (Use only for testing, prefer CSRF token in production)
+def submit_feedback(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))  # Parse JSON
+
+            name = data.get("name")
+            email = data.get("email")
+            message = data.get("message")
+            rating = data.get("rating")
+
+            print(f"Received Data: Name={name}, Email={email}, Message={message}, Rating={rating}")  # Debugging
+
+            if name and email and message and rating:
+                Feedback.objects.create(name=name, email=email, message=message, rating=int(rating))
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"success": False, "error": "Missing fields"})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Invalid JSON format"})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
