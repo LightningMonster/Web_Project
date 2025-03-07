@@ -415,7 +415,29 @@
             </table>
         </div>
         <div id="notifications-content" style="display: none;">
-            <div class="title">No notifications yet!</div>
+            <div class="title">Feedback's</div>
+            <table id="users-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in feedbacks %}
+                        <tr>
+                            <td>{{ feedback.id }}</td>
+                            <td>{{ feedback.name }}</td>
+                            <td>{{ feedback.email }}</td>
+                            <td>{{ feedback.message }}</td>
+                            <td>{{ feedback.rating }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 

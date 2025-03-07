@@ -16,7 +16,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from accounts.models import CustomUser 
+from accounts.models import CustomUser, Feedback
 
 # Function to fetch live stock price
 def fetch_live_stock_price(ticker):
@@ -486,4 +486,35 @@ def admin(request):
         return redirect('home2')  # Redirect non-admin users to home2
 
     users = CustomUser.objects.all()
-    return render(request, 'accounts/admin.html', {'users': users})
+    feedbacks = Feedback.objects.all()
+    return render(request, 'accounts/admin.html', {'users': users, 'feedbacks': feedbacks})
+
+
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Feedback
+
+@csrf_exempt  # (Use only for testing, prefer CSRF token in production)
+def submit_feedback(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))  # Parse JSON
+
+            name = data.get("name")
+            email = data.get("email")
+            message = data.get("message")
+            rating = data.get("rating")
+
+            print(f"Received Data: Name={name}, Email={email}, Message={message}, Rating={rating}")  # Debugging
+
+            if name and email and message and rating:
+                Feedback.objects.create(name=name, email=email, message=message, rating=int(rating))
+                return JsonResponse({"success": True})
+            else:
+                return JsonResponse({"success": False, "error": "Missing fields"})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"success": False, "error": "Invalid JSON format"})
+
+    return JsonResponse({"success": False, "error": "Invalid request"})
