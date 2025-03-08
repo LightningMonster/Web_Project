@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Details - {{ stock_symbol }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="./style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
-        /* General Styles */
-        :root {
+      :root {
             --primary-color: #3c1854; /* Dark blue for headings */
             --secondary-color: #5d33b0; /* Blue for buttons and links */
             --background-color: #ffffff; /* White background for light mode */
@@ -317,13 +319,13 @@
             background-color : black;
         }
         .chart-container {
-    width: 600px;
-    height: 400px;
-    background-color: #242222; /* Light grey background for better visibility */
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-}
+            width: 600px;
+            height: 400px;
+            background-color: #242222; /* Light grey background for better visibility */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -334,10 +336,6 @@
             <nav>
                 <ul>
                     <li><a href="{% url 'home2' %}">Home</a></li>
-<<<<<<< HEAD
-=======
-                    
->>>>>>> main
                     <li><a href="{% url 'calculators' %}">Calculators</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropbtn">
@@ -364,6 +362,8 @@
             </nav>
         </div>
     </header>
+   </style>
+</head>
 
     <!-- Main Content -->
     <main class="container">
@@ -389,6 +389,7 @@
             </div>
         </div>
 
+        <!-- Graph Container -->
         <div id="chart-container">
             <canvas id="stockChart"></canvas>
         </div>
@@ -462,6 +463,8 @@
         <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         // Function to load a new page using AJAX
         function loadPage(page) {
@@ -526,18 +529,32 @@
             body.classList.add('dark-mode');
             themeToggle.textContent = '☀️ Light Mode';
         }
-    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('stockChart').getContext('2d');
+        // Parse the historical data from Django context
+        const historicalData = JSON.parse('{{ historical_data_json|escapejs }}');
+
+        // Debug: Print the parsed historical data
+        console.log("Parsed Historical Data:", historicalData);
+
+        // Extract labels (dates) and data (close prices)
+        const labels = historicalData.map(entry => entry.date);
+        const data = historicalData.map(entry => entry.close);
+
+        // Debug: Print the labels and data
+        console.log("Labels:", labels);
+        console.log("Data:", data);
+
+        // Get the chart canvas element
+        const ctx = document.getElementById('stockChart').getContext('2d');
+
+        // Create the chart
         const stockChart = new Chart(ctx, {
-            type: 'line', // Change to 'bar' or 'candlestick' as needed
+            type: 'line', // Use 'line', 'bar', or 'candlestick' as needed
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Example labels
+                labels: labels, // Dates
                 datasets: [{
                     label: 'Stock Price',
-                    data: [150, 160, 170, 165, 180, 175], // Example data
+                    data: data, // Close prices
                     borderColor: 'blue',
                     backgroundColor: 'rgba(0, 0, 255, 0.2)',
                     borderWidth: 2,
@@ -561,7 +578,7 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Months'
+                            text: 'Date'
                         },
                         grid: {
                             display: true
@@ -579,7 +596,6 @@
                 }
             }
         });
-</script>
-
+    </script>
 </body>
 </html>
