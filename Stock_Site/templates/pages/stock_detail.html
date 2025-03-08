@@ -5,328 +5,327 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Details - {{ stock_symbol }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="./style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
-      :root {
-            --primary-color: #3c1854; /* Dark blue for headings */
-            --secondary-color: #5d33b0; /* Blue for buttons and links */
-            --background-color: #ffffff; /* White background for light mode */
-            --text-color: #770ac0; /* Black text for light mode */
-            --card-background: rgba(255, 254, 254, 0.781); /* Semi-transparent white card background */
-            --navbar-text-color: #a108ed; /* Cyan text for navbar */
-            --navbar-hover-color: rgba(26, 25, 25, 0.1); /* Light hover for navbar */
-        }
-
-        body {
-            font-family: 'Times New Roman', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.4;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            background-image: url('/static/images/pexels-leeloothefirst-7887810.jpg');
-            background-size:cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment:fixed;
-        }
-
-        .container {
-            max-width: 1250px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent dark blue */
-            color: var(--navbar-text-color); /* Cyan text for navbar */
-            padding: 0px 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            margin: 0px;
-            font-size: 24px;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 5px 0 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        nav ul li a {
-            color: var(--navbar-text-color); /* Cyan text for navbar */
-            text-decoration: none;
-            font-size: 16px;
-            padding: 8px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            background-color: var(--navbar-hover-color); /* Light hover for navbar */
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--card-background);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            z-index: 1;
-            min-width: 160px;
-        }
-
-        .dropdown-content a {
-            color: var(--text-color);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .theme-toggle {
-            background-color: var(--secondary-color);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background-color: #2980b9;
-        }
-
-        /* Main Content Styles */
-        main {
-            padding: 40px 0;
-        }
-
-        .card {
-            background-color: var(--card-background);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        h1 h2, h3 {
-            color: var(--primary-color);
-        }
-
-        h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-
-        h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        /* Stock Info Section */
-        .stock-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .stock-info p {
-            margin: 0;
-        }
-
-        .stock-info strong {
-            color: var(--primary-color);
-        }
-
-        /* Historical Data Table */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table th, table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        table th {
-            background-color: var(--primary-color);
-            color: #fff;
-        }
-
-        table tr:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        table tr:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        /* Pagination Styles */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .pagination a, .pagination span {
-            padding: 8px 16px;
-            background-color: var(--secondary-color);
-            color: #fff;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .pagination a:hover {
-            background-color: #2980b9;
-        }
-
-        .pagination span {
-            background-color: var(--primary-color);
-        }
-
-        /* News Section */
-        .news-item {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: rgba(0, 0, 0, 0.744);
-            border-radius: 5px;
-        }
-
-        .news-item h4 {
-            margin: 0 0 10px;
-            font-size: 18px;
-        }
-
-        .news-item p {
-            margin: 0;
-            font-size: 14px;
-            color: #666;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent dark blue */
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 14px;
-        }
-
-        /* Dark Mode Styles */
-        body.dark-mode {
-            --primary-color: #16d9ebca; /* Cyan for headings in dark mode */
-            --secondary-color: #206ea9; /* Dark blue for buttons and links */
-            --background-color: #121212; /* Dark background for dark mode */
-            --text-color: #f5fafa; /* Cyan text for dark mode */
-            --card-background: rgba(0, 0, 0, 0.649); /* Semi-transparent dark card background */
-            --navbar-text-color: #00ffff; /* Cyan text for navbar in dark mode */
-            --navbar-hover-color: rgba(255, 255, 255, 0.1); /* Light hover for navbar in dark mode */
-        }
-
-        body.dark-mode .dropdown-content {
-            background-color: var(--card-background);
-        }
-
-        body.dark-mode .dropdown-content a {
-            color: var(--text-color);
-        }
-
-        body.dark-mode .dropdown-content a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode table tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        body.dark-mode table tr:hover {
-            background-color: rgba(60, 59, 59, 0.1);
-        }
-
-        body.dark-mode .news-item {
-            background-color: rgba(108, 106, 106, 0.05);
-        }
-
-        @media (max-width: 768px) {
-            .stock-info {
-                grid-template-columns: 1fr;
-            }
-
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .dropdown-content {
-                position: static;
-                display: none;
-            }
-
-            .dropdown:hover .dropdown-content {
-                display: block;
-            }
-        }
-
-        #chart-container {
-            width: 1234px;
-            height: 600px;
-            margin: auto;
-            background-color : black;
-        }
-        .chart-container {
-            width: 600px;
-            height: 400px;
-            background-color: #242222; /* Light grey background for better visibility */
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+        :root {
+              --primary-color: #3c1854; /* Dark blue for headings */
+              --secondary-color: #5d33b0; /* Blue for buttons and links */
+              --background-color: #ffffff; /* White background for light mode */
+              --text-color: #770ac0; /* Black text for light mode */
+              --card-background: rgba(255, 254, 254, 0.781); /* Semi-transparent white card background */
+              --navbar-text-color: #a108ed; /* Cyan text for navbar */
+              --navbar-hover-color: rgba(26, 25, 25, 0.1); /* Light hover for navbar */
+          }
+  
+          body {
+              font-family: 'Times New Roman', sans-serif;
+              margin: 0;
+              padding: 0;
+              background-color: var(--background-color);
+              color: var(--text-color);
+              line-height: 1.4;
+              transition: background-color 0.3s ease, color 0.3s ease;
+              background-image: url('/static/images/pexels-leeloothefirst-7887810.jpg');
+              background-size:cover;
+              background-position: center;
+              background-repeat: no-repeat;
+              background-attachment:fixed;
+          }
+  
+          .container {
+              max-width: 1250px;
+              margin: 0 auto;
+              padding: 0 20px;
+          }
+  
+          /* Header Styles */
+          header {
+              background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent dark blue */
+              color: var(--navbar-text-color); /* Cyan text for navbar */
+              padding: 0px 5px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+  
+          header h1 {
+              margin: 0px;
+              font-size: 24px;
+              text-align: center;
+          }
+  
+          nav ul {
+              list-style: none;
+              padding: 0;
+              margin: 5px 0 0;
+              display: flex;
+              justify-content: center;
+              flex-wrap: wrap;
+              gap: 20px;
+          }
+  
+          nav ul li a {
+              color: var(--navbar-text-color); /* Cyan text for navbar */
+              text-decoration: none;
+              font-size: 16px;
+              padding: 8px 20px;
+              border-radius: 5px;
+              transition: background-color 0.3s ease;
+          }
+  
+          nav ul li a:hover {
+              background-color: var(--navbar-hover-color); /* Light hover for navbar */
+          }
+  
+          .dropdown {
+              position: relative;
+          }
+  
+          .dropdown-content {
+              display: none;
+              position: absolute;
+              background-color: var(--card-background);
+              box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+              border-radius: 5px;
+              z-index: 1;
+              min-width: 160px;
+          }
+  
+          .dropdown-content a {
+              color: var(--text-color);
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+              transition: background-color 0.3s ease;
+          }
+  
+          .dropdown-content a:hover {
+              background-color: rgba(0, 0, 0, 0.05);
+          }
+  
+          .dropdown:hover .dropdown-content {
+              display: block;
+          }
+  
+          .theme-toggle {
+              background-color: var(--secondary-color);
+              color: #fff;
+              border: none;
+              padding: 8px 16px;
+              border-radius: 5px;
+              cursor: pointer;
+              font-size: 14px;
+              transition: background-color 0.3s ease;
+          }
+  
+          .theme-toggle:hover {
+              background-color: #2980b9;
+          }
+  
+          /* Main Content Styles */
+          main {
+              padding: 40px 0;
+          }
+  
+          .card {
+              background-color: var(--card-background);
+              border-radius: 10px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              padding: 20px;
+              margin-bottom: 30px;
+          }
+  
+          h1 h2, h3 {
+              color: var(--primary-color);
+          }
+  
+          h1 {
+              font-size: 32px;
+              margin-bottom: 20px;
+          }
+  
+          h2 {
+              font-size: 28px;
+              margin-bottom: 15px;
+          }
+  
+          h3 {
+              font-size: 24px;
+              margin-bottom: 10px;
+          }
+  
+          /* Stock Info Section */
+          .stock-info {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+              gap: 20px;
+          }
+  
+          .stock-info p {
+              margin: 0;
+          }
+  
+          .stock-info strong {
+              color: var(--primary-color);
+          }
+  
+          /* Historical Data Table */
+          .table-container {
+              overflow-x: auto;
+          }
+  
+          table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-bottom: 20px;
+          }
+  
+          table th, table td {
+              padding: 12px;
+              text-align: left;
+              border-bottom: 1px solid #ddd;
+          }
+  
+          table th {
+              background-color: var(--primary-color);
+              color: #fff;
+          }
+  
+          table tr:nth-child(even) {
+              background-color: rgba(0, 0, 0, 0.05);
+          }
+  
+          table tr:hover {
+              background-color: rgba(0, 0, 0, 0.1);
+          }
+  
+          /* Pagination Styles */
+          .pagination {
+              display: flex;
+              justify-content: center;
+              gap: 10px;
+              margin-top: 20px;
+          }
+  
+          .pagination a, .pagination span {
+              padding: 8px 16px;
+              background-color: var(--secondary-color);
+              color: #fff;
+              border-radius: 5px;
+              text-decoration: none;
+              transition: background-color 0.3s ease;
+          }
+  
+          .pagination a:hover {
+              background-color: #2980b9;
+          }
+  
+          .pagination span {
+              background-color: var(--primary-color);
+          }
+  
+          /* News Section */
+          .news-item {
+              margin-bottom: 20px;
+              padding: 15px;
+              background-color: rgba(0, 0, 0, 0.744);
+              border-radius: 5px;
+          }
+  
+          .news-item h4 {
+              margin: 0 0 10px;
+              font-size: 18px;
+          }
+  
+          .news-item p {
+              margin: 0;
+              font-size: 14px;
+              color: #666;
+          }
+  
+          /* Footer Styles */
+          footer {
+              background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent dark blue */
+              color: #fff;
+              text-align: center;
+              padding: 20px 0;
+              margin-top: 40px;
+          }
+  
+          footer p {
+              margin: 0;
+              font-size: 14px;
+          }
+  
+          /* Dark Mode Styles */
+          body.dark-mode {
+              --primary-color: #16d9ebca; /* Cyan for headings in dark mode */
+              --secondary-color: #206ea9; /* Dark blue for buttons and links */
+              --background-color: #121212; /* Dark background for dark mode */
+              --text-color: #f5fafa; /* Cyan text for dark mode */
+              --card-background: rgba(0, 0, 0, 0.649); /* Semi-transparent dark card background */
+              --navbar-text-color: #00ffff; /* Cyan text for navbar in dark mode */
+              --navbar-hover-color: rgba(255, 255, 255, 0.1); /* Light hover for navbar in dark mode */
+          }
+  
+          body.dark-mode .dropdown-content {
+              background-color: var(--card-background);
+          }
+  
+          body.dark-mode .dropdown-content a {
+              color: var(--text-color);
+          }
+  
+          body.dark-mode .dropdown-content a:hover {
+              background-color: rgba(255, 255, 255, 0.1);
+          }
+  
+          body.dark-mode table tr:nth-child(even) {
+              background-color: rgba(255, 255, 255, 0.05);
+          }
+  
+          body.dark-mode table tr:hover {
+              background-color: rgba(60, 59, 59, 0.1);
+          }
+  
+          body.dark-mode .news-item {
+              background-color: rgba(108, 106, 106, 0.05);
+          }
+  
+          @media (max-width: 768px) {
+              .stock-info {
+                  grid-template-columns: 1fr;
+              }
+  
+              nav ul {
+                  flex-direction: column;
+                  align-items: center;
+              }
+  
+              .dropdown-content {
+                  position: static;
+                  display: none;
+              }
+  
+              .dropdown:hover .dropdown-content {
+                  display: block;
+              }
+          }
+  
+          #chart-container {
+              width: 1234px;
+              height: 600px;
+              margin: auto;
+              background-color : black;
+          }
+          .chart-container {
+              width: 600px;
+              height: 400px;
+              background-color: #242222; /* Light grey background for better visibility */
+              padding: 10px;
+              border-radius: 8px;
+              box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+          }
+      </style>
 </head>
 <body>
     <!-- Header with Navigation Bar -->
@@ -362,8 +361,6 @@
             </nav>
         </div>
     </header>
-   </style>
-</head>
 
     <!-- Main Content -->
     <main class="container">
@@ -386,6 +383,16 @@
                 <p><strong>P/E Ratio:</strong> {{ pe_ratio }}</p>
                 <p><strong>EPS (Earnings Per Share):</strong> {{ eps }}</p>
                 <p><strong>Dividend Yield:</strong> {{ dividend_yield }}%</p>
+            </div>
+        </div>
+
+        <!-- Interval Buttons -->
+        <div class="card">
+            <h2>Select Interval</h2>
+            <div class="interval-buttons">
+                <button id="daily-btn" class="interval-btn active">Daily</button>
+                <button id="weekly-btn" class="interval-btn">Weekly</button>
+                <button id="monthly-btn" class="interval-btn">Monthly</button>
             </div>
         </div>
 
@@ -466,136 +473,139 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        // Function to load a new page using AJAX
-        function loadPage(page) {
-            const url = `?page=${page}`;
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const newDocument = parser.parseFromString(data, 'text/html');
-
-                // Update the table body
-                const newTableBody = newDocument.querySelector('#historical-data-body').innerHTML;
-                document.querySelector('#historical-data-body').innerHTML = newTableBody;
-
-                // Update the pagination
-                const newPagination = newDocument.querySelector('#pagination').innerHTML;
-                document.querySelector('#pagination').innerHTML = newPagination;
-
-                // Reattach event listeners to the new pagination links
-                const newPaginationLinks = document.querySelectorAll('.page-link');
-                newPaginationLinks.forEach(link => {
-                    link.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        const page = this.getAttribute('data-page');
-                        loadPage(page);
-                    });
-                });
-            })
-            .catch(error => console.error('Error loading page:', error));
-        }
-
-        // Attach event listeners to pagination links
-        document.addEventListener('DOMContentLoaded', function() {
-            const paginationLinks = document.querySelectorAll('.page-link');
-            paginationLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const page = this.getAttribute('data-page');
-                    loadPage(page);
-                });
-            });
-        });
-
-        // Dark mode toggle functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            const isDarkMode = body.classList.contains('dark-mode');
-            themeToggle.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
-            localStorage.setItem('darkMode', isDarkMode);
-        });
-
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('darkMode');
-        if (savedTheme === 'true') {
-            body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️ Light Mode';
-        }
-
         // Parse the historical data from Django context
         const historicalData = JSON.parse('{{ historical_data_json|escapejs }}');
-
+    
         // Debug: Print the parsed historical data
         console.log("Parsed Historical Data:", historicalData);
-
-        // Extract labels (dates) and data (close prices)
-        const labels = historicalData.map(entry => entry.date);
-        const data = historicalData.map(entry => entry.close);
-
-        // Debug: Print the labels and data
-        console.log("Labels:", labels);
-        console.log("Data:", data);
-
-        // Get the chart canvas element
-        const ctx = document.getElementById('stockChart').getContext('2d');
-
-        // Create the chart
-        const stockChart = new Chart(ctx, {
-            type: 'line', // Use 'line', 'bar', or 'candlestick' as needed
-            data: {
-                labels: labels, // Dates
-                datasets: [{
-                    label: 'Stock Price',
-                    data: data, // Close prices
-                    borderColor: 'blue',
-                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                    borderWidth: 2,
-                    pointRadius: 5,
-                    pointBackgroundColor: 'red'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    },
-                    tooltip: {
-                        enabled: true
+    
+        // Function to group data by interval
+        function groupDataByInterval(data, interval) {
+            const groupedData = [];
+            let currentGroup = null;
+    
+            data.forEach((entry) => {
+                const date = new Date(entry.date);
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const week = Math.floor(date.getDate() / 7);
+    
+                if (interval === 'weekly') {
+                    if (!currentGroup || currentGroup.year !== year || currentGroup.week !== week) {
+                        currentGroup = { year, week, date: entry.date, close: entry.close };
+                        groupedData.push(currentGroup);
                     }
+                } else if (interval === 'monthly') {
+                    if (!currentGroup || currentGroup.year !== year || currentGroup.month !== month) {
+                        currentGroup = { year, month, date: entry.date, close: entry.close };
+                        groupedData.push(currentGroup);
+                    }
+                } else {
+                    // Daily interval (no grouping)
+                    groupedData.push(entry);
+                }
+            });
+    
+            return groupedData;
+        }
+    
+        // Function to update the chart
+        function updateChart(interval) {
+            const groupedData = groupDataByInterval(historicalData, interval);
+    
+            const labels = groupedData.map(entry => entry.date);
+            const data = groupedData.map(entry => entry.close);
+    
+            // Debug: Print the grouped data
+            console.log("Grouped Data:", groupedData);
+            console.log("Labels:", labels);
+            console.log("Data:", data);
+    
+            // Destroy the existing chart if it exists
+            if (window.stockChart && typeof window.stockChart.destroy === 'function') {
+                window.stockChart.destroy();
+            }
+    
+            // Get the chart canvas element
+            const ctx = document.getElementById('stockChart').getContext('2d');
+    
+            // Create the chart
+            window.stockChart = new Chart(ctx, {
+                type: 'line', // Use 'line', 'bar', or 'candlestick' as needed
+                data: {
+                    labels: labels, // Dates
+                    datasets: [{
+                        label: 'Stock Price',
+                        data: data, // Close prices
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 5,
+                        pointBackgroundColor: 'red'
+                    }]
                 },
-                scales: {
-                    x: {
-                        title: {
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
                             display: true,
-                            text: 'Date'
+                            position: 'top'
                         },
-                        grid: {
-                            display: true
+                        tooltip: {
+                            enabled: true
                         }
                     },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Stock Price (USD)'
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            },
+                            grid: {
+                                display: true
+                            }
                         },
-                        grid: {
-                            display: true
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Stock Price (USD)'
+                            },
+                            grid: {
+                                display: true
+                            }
                         }
                     }
                 }
-            }
+            });
+        }
+    
+        // Set default interval to daily
+        updateChart('daily');
+    
+        // Add event listeners to interval buttons
+        document.getElementById('daily-btn').addEventListener('click', () => {
+            updateChart('daily');
+            setActiveButton('daily-btn');
         });
+    
+        document.getElementById('weekly-btn').addEventListener('click', () => {
+            updateChart('weekly');
+            setActiveButton('weekly-btn');
+        });
+    
+        document.getElementById('monthly-btn').addEventListener('click', () => {
+            updateChart('monthly');
+            setActiveButton('monthly-btn');
+        });
+    
+        // Function to set the active button
+        function setActiveButton(activeId) {
+            document.querySelectorAll('.interval-btn').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(activeId).classList.add('active');
+        }
     </script>
 </body>
 </html>
