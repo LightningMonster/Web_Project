@@ -6,123 +6,87 @@
     <title>Stock Details - {{ stock_symbol }}</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* General Styles */
-        :root {
-            --primary-color: #3c1854; /* Dark blue for headings */
-            --secondary-color: #5d33b0; /* Blue for buttons and links */
-            --background-color: #ffffff; /* White background for light mode */
-            --text-color: #770ac0; /* Black text for light mode */
-            --card-background: rgba(255, 254, 254, 0.781); /* Semi-transparent white card background */
-            --navbar-text-color: #a108ed; /* Cyan text for navbar */
-            --navbar-hover-color: rgba(26, 25, 25, 0.1); /* Light hover for navbar */
-        }
-
         body {
-            font-family: 'Times New Roman', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.4;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            background-image: url('/static/images/wallpaper2.webp');
-            background-size:cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment:fixed;
+            font-family:'Times New Roman', sans-serif;
+            background-color: black;
+            color: white; 
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: 250px;
         }
 
-        .container {
-            max-width: 1250px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header Styles */
-        header {
-            /*background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent dark blue */
-            /*color: var(--navbar-text-color); /* Cyan text for navbar */
-            padding: 0px 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-    backdrop-filter: blur(12px); /* Blurred background for glass effect */
-    border-radius: 12px; /* Optional: Rounded corners for a softer look */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
-        }
-        
-        header h1 {
-            margin: 0px;
-            font-size: 24px;
+        .warning {
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            padding: 5px;
             text-align: center;
+            color:white;
+        }
+
+        /* Vertical Navbar Styles */
+        .navbar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 250px; /* Adjust width as needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        nav h1 a {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav h1 a:hover{
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: underline;
         }
 
         nav ul {
             list-style: none;
             padding: 0;
-            margin: 5px 0 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
+        }
+
+        nav ul li {
+            display: block; /* Places each item on a new line */
+            margin-bottom: 10px; /* Adds spacing between links */
         }
 
         nav ul li a {
-            color: var(--navbar-text-color); /* Cyan text for navbar */
-            text-decoration: none;
-            font-size: 16px;
-            padding: 8px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+            font-size: 20px;
+            color: white;
+            text-decoration: none; /* Removes underline */
         }
 
         nav ul li a:hover {
-            background-color: var(--navbar-hover-color); /* Light hover for navbar */
+            text-decoration: underline; /* Optional: Adds underline on hover */
         }
 
-        .dropdown {
-            position: relative;
+        .logo {
+            display: flex;
+            align-items: center;
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--card-background);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            z-index: 1;
-            min-width: 160px;
+        .logo img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
         }
+        /* Vertical navbar style ends*/
 
-        .dropdown-content a {
-            color: var(--text-color);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .theme-toggle {
-            background-color: var(--secondary-color);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background-color: #2980b9;
-        }
 
         /* Main Content Styles */
         main {
@@ -335,40 +299,34 @@
     </style>
 </head>
 <body>
-    <!-- Header with Navigation Bar -->
-    <header>
-        <div class="container">
-            <h1>Indian Stock Analysis</h1>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'home2' %}">Home</a></li>
-                    
-                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">
-                            {% if user.is_authenticated %}
-                                Hi, {{ user.first_name }} {{ user.last_name }}!
-                            {% else %}
-                                Guest
-                            {% endif %}
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="{% url 'dashboard' %}">Dashboard</a>
-                            <a href="#">Tools</a>
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
-                            {% else %}
-                                <a href="{% url 'login' %}">Login</a>
-                            {% endif %}
-                        </div>
-                    </li>
-                    <li>
-                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- Left Vertical Navbar -->
+    <nav class="navbar">
+        {% load static %}
+        <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "StockStats"> </div>
+        <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        <ul>
+            <li><a href="{% url 'profile' %}">
+                {% if user.is_authenticated %}
+                    Hi, {{ user.first_name }} {{ user.last_name }}!
+                {% else %}
+                    Guest
+                {% endif %}
+                </a>
+            </li>
+            <li><a href="{% url 'home2' %}">Home</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li> {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </li>
+            <li>
+                <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+            </li>
+        </ul>
+    </nav>
 
     <!-- Main Content -->
     <main class="container">

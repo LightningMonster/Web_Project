@@ -9,437 +9,340 @@
     <style>
         /* Google Font Import - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+
+        html {
+            scroll-behavior: smooth;
         }
-        :root {
-            /* ===== Colors ===== */
-            --body-color: #ffffff;
-            --sidebar-color: #FFF;
-            --primary-color: #695CFE;
-            --primary-color-light: #3e33a8;
-            --toggle-color: #ffffff;
-            --text2-color:#695CFE;
-            --text-color: #010101;
-            --text: #0c0c0c;
-            /* ====== Transition ====== */
-            --tran-03: all 0.2s ease;
-            --tran-04: all 0.3s ease;
-            --tran-05: all 0.3s ease;
-            /* Light Theme Variables */
-            --primary-bg: #ffffff;
-            --secondary-bg: #f5f5f5;
-            --accent-color: #695CFE;/*hover color of light theme*/
-            --text-secondary: #695CFE;
-            --card-bg: #ffffff;
-            --card-hover: #695CFE;
-            --positive: #4caf50;
-            --negative: #f44336;
-            --button-bg: #ffffff;
-            --button-hover: #695CFE;
-        }
+
         body {
-            min-height: 100vh;
-            background-color: var(--body-color);
-            transition: var(--tran-05);
-            font-family: 'Times New Roman', sans-serif;
-            margin: 0;
-            padding: 0;
-            color: var(--text-color);
-            overflow-x: hidden;
-            position: relative;
-        }
-        ::selection { /* Highlight color */
-            background-color: var(--primary-color);
-            color: #0e0d0d;
-        }
-        body.dark {
-            --body-color: #040405;
-            --sidebar-color: #050506;
-            --primary-color: #695CFE;
-            --primary-color-light: #3a3b3c;
-            --toggle-color: #010101;
-            --text-color: #ccc;
-            --text: #fff;
-        }
-        body.dark-mode {
-            --body-color: #040405;
-            --primary-bg: #0e1010da;
-            --secondary-bg: #131010;
-            --accent-color: #695CFE;
-            --text2-color: #695CFE;
-            --text-color: #fbfbff;
-            --text-secondary: #695CFE;
-            --card-bg: #040404;
-            --card-hover: #695CFE;
-            --button-bg: #e8e3e3;
-            --button-hover: #695CFE;
+            font-family:'Times New Roman', sans-serif;
+            background-color: black;
+            color: white; 
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: 250px;
         }
 
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 50%;
-            background: rgba(255, 255, 255, 0);
-            z-index: -1;
-        }
-        body.dark-mode::before {
-            background: rgba(248, 245, 245, 0);
+        .warning {
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            padding: 5px;
+            text-align: center;
+            color:white;
         }
 
-        /* Main Content Container - shifted right to accommodate the vertical navbar */
-        .container {
-            width: 100%;
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 1;
-            margin-left: 250px;  /* <-- added margin */
-        }
-
-        /* ========= Vertical Navbar ========= */
-        header {
-            background: var(--secondary-bg);
-            width: 250px;
-            height: 100vh;
+        .navbar {
             position: fixed;
-            top: 0;
             left: 0;
-            padding: 20px;
-            box-shadow: 2px 0 6px rgba(4, 153, 222, 0);
+            top: 0;
+            height: 100%;
+            width: 250px; /* Adjust width as needed */
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            z-index: 1000;
+            align-items: center;
+            padding-top: 20px;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         }
-        header .nav-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: var(--text2-color);
-        }
-        header h1 a {
+
+        nav h1 a {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: white;
             text-decoration: none;
-            color: inherit;
         }
+
+        nav h1 a:hover{
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: underline;
+        }
+
         nav ul {
             list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
             padding: 0;
-            margin: 0;
         }
+
+        nav ul li {
+            display: block; /* Places each item on a new line */
+            margin-bottom: 10px; /* Adds spacing between links */
+        }
+
         nav ul li a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 16px;
-            padding: 6px 12px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 20px;
+            color: white;
+            text-decoration: none; /* Removes underline */
         }
+
         nav ul li a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--card-bg);
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(112, 111, 111, 0.339);
-            z-index: 1;
-            border-radius: 5px;
-        }
-        .dropdown-content a {
-            color: var(--text-color);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .dropdown-content a:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .theme-toggle {
-            position: absolute;
-            bottom: 20px;
-            background-color: var(--button-bg);
-            color: rgb(12, 12, 12);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-        .theme-toggle:hover {
-            background-color: var(--button-hover);
+            text-decoration: underline; /* Optional: Adds underline on hover */
         }
 
-        /* ========= Hero Section ========= */
-        .hero {
-            padding: 100px 0;
-            text-align: center;
-            background: transparent;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            margin-top: 60px;
-            margin-bottom: 60px;
-        }
-        .hero h2 {
-            font-size: 38px;
-            margin-bottom: 20px;
-            color: var(--accent-color);
-            /*text-shadow: 2px 2px 10px rgba(0, 0, 0, 0);*/
-        }
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: var(--text-secondary);
-        }
-        #search-form {
+        .logo {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        #stock-search {
-            padding: 12px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: var(--primary-bg);
-            color: var(--text-color);
-            outline: none;
-        }
-        #search-form button {
-            padding: 12px 24px;
-            border: none;
-            background-color: var(--button-bg);
-            color: var(--primary-bg);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        #search-form button:hover {
-            background-color: var(--button-hover);
-        }
-
-        /* ========= Trending Stocks ========= */
-        .trending-stocks {
-            padding: 80px 0;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.97);
-            margin-top: 60px;
-            margin-bottom: 60px;
-        }
-        body.dark-mode .trending-stocks {
-            background: rgba(16, 15, 15, 0.597);
-        }
-        .trending-stocks h3 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 28px;
-            color: var(--accent-color);
-        }
-        .stock-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            justify-items: center;
-        }
-        .stock-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            color: var(--text-color);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 250px;
-            height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
         }
-        .stock-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
-        .stock-card h4 {
-            font-size: 20px;
-            margin: 0 0 10px;
-        }
-        .stock-card p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-        .stock-card .change {
-            font-size: 16px;
-        }
-        .stock-card .positive {
-            color: var(--positive);
-        }
-        .stock-card .negative {
-            color: var(--negative);
+
+        .logo img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
         }
 
-        /* ========= News Section ========= */
-        .news-section {
-            padding: 80px 0;
-            background: rgba(255, 255, 255, 0.7);
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            margin-top: 60px;
-            margin-bottom: 60px;
-        }
-        body.dark-mode .news-section {
-            background: rgba(16, 15, 15, 0.303);
-        }
-        .news-section h3 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 28px;
-            color: var(--accent-color);
-        }
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .news-item {
-            background: var(--card-bg);
+        .heading{
             padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .news-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(51, 51, 51, 0.185);
-        }
-        .news-item h4 {
-            margin: 0;
-            font-size: 18px;
-            color: var(--text-color);
-        }
-        .news-item h4 a {
-            text-decoration: none;
-            color: inherit;
-        }
-        .news-item h4 a:hover {
-            color: var(--accent-color);
-        }
-        .news-item p {
-            font-size: 14px;
-            margin: 10px 0 0;
-            color: var(--text-secondary);
-        }
-
-        /* ========= Footer ========= */
-        footer {
-            background: var(--secondary-bg);
-            color: var(--text-color);
             text-align: center;
-            padding: 20px 0;
-            margin-top: 80px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            margin-bottom: 0px;
-        }
-        footer p {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        /* ========= Notification ========= */
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--positive);
             color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            display: none;
-            z-index: 1000;
-        }
-        .notification.error {
-            background-color: var(--negative);
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
+        .heading h2 {
+            font-size: 40px;
+            margin-bottom: 10px;
         }
+
+        .heading h3 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .heading p {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .trending-stocks {
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background: rgba(255, 255, 255, 0.1); /* Lighter transparency */
+    backdrop-filter: blur(15px); /* Stronger glass effect */
+    border-radius: 15px; /* Smooth rounded edges */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Deeper shadow for depth */
+    margin-top: 40px;
+}
+
+.stock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    padding-bottom: 30px;
+}
+.top-gainers, .top-losers {
+    background: rgba(255, 255, 255, 0.1); /* Transparent glass effect */
+    backdrop-filter: blur(15px); /* Blur effect */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow */
+}
+
+.stock-card {
+    background: rgba(255, 255, 255, 0.15); /* More transparency */
+    backdrop-filter: blur(10px); /* Blur effect */
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slight shadow */
+    transition: all 0.3s ease-in-out;
+}
+
+.stock-card:hover {
+    transform: scale(1.05); /* Smooth hover zoom effect */
+    background: rgba(255, 255, 255, 0.2);
+}
+/*
+.stock-card {
+    background: rgba(255, 255, 255, 0.15); /* Slightly more transparency *//*
+    backdrop-filter: blur(20px); /* Stronger blur effect *//*
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* More pronounced shadow *//*
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, background 0.3s;
+    width: 100%;
+    max-width: 250px;
+    margin: auto;
+}
+
+.stock-card:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.2);
+}*/
+
+.stock-card h4 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.stock-card p {
+    font-size: 18px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.stock-card .change {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Positive & Negative Colors */
+.positive {
+    color: #4CAF50;
+}
+
+.negative {
+    color: #FF5733;
+}
+
+.news-section {
+    background: rgba(255, 255, 255, 0.1)!important; /* Glass effect */
+    backdrop-filter: blur(15px)!important; /* Blur effect */
+    border-radius: 12px!important; /* Rounded corners */
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3)!important; /* Soft shadow */
+    color: white;
+    margin-top: 40px;
+}
+
+.news-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Space between cards */
+}
+
+.news-card {
+    background: rgba(255, 255, 255, 0.1); /* Light transparent background */
+    backdrop-filter: blur(10px); /* Glass effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+    padding: 15px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: left;
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 20px; /* Add spacing between rows */
+}
+
+.news-card:hover {
+    transform: scale(1.05); /* Smooth hover zoom effect */
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Purple Heading */
+.news-section h2, .news-section h3 {
+    color: #695CFE; /* Purple color */
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Feedback Form Styles */
+.feedback-form {
+    margin-top: 50px; /* Space between News section and Feedback Form */
+    margin-bottom: 50px; /* Space between Feedback Form and Footer */
+    background: rgba(255, 255, 255, 0.1); /* Glass effect */
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 80%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Heading Style */
+.feedback-form h2 {
+    color: #695CFE; /* Purple heading */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Input, Textarea, and Select Styles */
+.feedback-form input, 
+.feedback-form textarea,
+.feedback-form select {
+    width: 100%;
+    max-width: 450px; /* Prevents overly large inputs */
+    padding: 12px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white; /* White input box */
+    color: black; /* Black text */
+    font-size: 20px;
+    outline: none;
+}
+
+/* Button Styling */
+.feedback-form button {
+    background: #695CFE;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+}
+
+.feedback-form button:hover {
+    background:#695CFE;
+    transform: scale(1.05);
+}
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: rgb(29, 28, 28);
+            color: white;
+        }
+
     </style>
 </head>
 <body>
 
+    <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
+
     <!-- Left Vertical Navbar -->
-    <header>
-        <div class="nav-container">
-            <h1><a href="{% url 'home1' %}">STOCKLENS</a></h1>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'home2' %}">Home</a></li>
-                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">
-                            {% if user.is_authenticated %}
-                                Hi, {{ user.first_name }} {{ user.last_name }}!
-                            {% else %}
-                                Guest
-                            {% endif %}
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="{% url 'dashboard' %}">Dashboard</a>
-                            <a href="#">Tools</a>
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
-                            {% else %}
-                                <a href="{% url 'login' %}">Login</a>
-                            {% endif %}
-                        </div>
-                    </li>
-                    <li>
-                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <nav class="navbar">
+        {% load static %}
+        <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "StockStats"> </div>
+        <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        <ul>
+            <li><a href="{% url 'profile' %}">
+                {% if user.is_authenticated %}
+                    Hi, {{ user.first_name }} {{ user.last_name }}!
+                {% else %}
+                    Guest
+                {% endif %}
+                </a>
+            </li>
+            <li><a href="{% url 'home2' %}">Home</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="#feedback">Feedback</a></li> <!-- Feedback Anchor -->
+            <li> {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </li>
+            <li>
+                <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+            </li>
+        </ul>
+    </nav>
 
     {% if messages %}
     <div class="notification" id="notification">
@@ -458,11 +361,11 @@
     </script>
     {% endif %}
 
-    <section class="hero">
+    <section class="heading">
         <div class="container">
             <h2>Track Your Favorite Indian Stocks</h2>
             <p>Stay ahead with real-time stock insights and news.</p>
-            <h2>Stock Search</h2>
+            <h3>Stock Search</h3>
             <input type="text" id="searchInput" placeholder="Search company name..." onkeyup="searchStocks()">
             <ul id="results"></ul>
         </div>
@@ -500,7 +403,13 @@
                     <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                         <h4>{{ stock.symbol }}</h4>
                         <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
-                        <p>Change: <span class="positive">+{{ stock.change }}%</span></p>
+                    <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
+                        {% if stock.change > 0 %}
+                            +{{ stock.change }}%
+                        {% else %}
+                            {{ stock.change }}%
+                        {% endif %}
+                    </span>
                     </a>
                 </div>
                 {% endfor %}
@@ -526,24 +435,22 @@
         </div>
     </section>
 
-    <!-- News Section -->
     <section class="news-section">
-        <div class="container">
-            <h3>Latest News</h3>
-            <div class="news-grid">
-                {% for news in news_data %}
-                <div class="news-item">
-                    <div class="news-content">
-                        <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
-                        <p>{{ news.published }}</p>
-                    </div>
-                </div>
-                {% endfor %}
+    <h2 class="news-heading">Latest News</h2>
+    <div class="news-container">
+        {% for news in news_data %}
+        <div class="news-card">
+            <div class="news-content">
+                <h4><a href="{{ news.link }}" target="_blank">{{ news.title }}</a></h4>
+                <p>{{ news.published }}</p>
             </div>
         </div>
-    </section>
+        {% endfor %}
+    </div>
+</section>
 
-    <div class="container">
+<section id="feedback">
+    <div class="feedback-form">
         <h2>Feedback Form</h2>
         <p>We appreciate your feedback!</p>
 
@@ -571,6 +478,7 @@
             <button type="submit">Submit Feedback</button>
         </form>
     </div>
+</section>
 
     <!-- Footer -->
     <footer>
