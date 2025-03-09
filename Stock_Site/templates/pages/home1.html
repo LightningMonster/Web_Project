@@ -6,75 +6,76 @@
     <title>StockStats</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+
+        html {
+        scroll-behavior: smooth;
+        }
+
         body {
             font-family:'Times New Roman', sans-serif;
-    background-color: #ffffff;
-    color: #000000;
-    transition: background-color 0.3s, color 0.3s;
-}
+            background-color: black;
+            color: #ffffff; 
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: 200px; /* Adjust according to navbar width 
+            background-image: url('/static/images/wallpaper2.jpeg');
+            background-size:cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment:fixed;*/
+        }
 
-.navbar {
-    display: flex;
-    justify-content: center; /* Centers content horizontally */
-    align-items: center;
-    padding: 5px 20px;
-    background-color: #f8f9fa;
-    color: #1ed6e0;
-    font-size: xx-large;
-    text-align: center;
-}
+        .navbar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 200px; /* Adjust width as needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
 
-.logo {
-    display: flex;
-    align-items: center;
-}
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
 
-.logo img {
-    width: 100px;
-    height: 100px;
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
-}
+        nav ul li {
+            display: block; /* Places each item on a new line */
+            margin-bottom: 10px; /* Adds spacing between links */
+        }
 
-.tagline {
-    flex: 2;
-    text-align: center;
-    color: #695CFE;
-    font-size: 40px;
-}
+        nav ul li a {
+            font-size: 20px;
+            color: white;
+            text-decoration: none; /* Removes underline */
+        }
 
-/* Theme Toggle Button */
-.theme-toggle {
-    font-size: 1.5rem;
-    padding: 8px 15px;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-    transition: transform 0.3s;
-}
+        nav ul li a:hover {
+            text-decoration: underline; /* Optional: Adds underline on hover */
+        }
 
-/* Button proportional to logo */
-.theme-toggle {
-    height: 50px; /* Match logo height */
-    width: 50px;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+        }
 
-/* Dark Mode Button */
-.dark-mode .theme-toggle {
-    color: white;
-}
+        .logo img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
 
-/* Hover Effect */
-.theme-toggle:hover {
-    transform: scale(1.1);
-}
-
-        .warning {
-            background-color: #5c514f;
-            padding: 5px;
+        .tagline {
             text-align: center;
-            color:white;
+            color: white;
+            font-size:60px;
+            padding: 10px;
         }
 
         .stock-info {
@@ -83,13 +84,14 @@
             gap: 10px;
             padding: 5px;
             justify-content: center;
+            padding-left: 20px;
         }
 
         .stock-box {
         color: white;
         position: relative;
         font-family: sans-serif;
-        margin-top: 3rem;
+        margin-top: 3rem;   
         }
 
         .stock-box::before,
@@ -117,13 +119,13 @@
         }
 
         .stock-box .box {
-        width: 400px;
+        width: 350px;
         height: 100px;
         padding: 1rem;
-        background-color: rgba(255, 255, 255, 0.074);
-        border: 2px solid rgba(255, 255, 255, 0.222);
-        -webkit-backdrop-filter:drop-shadow(20px);
-        backdrop-filter: blur(20px);
+        background-color: rgba(255, 255, 255, 0.08); /* Increased transparency */
+        border: 2px solid rgba(255, 255, 255, 0.15); /* More defined border */
+        -webkit-backdrop-filter: blur(25px); /* Increased blur */
+        backdrop-filter: blur(25px); /* Increased blur */
         border-radius: 0.7rem;
         transition: all ease 0.3s;
         }
@@ -163,130 +165,115 @@
         }
 
         .stock-box .box:hover {
-        box-shadow: 0px 0px 20px 1px #ffbb763f;
-        border: 1px solid rgba(255, 255, 255, 0.454);
+            box-shadow: 0px 0px 20px 2px rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
-        /* Responsive Design: Adjust layout for smaller screens */
-        @media (max-width: 768px) {
-            .stock-info {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns per row for tablets */
-            }
+        .start-button-container {
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center; /* Centers vertically if needed */
+            height: 100px; /* Adjust height as needed */
+            text-decoration: none; 
+            color: white; 
+            margin-top: 80px;
         }
 
-        @media (max-width: 480px) {
-            .stock-info {
-                grid-template-columns: repeat(1, 1fr); /* 1 column per row for mobile */
-            }
+        .start-button {
+            position: relative;
+            font-size: 20px;  
+            padding: 15px 30px;  
+            border-radius: 8px;
+            border: none;
+            color: white; /* Ensures the text is white */
+            text-decoration: none; 
+            cursor: pointer;
+            background-color: #695CFE;
+            transition: all 0.2s ease;
         }
 
-.start-button-container {
-    display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically if needed */
-    height: 100px; /* Adjust height as needed */
-    text-decoration: none; 
-    color: white; 
-    margin-top: 80px;
-}
+        .start-button:active {
+            transform: scale(0.96);
+        }
 
-.start-button {
-  position: relative;
-  font-size: 20px;  
-    padding: 15px 30px;  
-    border-radius: 8px;
-  border: none;
-  color: white; /* Ensures the text is white */
-    text-decoration: none; 
-  cursor: pointer;
-  background-color: #695CFE;
-  transition: all 0.2s ease;
-}
+        .start-button:before,
+        .start-button:after {
+            position: absolute;
+            content: "";
+            width: 150%;
+            left: 50%;
+            height: 100%;
+            transform: translateX(-50%);
+            z-index: -1000;
+            background-repeat: no-repeat;
+        }
 
-.start-button:active {
-  transform: scale(0.96);
-}
+        .start-button:hover:before {
+        top: -70%;
+        background-image: radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, transparent 20%, #695CFE 20%, transparent 30%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, transparent 10%, #695CFE 15%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%);
+        background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+            10% 10%, 18% 18%;
+        background-position: 50% 120%;
+        animation: greentopBubbles 0.6s ease;
+        }
 
-.start-button:before,
-.start-button:after {
-  position: absolute;
-  content: "";
-  width: 150%;
-  left: 50%;
-  height: 100%;
-  transform: translateX(-50%);
-  z-index: -1000;
-  background-repeat: no-repeat;
-}
+        @keyframes greentopBubbles {
+        0% {
+            background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+            40% 90%, 55% 90%, 70% 90%;
+        }
 
-.start-button:hover:before {
-  top: -70%;
-  background-image: radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, transparent 20%, #695CFE 20%, transparent 30%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #695CFE 15%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%);
-  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
-    10% 10%, 18% 18%;
-  background-position: 50% 120%;
-  animation: greentopBubbles 0.6s ease;
-}
+        50% {
+            background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+            50% 50%, 65% 20%, 90% 30%;
+        }
 
-@keyframes greentopBubbles {
-  0% {
-    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
-      40% 90%, 55% 90%, 70% 90%;
-  }
+        100% {
+            background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+            50% 40%, 65% 10%, 90% 20%;
+            background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+        }
+        }
 
-  50% {
-    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
-      50% 50%, 65% 20%, 90% 30%;
-  }
+        .start-button:hover::after {
+        bottom: -70%;
+        background-image: radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, transparent 10%, #695CFE 15%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%),
+            radial-gradient(circle, #695CFE 20%, transparent 20%);
+        background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+        background-position: 50% 0%;
+        animation: greenbottomBubbles 0.6s ease;
+        }
 
-  100% {
-    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
-      50% 40%, 65% 10%, 90% 20%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
-}
+        @keyframes greenbottomBubbles {
+        0% {
+            background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+            70% -10%, 70% 0%;
+        }
 
-.start-button:hover::after {
-  bottom: -70%;
-  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-  background-position: 50% 0%;
-  animation: greenbottomBubbles 0.6s ease;
-}
+        50% {
+            background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+            105% 0%;
+        }
 
-@keyframes greenbottomBubbles {
-  0% {
-    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
-      70% -10%, 70% 0%;
-  }
-
-  50% {
-    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
-      105% 0%;
-  }
-
-  100% {
-    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
-      110% 10%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
-}
-
-
+        100% {
+            background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+            110% 10%;
+            background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+        }
+        }
 
         .buttons a {
             display: inline-block;
@@ -294,7 +281,7 @@
             font-size: 20px;
             font-weight: bold;
             text-decoration: none;
-            color: white;
+            color: #695CFE;
             background-color: #695CFE;
             border-radius: 10px;
             transition: background-color 0.3s ease, transform 0.2s ease;
@@ -308,6 +295,37 @@
 
         .buttons a:active {
             transform: scale(0.95);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #695CFE;
+            color: white;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;/* Responsive Design: Adjust layout for smaller screens */
+        @media (max-width: 768px) {
+            .stock-info {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns per row for tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stock-info {
+                grid-template-columns: repeat(1, 1fr); /* 1 column per row for mobile */
+            }
+        }
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
         .features {
@@ -337,7 +355,10 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            background-color: #5c5e5e7a;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         }
 
         .feature-box img {
@@ -371,7 +392,7 @@
 
         .feature-box:nth-child(even) {
             flex-direction: row-reverse; /* Image Right, Text Left */
-        }
+         }
         
         .creators {
             display: flex;
@@ -382,7 +403,7 @@
             width: 100%;
             padding-bottom: 80px;
             font-size : 30px;
-            color: #695CFE;
+            color: white;
         }
 
         .creator {
@@ -422,14 +443,20 @@
         }
 
         .creator-front {
-            background: linear-gradient(120deg, #a49cff 60%, #695CFE 40%);
-            color: black;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            color: white;
             font-size: 20px;
         }
 
         .creator-back {
-            background: linear-gradient(120deg, #695CFE 60%, #a49cff 40%);
-            color: black;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            color: white;
             transform: rotateY(180deg);
             font-size : 20px;
         }
@@ -442,7 +469,7 @@
             margin-bottom: 10px;
         }
 
-        /* Responsive Fix */
+        /* Responsive Fix */   
         @media (max-width: 800px) {
             .creators {
                 flex-wrap: wrap; /* Cards will stack on smaller screens */
@@ -450,12 +477,21 @@
             }
         }
 
-
         footer {
             text-align: center;
             padding: 10px;
             background-color: 695CFE;
             color: white;
+        }
+
+        .warning {
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            padding: 5px;
+            text-align: center;
+            color:white;
         }
 
         .popup {
@@ -465,25 +501,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px); /* Only blur effect */
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
 
         .popup-content {
-            background: white;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            color: white;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
             position: relative;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .popup p {
             font-size: 18px;
             margin-bottom: 15px;
-            color: #333;
+            color: white;
         }
 
         .login-btn {
@@ -504,442 +543,13 @@
 
         .close-btn {
             margin-top: 10px;
-            padding: 8px 15px;
-            background: #888;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .close-btn:hover {
-            background: #555;
-        }
-
-
-        /*Dark Mode*/
-
-        body.dark-mode {
-            background-color: #121212;
-            color: #ffffff;
-        }
-
-.dark-mode .navbar {
-    background-color: #333;
-    color: #1ed6e0;
-    font-size: xx-large;
-    text-align: center;
-    display: flex;
-    justify-content: center; /* Centers content horizontally */
-    align-items: center;
-    padding: 5px 20px;
-}
-
-.dark-mode.logo {
-    display: flex;
-    align-items: center;
-}
-
-.dark-mode.logo img {
-    width: 100px;
-    height: 100px;
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
-}
-
-.dark-mode.tagline {
-    flex: 2;
-    text-align: center;
-    color: #695CFE;
-    font-size: 40px;
-}
-
-/* Theme Toggle Button */
-.dark-mode.theme-toggle {
-    font-size: 1.5rem;
-    padding: 8px 15px;
-    border: none;
-    cursor: pointer;
-    background-color: transparent;
-    transition: transform 0.3s;
-}
-
-/* Button proportional to logo */
-.dark-mode.theme-toggle {
-    height: 50px; /* Match logo height */
-    width: 50px;
-}
-
-/* Dark Mode Button */
-.dark-mode .theme-toggle {
-    color: white;
-}
-
-/* Hover Effect */
-.dark-mode.theme-toggle:hover {
-    transform: scale(1.1);
-}
-
-.dark-mode.warning {
-            background-color: #5c514f;
-            padding: 5px;
-            text-align: center;
-            color:white;
-        }
-
-        .dark-mode.stock-info {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 columns per row */
-            gap: 10px;
-            padding: 5px;
-            justify-content: center;
-        }
-
-        .dark-mode.stock-box {
-        color: white;
-        position: relative;
-        font-family: sans-serif;
-        margin-top: 3rem;
-        }
-
-        .dark-mode.stock-box::before,
-        .dark-mode.stock-box::after {
-        content: "";
-        background-color: #695CFE;
-        position: absolute;
-        }
-
-        .dark-mode.stock-box::before {
-        border-radius: 40%;
-        width: 4rem;
-        height: 4rem;
-        top: 30%;
-        right: 7%;
-        }
-
-        .dark-mode.stock-box::after {
-        content: "";
-        position: absolute;
-        height: 3rem;
-        top: 8%;
-        right: 5%;
-        border: 1px solid;
-        }
-
-        .dark-mode.stock-box .box {
-        width: 400px;
-        height: 100px;
-        padding: 1rem;
-        background-color: rgba(255, 255, 255, 0.074);
-        border: 2px solid rgba(255, 255, 255, 0.222);
-        -webkit-backdrop-filter:drop-shadow(20px);
-        backdrop-filter: blur(20px);
-        border-radius: 0.7rem;
-        transition: all ease 0.3s;
-        }
-
-        .dark-mode.stock-box .box {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        }
-
-        .dark-mode.stock-box .box .title {
-        font-size: 1rem;
-        font-weight: 500;
-        letter-spacing: 0.1em;
-        }
-
-        .dark-mode.stock-box .box div strong {
-        display: block;
-        margin-bottom: 0.5rem;
-        }
-
-        .dark-mode.stock-box .box div p {
-        margin: 0;
-        font-size: 0.9em;
-        font-weight: 300;
-        letter-spacing: 0.1em;
-        }
-
-        .dark-mode.stock-box .box div span {
-        font-size: 0.7rem;
-        font-weight: 300;
-        }
-
-        .dark-mode.stock-box .box div span:nth-child(3) {
-        font-weight: 500;
-        margin-right: 0.2rem;
-        }
-
-        .dark-mode.stock-box .box:hover {
-        box-shadow: 0px 0px 20px 1px #ffbb763f;
-        border: 1px solid rgba(255, 255, 255, 0.454);
-        }
-
-        .dark-mode.start-button-container {
-    display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically if needed */
-    height: 100px; /* Adjust height as needed */
-    text-decoration: none; 
-    color: white; 
-    margin-top: 80px;
-}
-
-.dark-mode.start-button {
-  position: relative;
-  font-size: 20px;  
-    padding: 15px 30px;  
-    border-radius: 8px;
-  border: none;
-  color: white; /* Ensures the text is white */
-    text-decoration: none; 
-  cursor: pointer;
-  background-color: #695CFE;
-  transition: all 0.2s ease;
-}
-
-.dark-mode.start-button:active {
-  transform: scale(0.96);
-}
-
-.dark-mode.start-button:before,
-.dark-mode.start-button:after {
-  position: absolute;
-  content: "";
-  width: 150%;
-  left: 50%;
-  height: 100%;
-  transform: translateX(-50%);
-  z-index: -1000;
-  background-repeat: no-repeat;
-}
-
-.dark-mode.start-button:hover:before {
-  top: -70%;
-  background-image: radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, transparent 20%, #695CFE 20%, transparent 30%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #695CFE 15%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%),
-    radial-gradient(circle, #695CFE 20%, transparent 20%);
-  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
-    10% 10%, 18% 18%;
-  background-position: 50% 120%;
-  animation: greentopBubbles 0.6s ease;
-}
-
-@keyframes greentopBubbles {
-  0% {
-    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
-      40% 90%, 55% 90%, 70% 90%;
-  }
-
-  50% {
-    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
-      50% 50%, 65% 20%, 90% 30%;
-  }
-
-  100% {
-    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
-      50% 40%, 65% 10%, 90% 20%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
-}
-
-.dark-mode.start-button:hover::after {
-  bottom: -70%;
-  background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-    radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-  background-position: 50% 0%;
-  animation: greenbottomBubbles 0.6s ease;
-}
-
-@keyframes greenbottomBubbles {
-  0% {
-    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
-      70% -10%, 70% 0%;
-  }
-
-  50% {
-    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
-      105% 0%;
-  }
-
-  100% {
-    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
-      110% 10%;
-    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-  }
-}
-
-
-
-.dark-mode.buttons a {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            text-decoration: none;
-            color: white;
-            background-color: #695CFE;
-            border-radius: 10px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 2px 2px 10px #695CFE;
-        }
-
-        .dark-mode.buttons a:hover {
-            background-color: #695CFE;
-            transform: scale(1.05);
-        }
-
-        .dark-mode.buttons a:active {
-            transform: scale(0.95);
-        }
-
-        .dark-mode.features {
-            padding: 50px;
-            text-align: center;
-        }
-
-        .dark-mode.features h2 {
-            margin-bottom: 20px;
-            font-size: 40px;
-            color: #695CFE;
-        }
-
-        .dark-mode.feature-container {
-            display: flex;
-            flex-direction: column; /* Stack boxes in one column */
-            align-items: center;
-            gap: 20px;
-        }
-
-        .dark-mode.feature-box {
-            padding: 10px;
-            border-radius: 15px;
-            border-color: #d9d9d9;
-            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background-color: #5c5e5e7a;
-        }
-
-        .dark-mode.feature-box img {
-            width:300px;
-            height: 100px;
-            border-radius: 10px;
-            background-color: #d9d9d9;
-            padding: 20px;
-        }
-
-        .dark-mode.feature-content {
-            flex: 1;
-            text-align: left;
-            padding : 20px;
-        }
-
-        .dark-mode.feature-box h3 {
-            margin-bottom: 10px;
-            font-size: 30px;
-            color: #695CFE;
-        }
-
-        .dark-mode.feature-box p {
-            font-size: 20px;
-            color: white;
-        }
-        
-        .dark-mode .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #695CFE;
-            color: white;
-        }
-
-        .dark-mode .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;/* Responsive Design: Adjust layout for smaller screens */
-        @media (max-width: 768px) {
-            .stock-info {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns per row for tablets */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stock-info {
-                grid-template-columns: repeat(1, 1fr); /* 1 column per row for mobile */
-            }
-        }
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .dark-mode.popup-content {
-            background: black;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            position: relative;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .dark-mode.popup p {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .dark-mode.login-btn {
-            display: inline-block;
             padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            background-color: #695CFE;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .dark-mode.login-btn:hover {
-            background-color: #695CFE;
-        }
-
-        .dark-mode.close-btn {
-            margin-top: 10px;
-            padding: 8px 15px;
             background: #888;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
-        }
-
-        .dark-mode.close-btn:hover {
-            background: #555;
         }
 
     </style>
@@ -951,9 +561,15 @@
     <nav class="navbar">
         {% load static %}
         <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "StockStats"> </div>
-        <h1 class="tagline"> Your Journey to Financial Freedom Starts Here!</h1>
-        <button id="theme-toggle" class="theme-toggle">🌙</button>
+        <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#creators">Creators</a></li>
+        </ul>
     </nav>
+
+    <div class="moto">
+        <h1 class="tagline"> Your Journey to Financial Freedom Starts Here!</h1> 
+    </div>
 
     <div class="stock-info">
         {% for stock in stock_data %}
@@ -977,46 +593,48 @@
     <a href="login/"> <button class="start-button">Get Started</button> </a>
 </div>
 
+<section id="features">
     <div class="features">
         <h2>Features</h2>
         <div class="feature-container">
             <div class="feature-box">
-                <img src="watchlist.jpg" alt="Watchlist">
+                <img src="{% static 'images/Watchlist.jpeg' %}" alt="Watchlist">
                 <div class="feature-content">
                     <h3>Personalized Watchlist</h3>
                     <p>Track your favorite stocks in one place.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="news.jpg" alt="Latest News">
+                <img src="{% static 'images/news.jpeg' %}" alt="Latest News">
                 <div class="feature-content">
                     <h3>Latest News</h3>
                     <p>Stay updated with real-time stock market news.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="calculator.jpg" alt="Calculators">
+                <img src="{% static 'images/calculators.jpeg' %}" alt="Calculators">
                 <div class="feature-content">
                     <h3>Calculators</h3>
                     <p>Use financial calculators for investment decisions.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="charts.jpg" alt="Charts and Graphs">
+                <img src="{% static 'images/charts.jpeg' %}" alt="Charts and Graphs">
                 <div class="feature-content">
                     <h3>Charts and Graphs</h3>
                     <p>Analyze stock trends with detailed graphs.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="stock-info.jpg" alt="Stock Info">
+                <img src="{% static 'images/Stock_info.jpeg' %}" alt="Stock Info">
                 <div class="feature-content">
                     <h3>Detailed Stock Info</h3>
                     <p>Access in-depth stock data and insights.</p>
                 </div>
             </div>
         </div>
-    </div>  
+    </div> 
+</section> 
     
     <div id="loginPopup" class="popup">
         <div class="popup-content">
@@ -1026,6 +644,7 @@
         </div>
     </div>
 
+<section id="creators">
     <div class="creators">
         <h2><b>Our Team</b></h2>
     </div>
@@ -1034,7 +653,7 @@
         <div class="creator">
             <div class="creator-inner">
                 <div class="creator-front">
-                    <img src="yash.jpg" alt="Yash">
+                    <img src="{% static 'images/Yash.jpeg' %}" alt="Yash">
                     <p><b>Mr.Yash Suresh Dhadve</b></p>
                 </div>
                 <div class="creator-back">
@@ -1046,7 +665,7 @@
         <div class="creator">
             <div class="creator-inner">
                 <div class="creator-front">
-                    <img src="phalguni.jpg" alt="Phalguni">
+                    <img src="{% static 'images/Phalguni.jpeg' %}" alt="Phalguni">
                     <p><b>Ms. Phalguni Rajaram Ubhe</b></p>
                 </div>
                 <div class="creator-back">
@@ -1058,7 +677,7 @@
         <div class="creator">
             <div class="creator-inner">
                 <div class="creator-front">
-                    <img src="omkar.jpg" alt="Omkar">
+                    <img src="{% static 'images/Omkar.jpeg' %}" alt="Omkar">
                     <p><b>Mr. Omkar Rajaram Ghule</b></p>
                 </div>
                 <div class="creator-back">
@@ -1067,6 +686,7 @@
             </div>
         </div>
     </div>
+</section>
     
     <footer>
         <p>&copy; 2025 StockStats. Contact us at info@stockstats.com</p>
@@ -1090,13 +710,6 @@
             document.querySelectorAll(".feature-box").forEach(box => {
                 box.addEventListener("click", showLoginMessage);
             });
-        });
-
-        document.getElementById("theme-toggle").addEventListener("click", function () {
-            document.body.classList.toggle("dark-mode");
-            
-            // Change button icon based on mode
-            this.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
         });
     </script>                           
 </body>

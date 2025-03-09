@@ -10,13 +10,18 @@
             font-family: 'Times New Roman', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #121212; /* Dark background */
-            color: #00ffff; /* Cyan text */
+            background-color: #121212;
+            color: #ffffff; 
             transition: background-color 0.3s, color 0.3s;
+            background-image: url('/static/images/wallpaper2.jpeg');
+            background-size: cover;
+            background-position: center;    
+            background-repeat: no-repeat;
+            background-attachment:fixed;    
         }
 
         a {
-            color: #00ffff; /* Cyan links */
+            color: white; 
             text-decoration: none;
         }
 
@@ -26,45 +31,35 @@
 
         /* Header Styles */
         header {
-            background-color: #1e1e1e; /* Darker header background */
-            padding: 5px 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        header .header-content {
+            display: flex;
+            align-items: center;
+            gap: 25px; /* Reduce gap */
         }
 
         header h1 {
             margin: 0;
-            font-size: 25px;
+            font-size: 50px;
         }
 
-        header nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
+        .logo {
             display: flex;
-            align-items: center; /* Vertically center items */
+            align-items: center;
         }
 
-        header nav ul li {
-            display: inline;
-        }
-
-        /* Push the Dark Mode toggle to the right */
-        header nav ul li:last-child {
-            margin-left: auto;
-        }
-
-        .theme-toggle {
-            background-color: #00ffff; /* Cyan button */
-            color: #121212; /* Dark text */
-            border: none;
-            padding: 8px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .theme-toggle:hover {
-            background-color: #00cccc; /* Darker cyan on hover */
+        .logo img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
         }
 
         /* Notification Styles */
@@ -74,7 +69,7 @@
             border-radius: 4px;
             text-align: center;
             background-color: #1e1e1e; /* Dark background */
-            color: #00ffff; /* Cyan text */
+            color: white; 
             display: none;
         }
 
@@ -83,9 +78,10 @@
             max-width: 400px;
             margin: 50px auto;
             padding: 20px;
-            background-color: #1e1e1e; /* Dark background */
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.2); /* Transparent white */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border-radius: 10px; /* Smooth edges */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         }
 
         .tab-nav {
@@ -97,7 +93,7 @@
         .tab-nav button {
             background: none;
             border: none;
-            color: #00ffff; /* Cyan text */
+            color: white;
             font-size: 16px;
             cursor: pointer;
             padding: 10px;
@@ -107,7 +103,7 @@
         }
 
         .tab-nav button.active {
-            border-bottom: 2px solid #00ffff; /* Cyan underline */
+            border-bottom: 2px solid white; 
         }
 
         .tab-content {
@@ -117,6 +113,96 @@
         .tab-content.active {
             display: block;
         }
+
+.tab-content.active .input-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 25px; /* Adds space between input fields */
+}
+
+p.label1 , p.label2 {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    padding-bottom: 0px;
+}
+
+select, input[type="date"] {
+    width: 375px;
+    height: 30px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.tab-content.active .label {
+    font-size: 20px;
+    padding-left: 10px;
+    position: absolute;
+    top: 13px;
+    transition: 0.3s;
+    pointer-events: none;
+    color: #695CFE;
+}
+
+.input {
+    width: 375px;
+    height: 30px;
+    border: none;
+    outline: none;
+    padding: 0px 7px;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: transparent;
+    color: white;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+        -1px -1px 6px rgba(255, 255, 255, 0.4);
+}
+
+.input:focus {
+    border: 2px solid transparent;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+        -1px -1px 6px rgba(255, 255, 255, 0.4),
+        inset 3px 3px 10px rgba(0, 0, 0, 1),
+        inset -1px -1px 6px rgba(255, 255, 255, 0.4);
+}
+
+.tab-content.active .input:valid ~ .label,
+.tab-content.active .input:focus ~ .label {
+    transition: 0.3s;
+    padding-left: 2px;
+    transform: translateY(-35px);
+}
+
+.tab-content.active .input:valid,
+.tab-content.active .input:focus {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+        -1px -1px 6px rgba(255, 255, 255, 0.4),
+        inset 3px 3px 10px rgba(0, 0, 0, 1),
+        inset -1px -1px 6px rgba(255, 255, 255, 0.4);
+}
+
+/*select gender*/
+select {
+    background-color: #695CFE; /* Purple background */
+    color: white; /* White text */
+    border: none;
+    padding: 8px;
+    width: 375px; /* Adjust width as needed */
+    height: 30px; /* Adjust height as needed */
+    font-size: 14px;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Style dropdown options */
+select option {
+    background-color: #695CFE; /* Purple background for options */
+    color: white; /* White text */
+}
 
         /* Form Styles */
         .form-container {
@@ -129,8 +215,8 @@
             padding: 10px;
             border: 1px solid #333;
             border-radius: 4px;
-            background-color: #333; /* Dark input background */
-            color: #00ffff; /* Cyan text */
+            background-color: white; 
+            color: black; 
             font-size: 16px;
         }
 
@@ -140,8 +226,8 @@
 
         .form-container button {
             padding: 10px;
-            background-color: #00ffff; /* Cyan button */
-            color: #121212; /* Dark text */
+            background-color: #695CFE; 
+            color: white; /* Dark text */
             border: none;
             border-radius: 4px;
             font-size: 16px;
@@ -150,66 +236,20 @@
         }
 
         .form-container button:hover {
-            background-color: #00cccc; /* Darker cyan on hover */
-        }
-
-        /* Light Mode Styles */
-        body.light-mode {
-            background-color: #f4f4f9; /* Light background */
-            color: #333; /* Dark text */
-        }
-
-        body.light-mode header {
-            background-color: #ffffff; /* White header */
-        }
-
-        body.light-mode .notification {
-            background-color: #ffffff; /* White notification */
-            color: #333; /* Dark text */
-        }
-
-        body.light-mode .tab-container {
-            background-color: #ffffff; /* White container */
-        }
-
-        body.light-mode input {
-            background-color: #f4f4f9; /* Light input background */
-            color: #333; /* Dark text */
-        }
-
-        body.light-mode .theme-toggle {
-            background-color: #333; /* Dark button */
-            color: #ffffff; /* White text */
-        }
-
-        body.light-mode .theme-toggle:hover {
-            background-color: #555; /* Darker button on hover */
-        }
-
-        body.light-mode .tab-nav button {
-            color: #333; /* Dark text */
-        }
-
-        body.light-mode .tab-nav button.active {
-            border-bottom: 2px solid #333; /* Dark underline */
+            background-color: #695CFE;
+            color: white;
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div>
+        <div class="header-content">
+            {% load static %}
+            <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "logo"> </div>
             <h1>
-                <a href="{% url 'home1' %}">Indian Stock Analysis</a>
+                <a href="{% url 'home1' %}">StockStats</a>
             </h1>
-            <nav>
-                <ul>
-                    <!-- Dark Mode toggle pushed to the right -->
-                    <li>
-                        <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </header>
 
@@ -244,9 +284,21 @@
             <form class="form-container" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="login">
-                <input type="email" name="email" id="login-email" placeholder="Email" required>
-                <input type="password" name="password" id="login-password" placeholder="Password" required>
-                <input type="text" name="otp" id="otp-login" placeholder="Enter OTP" required>
+                <div class="input-container">
+                    <input required="" type="email" name="email" id="login-email" class="input">
+                    <label class="label">Email</label>
+                </div>
+                
+                <div class="input-container">
+                    <input required="" type="password" name="password" id="login-password" class="input">
+                    <label class="label">Password</label>
+                </div>
+                
+                <div class="input-container">
+                    <input required="" type="text" name="otp" id="otp-login" class="input">
+                    <label class="label">Enter OTP</label>
+                </div>
+                
                 <button type="button" id="send-otp-login">Send OTP</button>
                 <button type="button" id="verify-otp-login">Verify OTP</button>
                 <button id="login-button" type="submit" style="display:none;">Login</button>
@@ -258,21 +310,55 @@
             <form class="form-container" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="register" value="true">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="email" name="email" id="email-register" placeholder="Email" required>
-                <input type="text" name="first_name" placeholder="First Name" required>
-                <input type="text" name="last_name" placeholder="Last Name" required>
-                <input type="text" name="phone_number" placeholder="Phone Number" required>
-                <input type="date" name="birthdate" placeholder="Birthdate" required>
-                <select name="gender" required>
-                    <option value="" disabled selected>Gender</option>
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="O">Other</option>
-                </select>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-                <input type="text" name="otp" id="otp-register" placeholder="Enter OTP" required>
+
+                <div class="input-container">
+                    <input required="" type="text" name="username" class="input">
+                    <label class="label">Username</label>
+                </div>
+                <div class="input-container">
+                    <input required="" type="email" id="email-register" name="email" class="input">
+                    <label class="label">Email</label>
+                </div>
+                <div class="input-container">
+                    <input required="" type="text" name="first_name" class="input">
+                    <label class="label">First Name</label>
+                </div>
+                <div class="input-container">
+                    <input required="" type="text" name="last_name" class="input">
+                    <label class="label">Last Name</label>
+                </div>
+                <div class="input-container">
+                    <input required="" type="text" name="phone_number" class="input">
+                    <label class="label">Phone Number</label>
+                </div>
+               
+                <div class="input-container">
+                    <p class="label1">BirthDate</p>
+                    <input required="" type="date" name="birthdate" class="input">
+                </div>
+                
+                <div class="input-container">
+                    <p class="label2">Gender</p>
+                    <select name="gender" class="input" required>
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <!--<label class="label">Gender</label>-->
+                </div>
+                <div class="input-container">
+                    <input required="" type="password" name="password" class="input">
+                    <label class="label">Password</label>
+                </div>
+                <div class="input-container">
+                    <input required="" type="password" name="confirm_password" class="input">
+                    <label class="label">Confirm Password</label>
+                </div>
+                <div class="input-container">
+                    <input required="" type="text" name="otp" id="otp-register" class="input">
+                    <label class="label">Enter OTP</label>
+                </div>
                 
                 <!-- Send OTP and Verify OTP buttons -->
                 <button type="button" id="send-otp-register">Send OTP</button>
@@ -282,45 +368,6 @@
             </form>
         </div>
     </div>
-
-    <!-- Dark/Light Mode Toggle Script -->
-    <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        // Check for saved theme in localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            body.classList.add(savedTheme);
-            themeToggle.textContent = savedTheme === 'light-mode' ? '🌙 Dark Mode' : '☀️ Light Mode';
-        }
-
-        // Toggle theme on button click
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            const isLightMode = body.classList.contains('light-mode');
-            themeToggle.textContent = isLightMode ? '🌙 Dark Mode' : '☀️ Light Mode';
-            localStorage.setItem('theme', isLightMode ? 'light-mode' : 'dark-mode');
-        });
-
-        // Tabbed Interface Script
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabName = button.getAttribute('data-tab');
-
-                // Remove active class from all buttons and contents
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-
-                // Add active class to the clicked button and corresponding content
-                button.classList.add('active');
-                document.getElementById(tabName).classList.add('active');
-            });
-        });
-    </script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -522,9 +569,5 @@
         });
     });
 </script>
-
-
-
-
 </body>
 </html>
