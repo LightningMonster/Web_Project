@@ -6,7 +6,6 @@
     <title>Stock Details - {{ stock_symbol }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
         :root {
               --primary-color: #3c1854; /* Dark blue for headings */
@@ -241,8 +240,7 @@
               font-size: 14px;
               color: #666;
           }
-  
-          /* Footer Styles */
+            /* Footer Styles */
           footer {
               background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent dark blue */
               color: #fff;
@@ -316,16 +314,74 @@
               height: 600px;
               margin: auto;
               background-color : black;
+              color: #00ffff;
           }
           .chart-container {
+            color: #00ffff;
               width: 600px;
               height: 400px;
-              background-color: #242222; /* Light grey background for better visibility */
+              background-color: #ffffff; /* Light grey background for better visibility */
               padding: 10px;
               border-radius: 8px;
               box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
           }
-      </style>
+    
+
+        /* Interval and Date Range Selector Styling */
+        .interval-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .interval-btn {
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .interval-btn.active {
+            background-color: var(--primary-color);
+        }
+
+        .interval-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .date-range-selector {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .date-range-selector label {
+            font-weight: bold;
+        }
+
+        .date-range-selector select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: var(--card-background);
+            color: var(--text-color);
+        }
+
+        /* Chart Container Styling */
+        #chart-container {
+            width: 100%;
+            height: 500px;
+            margin: auto;
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
     <!-- Header with Navigation Bar -->
@@ -386,13 +442,23 @@
             </div>
         </div>
 
-        <!-- Interval Buttons -->
+        <!-- Interval Buttons and Date Range Selector -->
         <div class="card">
-            <h2>Select Interval</h2>
+            <h2>Select Interval and Date Range</h2>
             <div class="interval-buttons">
                 <button id="daily-btn" class="interval-btn active">Daily</button>
                 <button id="weekly-btn" class="interval-btn">Weekly</button>
                 <button id="monthly-btn" class="interval-btn">Monthly</button>
+            </div>
+            <div class="date-range-selector">
+                <label for="date-range">Show Data for:</label>
+                <select id="date-range">
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
+                    <option value="180">Last 6 Months</option>
+                    <option value="365">Last 1 Year</option>
+                    <option value="all">All Data</option>
+                </select>
             </div>
         </div>
 
@@ -470,26 +536,58 @@
         <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        // Parse the historical data from Django context
+        // DARK MODE TOGGLE FUNCTIONALITY
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check localStorage for theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark-mode') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Light Mode';
+        }
+
+        // Toggle dark mode
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark-mode');
+                themeToggle.textContent = '☀️ Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light-mode');
+                themeToggle.textContent = '🌙 Dark Mode';
+            }
+        });
+
+        // CHART.JS FUNCTIONALITY
         const historicalData = JSON.parse('{{ historical_data_json|escapejs }}');
-    
-        // Debug: Print the parsed historical data
-        console.log("Parsed Historical Data:", historicalData);
-    
+
+        // Function to filter data based on date range
+        function filterDataByDateRange(data, days) {
+            if (days === 'all') return data; // Return all data if 'all' is selected
+
+            const currentDate = new Date();
+            const startDate = new Date(currentDate);
+            startDate.setDate(currentDate.getDate() - days);
+
+            return data.filter(entry => {
+                const entryDate = new Date(entry.date);
+                return entryDate >= startDate;
+            });
+        }
+
         // Function to group data by interval
         function groupDataByInterval(data, interval) {
             const groupedData = [];
             let currentGroup = null;
-    
+
             data.forEach((entry) => {
                 const date = new Date(entry.date);
                 const year = date.getFullYear();
                 const month = date.getMonth();
                 const week = Math.floor(date.getDate() / 7);
-    
+
                 if (interval === 'weekly') {
                     if (!currentGroup || currentGroup.year !== year || currentGroup.week !== week) {
                         currentGroup = { year, week, date: entry.date, close: entry.close };
@@ -505,43 +603,40 @@
                     groupedData.push(entry);
                 }
             });
-    
+
             return groupedData;
         }
-    
+
         // Function to update the chart
-        function updateChart(interval) {
-            const groupedData = groupDataByInterval(historicalData, interval);
-    
+        function updateChart(interval, days) {
+            const filteredData = filterDataByDateRange(historicalData, days);
+            const groupedData = groupDataByInterval(filteredData, interval);
+
             const labels = groupedData.map(entry => entry.date);
             const data = groupedData.map(entry => entry.close);
-    
-            // Debug: Print the grouped data
-            console.log("Grouped Data:", groupedData);
-            console.log("Labels:", labels);
-            console.log("Data:", data);
-    
+
             // Destroy the existing chart if it exists
             if (window.stockChart && typeof window.stockChart.destroy === 'function') {
                 window.stockChart.destroy();
             }
-    
+
             // Get the chart canvas element
             const ctx = document.getElementById('stockChart').getContext('2d');
-    
+
             // Create the chart
             window.stockChart = new Chart(ctx, {
-                type: 'line', // Use 'line', 'bar', or 'candlestick' as needed
+                type: 'bar', // Line chart
                 data: {
                     labels: labels, // Dates
                     datasets: [{
-                        label: 'Stock Price',
+                        label: 'Stock Price (INR)',
                         data: data, // Close prices
-                        borderColor: 'blue',
-                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                        borderColor: 'cyan', // Line color
+                        backgroundColor: 'purple', // Fill color under the line
                         borderWidth: 2,
-                        pointRadius: 5,
-                        pointBackgroundColor: 'red'
+                        fill: true, // Fill the area under the line
+                        pointRadius: 3, // Size of data points
+                        pointBackgroundColor: 'black', // Color of data points
                     }]
                 },
                 options: {
@@ -553,7 +648,9 @@
                             position: 'top'
                         },
                         tooltip: {
-                            enabled: true
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false
                         }
                     },
                     scales: {
@@ -563,42 +660,55 @@
                                 text: 'Date'
                             },
                             grid: {
-                                display: true
+                                display: true,
+                                color: 'rgba(255, 255, 255, 0.1)'
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'Stock Price (USD)'
+                                text: 'Stock Price (INR)'
                             },
                             grid: {
-                                display: true
+                                display: true,
+                                color: 'rgba(255, 255, 255, 0.1)'
                             }
                         }
                     }
                 }
             });
         }
-    
-        // Set default interval to daily
-        updateChart('daily');
-    
+
+        // Set default interval to daily and date range to last 30 days
+        let currentInterval = 'daily';
+        let currentDateRange = '30';
+        updateChart(currentInterval, currentDateRange);
+
         // Add event listeners to interval buttons
         document.getElementById('daily-btn').addEventListener('click', () => {
-            updateChart('daily');
+            currentInterval = 'daily';
+            updateChart(currentInterval, currentDateRange);
             setActiveButton('daily-btn');
         });
-    
+
         document.getElementById('weekly-btn').addEventListener('click', () => {
-            updateChart('weekly');
+            currentInterval = 'weekly';
+            updateChart(currentInterval, currentDateRange);
             setActiveButton('weekly-btn');
         });
-    
+
         document.getElementById('monthly-btn').addEventListener('click', () => {
-            updateChart('monthly');
+            currentInterval = 'monthly';
+            updateChart(currentInterval, currentDateRange);
             setActiveButton('monthly-btn');
         });
-    
+
+        // Add event listener to date range selector
+        document.getElementById('date-range').addEventListener('change', (event) => {
+            currentDateRange = event.target.value;
+            updateChart(currentInterval, currentDateRange);
+        });
+
         // Function to set the active button
         function setActiveButton(activeId) {
             document.querySelectorAll('.interval-btn').forEach(button => {
