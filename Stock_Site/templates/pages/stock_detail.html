@@ -11,7 +11,8 @@
             background-color: black;
             color: white; 
             transition: background-color 0.3s, color 0.3s;
-            margin-left: 250px;
+            margin-left: 300px;
+            margin-right: 50px;
         }
 
         .warning {
@@ -129,6 +130,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+
         }
 
         .stock-info p {
@@ -136,7 +138,7 @@
         }
 
         .stock-info strong {
-            color: var(--primary-color);
+            color: #695CFE;
         }
 
         /* Historical Data Table */
@@ -187,7 +189,7 @@
         }
 
         .pagination a:hover {
-            background-color: #2980b9;
+            background-color: #695CFE;
         }
 
         .pagination span {
@@ -229,12 +231,12 @@
 
         /* Dark Mode Styles */
         body.dark-mode {
-            --primary-color: #16d9ebca; /* Cyan for headings in dark mode */
-            --secondary-color: #206ea9; /* Dark blue for buttons and links */
+            --primary-color: #695CFE; /* Cyan for headings in dark mode */
+            --secondary-color: #695CFE; /* Dark blue for buttons and links */
             --background-color: #121212; /* Dark background for dark mode */
             --text-color: #f5fafa; /* Cyan text for dark mode */
             --card-background: rgba(0, 0, 0, 0.649); /* Semi-transparent dark card background */
-            --navbar-text-color: #00ffff; /* Cyan text for navbar in dark mode */
+            --navbar-text-color: #695CFE; /* Cyan text for navbar in dark mode */
             --navbar-hover-color: rgba(255, 255, 255, 0.1); /* Light hover for navbar in dark mode */
         }
 
