@@ -17,6 +17,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from accounts.models import CustomUser, Feedback
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+from .models import CustomUser
+from django.contrib.auth.hashers import make_password
 
 # Function to fetch live stock price
 def fetch_live_stock_price(ticker):
@@ -68,31 +73,85 @@ def send_otp(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
-@csrf_exempt
-def verify_otp(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body.decode('utf-8'))
-            user_otp = data.get('otp')
 
-            # Get stored OTP from session
+def forgot_password(request):
+    if request.method == 'POST':
+        if 'email' in request.POST:  # Step 1: Send OTP
+            email = request.POST.get('email')
+
+            if not email:
+                messages.error(request, 'Email is required.')
+                return redirect('forgot_password')
+
+            try:
+                user = CustomUser.objects.get(email=email)
+                if user:
+                    # Generate OTP
+                    otp = random.randint(100000, 999999)
+                    request.session['otp'] = otp  # Store OTP in session
+                    request.session['email'] = email  # Store email in session
+
+                    # Send OTP via email
+                    subject = "Password Reset OTP"
+                    message = f"Your OTP for password reset is: {otp}. Do not share it with anyone."
+                    from_email = settings.EMAIL_HOST_USER
+                    send_mail(subject, message, from_email, [email])
+
+                    messages.success(request, 'OTP sent to your email. Please check your inbox.')
+                    return redirect('forgot_password')  # Stay on the same page
+            except CustomUser.DoesNotExist:
+                messages.error(request, 'No user found with this email address.')
+                return redirect('forgot_password')
+
+        elif 'otp' in request.POST:  # Step 2: Verify OTP
+            user_otp = request.POST.get('otp')
+
+            # Get stored OTP and email from session
             stored_otp = request.session.get('otp')
             stored_email = request.session.get('email')
 
-            if not stored_otp:
-                return JsonResponse({'success': False, 'message': 'No OTP found. Please request a new one.'})
+            if not stored_otp or not stored_email:
+                messages.error(request, 'OTP expired. Please request a new one.')
+                return redirect('forgot_password')
 
             if str(user_otp) == str(stored_otp):  # Match OTP
-                del request.session['otp']  # Clear OTP after verification
-                return JsonResponse({'success': True, 'message': 'OTP verified successfully'})
+                messages.success(request, 'OTP verified. Please reset your password.')
+                return redirect('forgot_password')  # Stay on the same page
             else:
-                return JsonResponse({'success': False, 'message': 'Invalid OTP'})
+                messages.error(request, 'Invalid OTP. Please try again.')
+                return redirect('forgot_password')
 
-        except Exception as e:
-            return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+        elif 'new_password' in request.POST:  # Step 3: Reset Password
+            new_password = request.POST.get('new_password')
+            confirm_password = request.POST.get('confirm_password')
 
-    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+            if new_password != confirm_password:
+                messages.error(request, 'Passwords do not match.')
+                return redirect('forgot_password')
 
+            # Get email from session
+            email = request.session.get('email')
+
+            if not email:
+                messages.error(request, 'Session expired. Please request a new OTP.')
+                return redirect('forgot_password')
+
+            try:
+                user = CustomUser.objects.get(email=email)
+                user.password = make_password(new_password)  # Hash the new password
+                user.save()
+
+                # Clear session data
+                del request.session['otp']
+                del request.session['email']
+
+                messages.success(request, 'Password reset successfully. Please log in.')
+                return redirect('login')  # Redirect to login page
+            except CustomUser.DoesNotExist:
+                messages.error(request, 'User not found.')
+                return redirect('forgot_password')
+
+    return render(request, 'accounts/forgot_password.html')
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
