@@ -302,35 +302,34 @@
     </style>
 </head>
 <body>
- 
- <!-- Left Vertical Navbar -->
- <nav class="navbar">
-    {% load static %}
-    <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "StockStats"> </div>
-    <h1><a href="{% url 'home1' %}">StockStats</a></h1>
-    <ul>
-        <li><a href="{% url 'profile' %}">
-            {% if user.is_authenticated %}
-                Hi, {{ user.first_name }} {{ user.last_name }}!
-            {% else %}
-                Guest
-            {% endif %}
-            </a>
-        </li>
-        <li><a href="{% url 'home2' %}">Home</a></li>
-        <li><a href="{% url 'calculators' %}">Calculators</a></li>
-        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-        <li> {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-            {% endif %}
-        </li>
-        <li>
-            <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
-        </li>
-    </ul>
-</nav>
+    <!-- Left Vertical Navbar -->
+    <nav class="navbar">
+        {% load static %}
+        <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "StockStats"> </div>
+        <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        <ul>
+            <li><a href="{% url 'profile' %}">
+                {% if user.is_authenticated %}
+                    Hi, {{ user.first_name }} {{ user.last_name }}!
+                {% else %}
+                    Guest
+                {% endif %}
+                </a>
+            </li>
+            <li><a href="{% url 'home2' %}">Home</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li> {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </li>
+            <li>
+                <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+            </li>
+        </ul>
+    </nav>
 
     <!-- Main Content -->
     <main class="container">
@@ -474,162 +473,66 @@
             }
         });
 
-        // CHART.JS FUNCTIONALITY
-        const historicalData = JSON.parse('{{ historical_data_json|escapejs }}');
-
-        // Function to filter data based on date range
-        function filterDataByDateRange(data, days) {
-            if (days === 'all') return data; // Return all data if 'all' is selected
-
-            const currentDate = new Date();
-            const startDate = new Date(currentDate);
-            startDate.setDate(currentDate.getDate() - days);
-
-            return data.filter(entry => {
-                const entryDate = new Date(entry.date);
-                return entryDate >= startDate;
-            });
-        }
-
-        // Function to group data by interval
-        function groupDataByInterval(data, interval) {
-            const groupedData = [];
-            let currentGroup = null;
-
-            data.forEach((entry) => {
-                const date = new Date(entry.date);
-                const year = date.getFullYear();
-                const month = date.getMonth();
-                const week = Math.floor(date.getDate() / 7);
-
-                if (interval === 'weekly') {
-                    if (!currentGroup || currentGroup.year !== year || currentGroup.week !== week) {
-                        currentGroup = { year, week, date: entry.date, close: entry.close };
-                        groupedData.push(currentGroup);
-                    }
-                } else if (interval === 'monthly') {
-                    if (!currentGroup || currentGroup.year !== year || currentGroup.month !== month) {
-                        currentGroup = { year, month, date: entry.date, close: entry.close };
-                        groupedData.push(currentGroup);
-                    }
-                } else {
-                    // Daily interval (no grouping)
-                    groupedData.push(entry);
-                }
-            });
-
-            return groupedData;
-        }
-
-        // Function to update the chart
-        function updateChart(interval, days) {
-            const filteredData = filterDataByDateRange(historicalData, days);
-            const groupedData = groupDataByInterval(filteredData, interval);
-
-            const labels = groupedData.map(entry => entry.date);
-            const data = groupedData.map(entry => entry.close);
-
-            // Destroy the existing chart if it exists
-            if (window.stockChart && typeof window.stockChart.destroy === 'function') {
-                window.stockChart.destroy();
-            }
-
-            // Get the chart canvas element
-            const ctx = document.getElementById('stockChart').getContext('2d');
-
-            // Create the chart
-            window.stockChart = new Chart(ctx, {
-                type: 'line', // Line chart
-                data: {
-                    labels: labels, // Dates
-                    datasets: [{
-                        label: 'Stock Price (INR)',
-                        data: data, // Close prices
-                        borderColor: 'white', // Line color
-                        backgroundColor: 'purple', // Fill color under the line
-                        borderWidth: 2,
-                        fill: true, // Fill the area under the line
-                        pointRadius: 3, // Size of data points
-                        pointBackgroundColor: 'black', // Color of data points
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        },
-                        tooltip: {
-                            enabled: true,
-                            mode: 'index',
-                            intersect: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Date'
-                            },
-                            grid: {
-                                display: true,
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Stock Price (INR)'
-                            },
-                            grid: {
-                                display: true,
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Set default interval to daily and date range to last 30 days
-        let currentInterval = 'daily';
-        let currentDateRange = '30';
-        updateChart(currentInterval, currentDateRange);
-
-        // Add event listeners to interval buttons
-        document.getElementById('daily-btn').addEventListener('click', () => {
-            currentInterval = 'daily';
-            updateChart(currentInterval, currentDateRange);
-            setActiveButton('daily-btn');
-        });
-
-        document.getElementById('weekly-btn').addEventListener('click', () => {
-            currentInterval = 'weekly';
-            updateChart(currentInterval, currentDateRange);
-            setActiveButton('weekly-btn');
-        });
-
-        document.getElementById('monthly-btn').addEventListener('click', () => {
-            currentInterval = 'monthly';
-            updateChart(currentInterval, currentDateRange);
-            setActiveButton('monthly-btn');
-        });
-
-        // Add event listener to date range selector
-        document.getElementById('date-range').addEventListener('change', (event) => {
-            currentDateRange = event.target.value;
-            updateChart(currentInterval, currentDateRange);
-        });
-
-        // Function to set the active button
-        function setActiveButton(activeId) {
-            document.querySelectorAll('.interval-btn').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.getElementById(activeId).classList.add('active');
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('darkMode');
+        if (savedTheme === 'true') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Light Mode';
         }
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('stockChart').getContext('2d');
+        const stockChart = new Chart(ctx, {
+            type: 'line', // Change to 'bar' or 'candlestick' as needed
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Example labels
+                datasets: [{
+                    label: 'Stock Price',
+                    data: [150, 160, 170, 165, 180, 175], // Example data
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'red'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months'
+                        },
+                        grid: {
+                            display: true
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Stock Price (USD)'
+                        },
+                        grid: {
+                            display: true
+                        }
+                    }
+                }
+            }
+        });
+</script>
+
 </body>
 </html>
