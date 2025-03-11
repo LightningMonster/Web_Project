@@ -17,9 +17,5 @@ urlpatterns = [
     path('admin/', views.admin, name='admin'),
     path('send-otp/', views.send_otp, name='send_otp'),
     path('verify-otp/', views.verify_otp, name='verify_otp'),
-<<<<<<< HEAD
     path("submit-feedback/", views.submit_feedback, name="submit_feedback"),
-=======
-
->>>>>>> 6b5ddcba464d72dcab8a2438da0da12e3500dd1d
 ]
