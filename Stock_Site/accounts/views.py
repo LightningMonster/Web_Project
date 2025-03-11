@@ -366,7 +366,20 @@ def stock_detail(request, stock_symbol):
     high_52week = stock_data.aggregate(Max('high'))['high__max']
     low_52week = stock_data.aggregate(Min('low'))['low__min']
     latest_data = stock_data.first()
-
+    
+    # Prepare historical data for the chart
+    historical_data = stock_data.order_by('date').values('date', 'close')  # Fetch date and close price
+    
+    # Convert date objects to strings and Decimal to float
+    historical_data = [
+        {
+            'date': entry['date'].strftime('%Y-%m-%d'),  # Convert date to string
+            'close': float(entry['close'])  # Convert Decimal to float
+        }
+        for entry in historical_data
+    ]
+    historical_data_json = json.dumps(historical_data)
+    
     # Fetch additional company details (assuming they are stored in the latest_data object)
     company_name = latest_data.company_name
     ceo = latest_data.ceo
@@ -378,7 +391,7 @@ def stock_detail(request, stock_symbol):
     eps = latest_data.eps
     market_cap = latest_data.market_cap
     pe_ratio = latest_data.pe_ratio
-
+ 
     # Paginate the historical data
     paginator = Paginator(stock_data, 10)  # Show 10 records per page
     page_number = request.GET.get('page')
@@ -405,6 +418,7 @@ def stock_detail(request, stock_symbol):
         'latest_data': latest_data,
         'high_52week': high_52week,
         'low_52week': low_52week,
+        'historical_data_json': historical_data_json,
         'page_obj': page_obj,
         'news_data': news_data,
         'company_name': company_name,
