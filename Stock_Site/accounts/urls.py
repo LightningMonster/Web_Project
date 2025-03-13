@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home1, name='home1'),
     path('home2/', views.home2, name='home2'),
     path('login/', views.login_user, name='login'),
+    path('learningpg.html/', views.learningpg, name='learningpg'),
     path('logout/', views.logout_user, name='logout'),
     path('calculators/', views.calculators, name='calculators'), 
     path('dashboard/', views.dashboard, name='dashboard'),
@@ -16,6 +17,7 @@ urlpatterns = [
     path("search/", views.search_stocks, name="search_stocks"),
     path('admin/', views.admin, name='admin'),
     path('send-otp/', views.send_otp, name='send_otp'),
+    path('verify-otp/', views.verify_otp, name='verify_otp'),
     path("submit-feedback/", views.submit_feedback, name="submit_feedback"),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
 ]

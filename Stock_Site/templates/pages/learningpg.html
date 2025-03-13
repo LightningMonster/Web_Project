@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Indian Stock Market</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Times New Roman', sans-serif;
+            background-color: #f4f4f9;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            margin-left: 200px; /* Space for the navbar */
+        }
+
+        h1, h2, h3 {
+            color: #3947e3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 200px; /* Smaller navbar */
+    height: 100%;
+    background: linear-gradient(135deg, #3947e3, #34495e); /* Gradient background */
+    color: #fff;
+    padding: 20px 10px; /* Reduced padding */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo Styles */
+.logo img {
+    width: 120px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure the image is centered */
+    margin: 0 auto 20px; /* Center the logo and add margin below */
+    border-radius: 10px; /* Optional: Add rounded corners */
+}
+
+        .navbar h1 {
+            font-size: 20px; /* Smaller font size */
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin: 10px 0;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            font-size: 14px; /* Smaller font size */
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px); /* Hover effect */
+        }
+
+        /* Main Content Styles */
+        .container {
+            padding: 20px;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px); /* Hover effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #3947e3;
+            font-size: 24px;
+        }
+
+        .section ul {
+            padding-left: 20px;
+        }
+
+        .section ul li {
+            margin: 10px 0;
+            color: #000000;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 0px;
+            background: linear-gradient(135deg, #3947e3, #34495e);
+            color: #fff;
+            margin-bottom: -20px;
+        }
+
+        footer a {
+            color: #3498db;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                margin-left: 0;
+            }
+
+            .navbar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 10px;
+            }
+
+            .navbar h1 {
+                font-size: 18px;
+            }
+
+            .navbar ul li a {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .section h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Left Vertical Navbar -->
+    <nav class="navbar">
+        {% load static %}
+        <div class="logo"> <img src="{% static '/images/WhatsApp Image 2025-03-10 at 7.26.55 PM.jpeg' %}" alt= "StockStats"> </div>
+        <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        <ul>
+            <li><a href="{% url 'profile' %}">
+                {% if user.is_authenticated %}
+                    Hi, {{ user.first_name }} {{ user.last_name }}!
+                {% else %}
+                    Guest
+                {% endif %}
+                </a>
+            </li>
+            <li><a href="{% url 'home2' %}">Home</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li> {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Introduction Section -->
+        <section id="introduction" class="section">
+            <h2>Introduction to Indian Stock Market</h2>
+            <p>
+                The Indian stock market is one of the most dynamic and growing markets in the world. It provides a platform for investors to buy and sell shares of publicly listed companies. For beginners, understanding the basics is crucial before diving into investments.
+            </p>
+            <p>
+                Key stock exchanges in India:
+                <ul>
+                    <li><strong>BSE (Bombay Stock Exchange):</strong> Asia's oldest stock exchange.</li>
+                    <li><strong>NSE (National Stock Exchange):</strong> The largest stock exchange in India.</li>
+                </ul>
+            </p>
+        </section>
+
+        <!-- Basics of Stock Market Section -->
+        <section id="basics" class="section">
+            <h2>Basics of Stock Market</h2>
+            <p>
+                Before investing, it's essential to understand the following concepts:
+            </p>
+            <ul>
+                <li><strong>Stocks:</strong> Represent ownership in a company.</li>
+                <li><strong>Shares:</strong> Units of stock that can be bought or sold.</li>
+                <li><strong>IPO (Initial Public Offering):</strong> When a company first sells its shares to the public.</li>
+                <li><strong>Dividends:</strong> A portion of a company's profits distributed to shareholders.</li>
+                <li><strong>Market Capitalization:</strong> The total value of a company's shares.</li>
+            </ul>
+        </section>
+
+        <!-- Analysis Section -->
+        <section id="analysis" class="section">
+            <h2>Technical & Fundamental Analysis</h2>
+            <p>
+                To make informed investment decisions, you need to analyze stocks. There are two primary methods:
+            </p>
+            <ul>
+                <li><strong>Fundamental Analysis:</strong> Evaluating a company's financial health, management, and industry position.</li>
+                <li><strong>Technical Analysis:</strong> Studying price charts and patterns to predict future movements.</li>
+            </ul>
+        </section>
+
+        <!-- Tools Section -->
+        <section id="tools" class="section">
+            <h2>Tools for Analysis</h2>
+            <p>
+                Here are some tools to help you analyze the stock market:
+            </p>
+            <ul>
+                <li><strong>Screener:</strong> For filtering stocks based on financial metrics.</li>
+                <li><strong>Charting Tools:</strong> Like TradingView for technical analysis.</li>
+                <li><strong>News Platforms:</strong> Such as Moneycontrol and Economic Times for updates.</li>
+                <li><strong>Broker Platforms:</strong> Zerodha, Groww, and Upstox for trading.</li>
+            </ul>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="section">
+            <h2>Learning Resources</h2>
+            <p>
+                Here are some resources to help you learn more:
+            </p>
+            <ul>
+                <li><strong>Books:</strong> "The Intelligent Investor" by Benjamin Graham, "Common Stocks and Uncommon Profits" by Philip Fisher.</li>
+                <li><strong>Websites:</strong> Investopedia, NSE India, and BSE India.</li>
+                <li><strong>YouTube Channels:</strong> CA Rachana Ranade, Pranjal Kamra.</li>
+                <li><strong>Courses:</strong> NSE Academy, Coursera, and Udemy.</li>
+            </ul>
+        </section>
+
+        <!-- Investment Tips Section -->
+        <section id="tips" class="section">
+            <h2>Investment Tips for Beginners</h2>
+            <p>
+                Here are some tips to get started:
+            </p>
+            <ul>
+                <li>Start with small investments and gradually increase.</li>
+                <li>Diversify your portfolio to reduce risk.</li>
+                <li>Avoid emotional decisions; stick to your strategy.</li>
+                <li>Stay updated with market news and trends.</li>
+                <li>Invest for the long term to maximize returns.</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Stock Learning. All rights reserved. | <a href="#">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>
