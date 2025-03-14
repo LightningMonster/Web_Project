@@ -17,7 +17,7 @@
             color: #000000;
             margin: 0;
             padding: 0;
-            margin-left: 200px; /* Space for the navbar */
+            margin-top: 130px;
         }
 
         h1, h2, h3 {
@@ -33,65 +33,78 @@
             text-decoration: underline;
         }
 
-        /* Navbar Styles */
         .navbar {
+    font-size: 20px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: fixed;
-    left: 0;
     top: 0;
-    width: 200px; /* Smaller navbar */
-    height: 100%;
-    background: linear-gradient(135deg, #3947e3, #34495e); /* Gradient background */
-    color: #fff;
-    padding: 20px 10px; /* Reduced padding */
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(135deg, #3947e3, #34495e);
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
-/* Logo Styles */
-.logo img {
-    width: 120px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Ensure the image is centered */
-    margin: 0 auto 20px; /* Center the logo and add margin below */
-    border-radius: 10px; /* Optional: Add rounded corners */
+.navbar .nav-links {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-        .navbar h1 {
-            font-size: 20px; /* Smaller font size */
+.navbar a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: background 0.3s ease-in-out;
+    border-radius: 5px;
+}
+
+.navbar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+
+.logo {
+            display: flex;
+            align-items: center;
+            border-radius: 15px;
+        }
+
+        .logo img {
+            width: 80px;
+            height: 80px;
             margin-bottom: 20px;
-            text-align: center;
-            color: #fff;
-        }
-
-        .navbar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .navbar ul li {
-            margin: 10px 0;
-        }
-
-        .navbar ul li a {
-            color: #fff;
-            font-size: 14px; /* Smaller font size */
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        .navbar ul li a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px); /* Hover effect */
+            margin-top:20px;
         }
 
         /* Main Content Styles */
         .container {
+            font-family:'Times New Roman', sans-serif;
+            color: black;
+            background: white;
+            transition: background-color 0.3s ease-in-out;
+            box-sizing: border-box;
+            width: 100%;
             padding: 20px;
         }
 
         .section {
             background-color: #fff;
+            border: 2px solid #3947e3;
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 8px;
@@ -122,9 +135,11 @@
         /* Footer Styles */
         footer {
             text-align: center;
-            padding: 0px;
+            width: 100%;
+            padding: 10px 0;
             background: linear-gradient(135deg, #3947e3, #34495e);
             color: #fff;
+            position: relative;
             margin-bottom: -20px;
         }
 
@@ -138,30 +153,17 @@
                 margin-left: 0;
             }
 
-            .navbar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding: 10px;
-            }
-
-            .navbar h1 {
-                font-size: 18px;
-            }
-
-            .navbar ul li a {
-                font-size: 12px;
-                padding: 8px;
-            }
-
             .container {
                 padding: 10px;
             }
 
             .section {
                 padding: 15px;
+                border:2px solid #3947e3;
+                border-radius: 5px;
+                margin-bottom: 10px;
             }
-
+    
             .section h2 {
                 font-size: 20px;
             }
@@ -169,27 +171,24 @@
     </style>
 </head>
 <body>
-    <!-- Left Vertical Navbar -->
     <nav class="navbar">
-        {% load static %}
-        <div class="logo"> <img src="{% static '/images/WhatsApp Image 2025-03-10 at 7.26.55 PM.jpeg' %}" alt= "StockStats"> </div>
-        <h1><a href="{% url 'home1' %}">StockStats</a></h1>
-        <ul>
-            <li><a href="{% url 'profile' %}">
-                {% if user.is_authenticated %}
-                    Hi, {{ user.first_name }} {{ user.last_name }}!
-                {% else %}
-                    Guest
-                {% endif %}
-                </a>
-            </li>
+        <div class="logo">
+            {% load static %}
+            <img src="{% static 'images/logo.png' %}" alt="StockStats">
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        </div>
+        <ul class="nav-links">
             <li><a href="{% url 'home2' %}">Home</a></li>
-            <li><a href="{% url 'calculators' %}">Calculators</a></li>
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li> {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="{% url 'learningpg' %}">Learn Basics</a></li>
+            <li><a href="#feedback">Feedback</a></li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
+                    <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
                 {% else %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <a href="{% url 'login' %}">Login</a>
                 {% endif %}
             </li>
         </ul>
