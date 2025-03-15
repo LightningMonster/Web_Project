@@ -6,60 +6,64 @@
     <title>Login & Register - Indian Stock Analysis</title>
     <style>
         /* General Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Times New Roman', sans-serif;
+            background-color: #f4f4f9;
+            color: #000000;
             margin: 0;
             padding: 0;
-            background-color: #121212;
-            color: #ffffff; 
-            transition: background-color 0.3s, color 0.3s;
-            background-image: url('/static/images/wallpaper2.jpeg');
-            background-size: cover;
-            background-position: center;    
-            background-repeat: no-repeat;
-            background-attachment:fixed;    
+            margin-top: 110px;
+        }
+
+        h1, h2, h3 {
+            color: #3947e3;
         }
 
         a {
-            color: white; 
             text-decoration: none;
+            color: #ffffff;
         }
 
         a:hover {
             text-decoration: underline;
         }
 
-        /* Header Styles */
-        header {
-            background: rgba(255, 255, 255, 0.2); /* Transparent white */
-            backdrop-filter: blur(10px); /* Glass effect */
-            border-radius: 10px; /* Smooth edges */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-            padding: 10px 20px;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-
-        header .header-content {
+        .navbar {
+            font-size: 20px;
+            font-weight: 500;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 25px; /* Reduce gap */
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, #3947e3, #34495e);
+            color: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .logo {
             display: flex;
             align-items: center;
+            border-radius: 15px;
         }
 
         .logo img {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             margin-bottom: 20px;
+            margin-top:20px;
         }
 
         /* Notification Styles */
@@ -76,10 +80,9 @@
         /* Tab Styles */
         .tab-container {
             max-width: 400px;
-            margin: 50px auto;
+            margin: 150px auto;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.2); /* Transparent white */
-            backdrop-filter: blur(10px); /* Glass effect */
+            background: linear-gradient(135deg,  #2333df, #34495e);
             border-radius: 10px; /* Smooth edges */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         }
@@ -114,95 +117,100 @@
             display: block;
         }
 
-.tab-content.active .input-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    margin-bottom: 25px; /* Adds space between input fields */
-}
+        .tab-content.active .input-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 10px; /* Adds space between input fields */
+        }
 
-p.label1 , p.label2 {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    padding-bottom: 0px;
-}
+        p.label1 , p.label2 {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            padding-bottom: 0px;
+        }
 
-select, input[type="date"] {
-    /*width: 375px;
-    height: 30px;*/
-    padding: 8px;
-    font-size: 14px;
-}
+        select, input[type="date"] {
+            padding: 8px;
+            font-size: 14px;
+        }
 
-.tab-content.active .label {
-    font-size: 20px;
-    padding-left: 10px;
-    position: absolute;
-    top: 13px;
-    transition: 0.3s;
-    pointer-events: none;
-    color: #695CFE;
-}
+        .tab-content.active .label {
+            font-size: 20px;
+            padding-left: 10px;
+            position: absolute;
+            top: 13px;
+            transition: 0.3s;
+            pointer-events: none;
+            color: Black;
+        }
 
-.input {
-    width: 375px;
-    height: 30px;
-    border: none;
-    outline: none;
-    padding: 0px 7px;
-    border-radius: 6px;
-    font-size: 15px;
-    background-color: transparent;
-    color: white;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
-        -1px -1px 6px rgba(255, 255, 255, 0.4);
-}
+        .input {
+            width: 375px;
+            height: 30px;
+            border: none;
+            outline: none;
+            /* padding: 0px 7px; */
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: transparent;
+            color: white;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+                -1px -1px 6px rgba(255, 255, 255, 0.4);
+        }
 
-.input:focus {
-    border: 2px solid transparent;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
-        -1px -1px 6px rgba(255, 255, 255, 0.4),
-        inset 3px 3px 10px rgba(0, 0, 0, 1),
-        inset -1px -1px 6px rgba(255, 255, 255, 0.4);
-}
+        .input:focus {
+            border: 2px solid transparent;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+                -1px -1px 6px rgba(255, 255, 255, 0.4),
+                inset 3px 3px 10px rgba(0, 0, 0, 1),
+                inset -1px -1px 6px rgba(255, 255, 255, 0.4);
+        }
 
-.tab-content.active .input:valid ~ .label,
-.tab-content.active .input:focus ~ .label {
-    transition: 0.3s;
-    padding-left: 2px;
-    transform: translateY(-35px);
-}
+        .tab-content.active .input:valid ~ .label,
+        .tab-content.active .input:focus ~ .label {
+            transition: 0.3s;
+            padding-left: 2px;
+            transform: translateY(-35px);
+        }
 
-.tab-content.active .input:valid,
-.tab-content.active .input:focus {
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
-        -1px -1px 6px rgba(255, 255, 255, 0.4),
-        inset 3px 3px 10px rgba(0, 0, 0, 1),
-        inset -1px -1px 6px rgba(255, 255, 255, 0.4);
-}
+        .tab-content.active .input:valid,
+        .tab-content.active .input:focus {
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+                -1px -1px 6px rgba(255, 255, 255, 0.4),
+                inset 3px 3px 10px rgba(0, 0, 0, 1),
+                inset -1px -1px 6px rgba(255, 255, 255, 0.4);
+        }
 
-/*select gender*/
-select {
-    background-color: #695CFE; /* Purple background */
-    color: white; /* White text */
-    border: none;
-    padding: 8px;
-    width: 375px; /* Adjust width as needed */
-    height: 30px; /* Adjust height as needed */
-    font-size: 14px;
-    border-radius: 5px;
-    outline: none;
-}
+        /*select gender*/
+        select {
+            background-color: #695CFE; /* Purple background */
+            color: white; /* White text */
+            border: none;
+            padding: 8px;
+            width: 375px; /* Adjust width as needed */
+            height: 30px; /* Adjust height as needed */
+            font-size: 14px;
+            border-radius: 5px;
+            outline: none;
+        }
 
-/* Style dropdown options */
-select option {
-    background-color: #695CFE; /* Purple background for options */
-    color: white; /* White text */
-}
+        /* Style dropdown options */
+        select option {
+            background-color: #695CFE; /* Purple background for options */
+            color: white; /* White text */
+        }
+
+        .forgot-password {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
 
         /* Form Styles */
         .form-container {
@@ -212,7 +220,7 @@ select option {
         }
 
         .form-container input {
-            padding: 10px;
+            padding: 5px;
             border: 1px solid #333;
             border-radius: 4px;
             background-color: white; 
@@ -226,8 +234,8 @@ select option {
 
         .form-container button {
             padding: 10px;
-            background-color: #695CFE; 
-            color: white; /* Dark text */
+            background-color: white; 
+            color: #2333df; /* Dark text */
             border: none;
             border-radius: 4px;
             font-size: 16px;
@@ -236,22 +244,20 @@ select option {
         }
 
         .form-container button:hover {
-            background-color: #695CFE;
-            color: white;
+            background-color: white;
+            color: #2333df;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
             {% load static %}
-            <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "logo"> </div>
-            <h1>
-                <a href="{% url 'home1' %}">StockStats</a>
-            </h1>
+            <img src="{% static 'images/logo.jpeg' %}" alt="StockStats">
+            <h1><a href="{% url 'home1' %}">  StockStats</a></h1>
         </div>
-    </header>
+    </nav>
 
     <!-- Notification -->
     {% if messages %}
@@ -292,6 +298,10 @@ select option {
                 <div class="input-container">
                     <input required="" type="password" name="password" id="login-password" class="input">
                     <label class="label">Password</label>
+                </div>
+
+                <div class="input-container">
+                    <p class="forgot-password"><a href="{% url 'forgot_password' %}">forgot password?</a></p>
                 </div>
                 
                 <div class="input-container">
