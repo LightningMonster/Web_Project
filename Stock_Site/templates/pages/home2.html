@@ -38,7 +38,7 @@
     left: 0;
     width: 100%;
     height: 60px;
-    background: linear-gradient(135deg, #3947e3, #34495e);
+    background: linear-gradient(135deg,  #2333df, #34495e);
     color: white;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -46,7 +46,6 @@
     padding-right: 10px;
     z-index: 1000;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
 }
 
 .navbar .nav-links {
@@ -86,25 +85,21 @@
 
         /* Fixed Warning Message */
         .warning {
-            position: fixed;
-            top: 110px; /* Below the navbar */
+            /* position: fixed; */
+            margin-top: 110px; /* Below the navbar */
             left: 0;
             width: 100%;
-            background: linear-gradient(135deg, #3947e3, #34495e);
+            background: linear-gradient(135deg,  #2333df, #34495e);
             padding: 10px;
             text-align: center;
             color: white;
             font-size: 16px;
             z-index: 999;
-            border-radius: 10px;
         }
 
-        main {
-            /* margin-top: 120px; Ensure all content starts below navbar */
-            margin-top: 100px; /* Adjusted to be below both navbar and warning */
+        main {  
             color: black;
             padding: 20px;
-            padding-top: 50px;
         }
 
         .heading{
@@ -131,7 +126,7 @@
             padding: 20px;
             justify-content: center;
             text-align: center;
-            background: linear-gradient(135deg, #3947e3, #34495e);
+            background: linear-gradient(135deg, #2333df, #34495e);
             border-radius: 15px;
             color:white;
             margin-top: 40px;
@@ -162,9 +157,9 @@
   transform: scale(1.05);
 }
 
-.stock-card:active {
+/* .stock-card:active {
   transform: scale(0.95) rotateZ(1.7deg);
-}
+} */
 
 .stock-card h4 {
     font-size: 24px;
@@ -288,8 +283,8 @@
 
         footer {
             text-align: center;
-            padding: 10px;
-            background-color: rgb(29, 28, 28);
+            padding: 2px;
+            background: linear-gradient(135deg,  #2333df, #34495e);
             color: white;
         }
 
@@ -352,7 +347,6 @@
 
     <!-- Trending Stocks Section -->
     <section class="trending-stocks">
-        <!-- <div class="container"> -->
             <h3>Trending Indian Stocks</h3>
             <div class="stock-grid">
                 {% for stock in stock_data %}
@@ -369,19 +363,16 @@
                 </a>
                 {% endfor %}
             </div>
-        <!-- </div> -->
     </section>
 
-    <!-- Top Gainers Section -->
+
     <section class="trending-stocks">
-        <!-- <div class="container"> -->
             <h3>Top Gainers</h3>
             <div class="stock-grid">
                 {% for stock in top_gainers %}
-                <div class="stock-card">
-                    <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
-                        <h4>{{ stock.symbol }}</h4><br>
-                        <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p><br>
+                <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
+                    <h4>{{ stock.symbol }}</h4>
+                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
                     <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
                         {% if stock.change > 0 %}
                             +{{ stock.change }}%
@@ -389,29 +380,23 @@
                             {{ stock.change }}%
                         {% endif %}
                     </span>
-                    </a>
-                </div>
+                </a>
                 {% endfor %}
             </div>
-        <!-- </div> -->
     </section>
 
     <!-- Top Losers Section -->
     <section class="trending-stocks">
-        <!-- <div class="container"> -->
             <h3>Top Losers</h3>
             <div class="stock-grid">
                 {% for stock in top_losers %}
-                <div class="stock-card">
                     <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                         <h4>{{ stock.symbol }}</h4>
                         <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
                         <p>Change: <span class="negative">{{ stock.change }}%</span></p>
                     </a>
-                </div>
                 {% endfor %}
             </div>
-        <!-- </div> -->
     </section>
 
     <section class="news-section">
