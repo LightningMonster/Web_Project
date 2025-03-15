@@ -7,136 +7,94 @@ html >
     <title>Dashboard - StockStats</title>
     <style>
         /* General Styles */
-        /* General Styles */
-body {
-<<<<<<< HEAD
-    font-family: 'Arial', sans-serif;
-=======
-    font-family: 'Times New Roman', sans-serif;
->>>>>>> main
-    margin: 0;
-    padding: 0;
-    background-color: #121212;
-    color: #f4fafa;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    transition: background-color 0.3s, color 0.3s;
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-body.light-mode {
-    background-color: #f4f4f9;
-    color: #620770;
-}
+        body {
+            font-family: 'Times New Roman', sans-serif;
+            background-color: #f4f4f9;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            margin-top: 130px;
+        }
 
-a {
-    color: #ffffff;
-    text-decoration: none;
-    transition: color 0.3s;
-}
+        h1, h2, h3 {
+            color: #3947e3;
+        }
 
-body.light-mode a {
-    color: #6c0486;
-}
+        a {
+            text-decoration: none;
+            color: #ffffff;
+        }
 
-a:hover {
-    color: #00cccc;
-}
+        a:hover {
+            text-decoration: underline;
+        }
 
-body.light-mode a:hover {
-    color: #040404;
-}
+        .navbar {
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, #3947e3, #34495e);
+            color: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-/* Top Navbar */
-.top-navbar {
-    background-color: #000000;
-    padding: 0px 16px; /* Remove padding from top and bottom */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-    height: 50px; /* Set a fixed height for the navbar */
-}
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
 
-body.light-mode .top-navbar {
-    background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
-}
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: background 0.3s ease-in-out;
+            border-radius: 5px;
+        }
 
-.profile-section {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Reduce the gap between elements */
-}
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
 
-.profile-image {
-    width: 30px; /* Reduce the size of the profile image */
-    height: 30px;
-    border-radius: 50%;
-    background-color: #72098f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px; /* Adjust font size */
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            border-radius: 15px;
+        }
 
-.theme-toggle {
-    background-color: #72098f;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px; /* Reduce padding */
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 14px; /* Adjust font size */
-}
-
-.theme-toggle:hover {
-    background-color: #852d82;
-}
-
-/* Main Content Layout */
-.content-wrapper {
-    display: flex;
-    flex: 1;
-}
-
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    background-color: #000000;
-    padding: 20px;
-    border-right: 1px solid rgba(0, 255, 255, 0.2);
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-body.light-mode .sidebar {
-    background-color: #ffffff;
-    border-right: 1px solid #ddd;
-}
-
-.sidebar h1 {
-    margin: 0 0 20px 0;
-    font-size: 1.5em;
-}
-
-.sidebar nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar nav ul li {
-    margin-bottom: 10px;
-}
+        .logo img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            margin-top:20px;
+        }
 
 /* Main Content */
 .main-container {
     flex: 1;
-    padding: 10px 20px; /* Reduced padding from top */
+    padding: 10px; /* Reduced padding from top */
     display: flex;
     flex-direction: column;
+    width: 1800px;
 }
 
 .content {
@@ -146,31 +104,24 @@ body.light-mode .sidebar {
 }
 
 .watchlist-section, .stock-section {
-    background-color: #1e1e1e;
+    background: white;
+    color: black;
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid rgba(0, 255, 255, 0.2);
+    border: 1px solid #2333df;
     flex: 1;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-body.light-mode .watchlist-section, body.light-mode .stock-section {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-}
-
 .watchlist-section h2, .stock-section h3 {
     margin-top: 0;
-    color: #fdfdfd;
+    color: #2333df;
     transition: color 0.3s;
-}
-
-body.light-mode .watchlist-section h2, body.light-mode .stock-section h3 {
-    color: #6f058f;
 }
 
 .watchlist-section ul, .stock-section ul {
     list-style: none;
+    color:black;
     padding: 0;
 }
 
@@ -183,17 +134,18 @@ body.light-mode .watchlist-section h2, body.light-mode .stock-section h3 {
     transition: border-color 0.3s;
 }
 
-body.light-mode .watchlist-section li, body.light-mode .stock-section li {
-    border-bottom: 1px solid #ddd;
-}
-
 .watchlist-section li:last-child, .stock-section li:last-child {
     border-bottom: none;
 }
 
+.watchlist-section a {
+    color: black;
+    transition: color 0.3s;
+}
+
 .plus-button, .minus-button {
-    background-color: #72098f;
-    color: #fff;
+    background-color: #2333df;
+    color: white;
     border: none;
     border-radius: 4px;
     padding: 5px 10px;
@@ -202,20 +154,18 @@ body.light-mode .watchlist-section li, body.light-mode .stock-section li {
 }
 
 .plus-button:hover, .minus-button:hover {
-    background-color: #005555;
+    background-color: #2333df;
 }
 
 .scrollable-card {
     max-height: 300px;
     overflow-y: auto;
-    border: 1px solid rgba(0, 255, 255, 0.2);
+    background: linear-gradient(135deg,  #2333df, #34495e);
+    color:white;
+    border: 1px solid #2333df;
     border-radius: 4px;
     padding: 10px;
     transition: border-color 0.3s;
-}
-
-body.light-mode .scrollable-card {
-    border: 1px solid #ddd;
 }
 
 /* Forms */
@@ -230,29 +180,19 @@ label {
     transition: color 0.3s;
 }
 
-body.light-mode label {
-    color: #6f0589;
-}
-
 input[type="text"] {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
-    background-color: #2d2d2d;
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    border-radius: 4px;
-    color: #ffffff;
+    background-color: white;
+    border: 1px solid #2333df;
+    border-radius: 4px ;
+    color: black;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
-body.light-mode input[type="text"] {
-    background-color: #f4f4f9;
-    border: 1px solid #ddd;
-    color: #000000;
-}
-
 button[type="submit"] {
-    background-color: #72098f;
+    background-color: #2333df;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -265,71 +205,43 @@ button[type="submit"]:hover {
     background-color: #f0f4f4;
 }
 
-/* Footer */
-footer {
-    background-color: #1e1e1e;
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid rgba(0, 255, 255, 0.2);
-    transition: background-color 0.3s, border-color 0.3s;
+.label{
+    color: black;
 }
 
-body.light-mode footer {
-    background-color: #ffffff;
-    border-top: 1px solid #ddd;
-}
-
-footer p {
-    margin: 0;
-    color: #ffffff;
-    transition: color 0.3s;
-}
-
-body.light-mode footer p {
-    color: #333;
-}
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 2px;
+            background: linear-gradient(135deg,  #2333df, #34495e);
+            color: white;
+            margin-top: 209px;
+            width: 100%;
+        }
     </style>    
 </head>
 <body>
-    <!-- Top Navbar. -->
-    <nav class="top-navbar">
-        <h1>StockStats Dashboard</h1>
-        <div class="profile-section">
-            <div class="profile-image">
-                {% if user.is_authenticated %}
-                    {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
-                {% else %}
-                    G
-                {% endif %}
-            </div>
-            <span>
-                {% if user.is_authenticated %}
-                    {{ user.first_name }} {{ user.last_name }}
-                {% else %}
-                    Guest
-                {% endif %}
-            </span>
-            <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
+    <nav class="navbar">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static 'images/logo.jpeg' %}" alt="StockStats">
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
         </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home2' %}">Home</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="{% url 'learningpg' %}">Learn Basics</a></li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
+                    <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </li>
+        </ul>
     </nav>
-
-    <div class="content-wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <nav>
-                <ul>
-                    <li><a href="{% url 'home2' %}">Home</a></li>
-                    <li><a href="{% url 'calculators' %}">Calculators</a></li>
-                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                    <li><a href="#">Tools</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
 
         <!-- Main Content -->
         <div class="main-container">
@@ -356,7 +268,7 @@ body.light-mode footer p {
                     <h3>Add a Stock to Watchlist</h3>
                     <form method="post" action="{% url 'add_to_watchlist' %}">
                         {% csrf_token %}
-                        <label for="stock_symbol">Stock Symbol:</label>
+                        <label for="stock_symbol" class="label">Stock Symbol:</label>
                         <input type="text" id="stock_symbol" name="stock_symbol" required>
                         <button type="submit">Add</button>
                     </form>
@@ -379,7 +291,9 @@ body.light-mode footer p {
 
             <!-- Footer -->
             <footer>
-                <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+                <div class="container">
+                    <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+                </div>
             </footer>
         </div>
     </div>
