@@ -23,22 +23,6 @@ import random
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password
 
-# Function to fetch live stock price
-def fetch_live_stock_price(ticker):
-    try:
-        # Fetch the stock data using yfinance
-        stock = yf.Ticker(ticker)
-
-        # Get the live price (current price)
-        live_price = stock.history(period="1d", interval="1m")["Close"][-1]  # Get the latest closing price for the 1-minute interval
-
-        # Return the live price
-        return live_price
-
-    except Exception as e:
-        # Handle errors (e.g., ticker not found)
-        print(f"Error fetching live price for {ticker}: {e}")
-        return None
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -249,7 +233,6 @@ def logout_user(request):
 def home2(request):
     if not request.user.is_authenticated:
         return redirect('login')
-        return redirect('login')
 
     # Fetch all distinct stock symbols from the database
     all_stock_symbols = StockData.objects.values_list('stock_symbol', flat=True).distinct()
@@ -277,7 +260,8 @@ def home2(request):
             # Store all stocks for gainers/losers selection
             gainers_losers_data.append({
                 'symbol': last_two_entries[0].stock_symbol,
-                'change': round(change, 2)  # Calculating change here
+                'change': round(change, 2),  # Calculating change here
+                'last_price': current_close  # Include last_price here
             })
 
             # Fetch historical data (last 30 days)
@@ -296,16 +280,11 @@ def home2(request):
             current_close = last_two_entries[0].close
             change = ((current_close - previous_close) / previous_close) * 100 if previous_close else 0
 
-            # Fetch live price for the stock
-            live_price = fetch_live_stock_price(stock.stock_symbol)
-
-            # Add live price to the stock data
             stock_data.append({
                 'symbol': stock.stock_symbol,
                 'last_price': current_close,
                 'change': round(change, 2),  # Calculating change here
                 'volume': stock.volume,
-                'live_price': live_price if live_price else current_close  # Fallback to last_close if live price is unavailable
             })
 
     # Sort all stocks for gainers/losers selection
@@ -314,16 +293,13 @@ def home2(request):
 
     # Fetch live prices for gainers and losers
     for stock in sorted_gainers:
-        live_price = fetch_live_stock_price(stock['symbol'])
-        stock['live_price'] = live_price if live_price else None
+        stock['live_price'] = stock['last_price']  # Use the last_price field directly
 
     for stock in sorted_losers:
-        live_price = fetch_live_stock_price(stock['symbol'])
-        stock['live_price'] = live_price if live_price else None
+        stock['live_price'] = stock['last_price']  # Use the last_price field directly
 
     # Fetch stock market news from Google News RSS Feed
     query = "Indian stock market"
-    encoded_query = quote(query)
     encoded_query = quote(query)
     url = f"https://news.google.com/rss/search?q={encoded_query}"
     feed = feedparser.parse(url)
