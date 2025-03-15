@@ -104,9 +104,9 @@
             padding: 20px;
             margin-bottom: 30px;
             background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-    backdrop-filter: blur(12px); /* Blurred background for glass effect */
-    border-radius: 12px; /* Optional: Rounded corners for a softer look */
-    border: 1.5px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+            backdrop-filter: blur(12px); /* Blurred background for glass effect */
+            border-radius: 12px; /* Optional: Rounded corners for a softer look */
+            border: 1.5px solid rgba(255, 255, 255, 0.3); /* Subtle border */
         }
 
         h1 h2, h3 {
@@ -128,20 +128,43 @@
             margin-bottom: 10px;
         }
 
+        .container
+        {
+            color: #2333df;
+            background: white;
+            transition: background-color 0.3s ease-in-out;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card 
+        {
+            background: linear-gradient(135deg, #3947e3, #34495e);
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
         /* Stock Info Section */
         .stock-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-
         }
 
         .stock-info p {
+            font-size: 18px;
             margin: 0;
         }
 
         .stock-info strong {
-            color: #695CFE;
+            color: white;
+            font-weight: bold;
         }
 
         /* Historical Data Table */
@@ -162,8 +185,8 @@
         }
 
         table th {
-            background-color: var(--primary-color);
-            color: #fff;
+            background-color: white;
+            color: black;
         }
 
         table tr:nth-child(even) {
@@ -192,7 +215,7 @@
         }
 
         .pagination a:hover {
-            background-color: #695CFE;
+            background-color: #3947e3;
         }
 
         .pagination span {
@@ -207,13 +230,15 @@
             font-size: 22px;
         }
         .statistical-analysis strong {
-            color: #5c72fe;
+            color: white;
+            font-weight: bold;
         }
         /* News Section */
         .news-item {
             margin-bottom: 20px;
             padding: 15px;
-            background-color: rgba(0, 0, 0, 0.744);
+            background-color: white;
+            color: black;
             border-radius: 5px;
         }
 
@@ -227,6 +252,7 @@
             font-size: 14px;
             color: #666;
         }
+
         /* Footer Styles */
         footer {
             text-align: center;
@@ -259,16 +285,30 @@
             width: 1234px;
             height: 600px;
             margin: auto;
-            background-color : black;
+            background-color : white;
+            color: black;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .chart-container {
-    width: 600px;
-    height: 400px;
-    background-color: #242222; /* Light grey background for better visibility */
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-}
+
+        .interval-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .interval-btn {
+            padding: 10px 20px;
+            background-color: white;
+            color: #3947e3;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -330,8 +370,8 @@
                 <button id="monthly-btn" class="interval-btn">Monthly</button>
             </div>
             <div class="date-range-selector">
-                <label for="date-range">Show Data for:</label>
-                <select id="date-range">
+                <label for="date-range" class="datarange">Show Data for:</label>
+                <select id="date-range" class="datarange">
                     <option value="30">Last 30 Days</option>
                     <option value="90">Last 90 Days</option>
                     <option value="180">Last 6 Months</option>
@@ -384,7 +424,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             <!-- Pagination -->
 <div class="pagination" id="pagination">
     {% if page_obj.has_previous %}
