@@ -166,7 +166,7 @@
     <nav class="navbar">
         <div class="logo">
             {% load static %}
-            <img src="{% static 'images/logo.png' %}" alt="StockStats">
+            <img src="{% static 'images/logo.jpeg' %}" alt="StockStats">
             <h1><a href="{% url 'home1' %}">StockStats</a></h1>
         </div>
         <ul class="nav-links">
@@ -174,7 +174,6 @@
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'calculators' %}">Calculators</a></li>
             <li><a href="{% url 'learningpg' %}">Learn Basics</a></li>
-            <li><a href="#feedback">Feedback</a></li>
             <li>
                 {% if user.is_authenticated %}
                     <a href="{% url 'profile' %}">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
