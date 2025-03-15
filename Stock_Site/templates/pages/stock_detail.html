@@ -9,11 +9,9 @@
     <style>
                 body {
             font-family:'Times New Roman', sans-serif;
-            background-color: black;
-            color: white; 
+            background-color: white;
+            color: black; 
             transition: background-color 0.3s, color 0.3s;
-            margin-left: 300px;
-            margin-right: 50px;
         }
 
         .warning {
@@ -26,68 +24,74 @@
             color:white;
         }
 
-        /* Vertical Navbar Styles */
         .navbar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 250px; /* Adjust width as needed */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
-            background: rgba(255, 255, 255, 0.2); /* Transparent white */
-            backdrop-filter: blur(10px); /* Glass effect */
-            border-radius: 10px; /* Smooth edges */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-        }
+    font-size: 20px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(135deg, #3947e3, #34495e);
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-        nav h1 a {
-            font-size: 30px;
-            margin-bottom: 20px;
-            color: white;
-            text-decoration: none;
-        }
+.navbar .nav-links {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 
-        nav h1 a:hover{
-            font-size: 30px;
-            margin-bottom: 20px;
-            color: white;
-            text-decoration: underline;
-        }
+.navbar a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: background 0.3s ease-in-out;
+    border-radius: 5px;
+}
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-        }
+.navbar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
 
-        nav ul li {
-            display: block; /* Places each item on a new line */
-            margin-bottom: 10px; /* Adds spacing between links */
-        }
 
-        nav ul li a {
-            font-size: 20px;
-            color: white;
-            text-decoration: none; /* Removes underline */
-        }
 
-        nav ul li a:hover {
-            text-decoration: underline; /* Optional: Adds underline on hover */
-        }
-
-        .logo {
+.logo {
             display: flex;
             align-items: center;
+            border-radius: 15px;
         }
 
         .logo img {
-            width: 150px;
-            height: 150px;
+            width: 80px;
+            height: 80px;
             margin-bottom: 20px;
+            margin-top:20px;
         }
-        /* Vertical navbar style ends*/
+
+        .warning {
+            margin-top: 110px; /* Below the navbar */
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg,  #2333df, #34495e);
+            padding: 10px;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            z-index: 999;
+        }
 
 
         /* Main Content Styles */
@@ -225,54 +229,12 @@
             font-size: 14px;
             color: #666;
         }
-        
         /* Footer Styles */
         footer {
-            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent dark blue */
-            color: #fff;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 14px;
-        }
-
-        /* Dark Mode Styles */
-        body.dark-mode {
-            --primary-color: #695CFE; /* Cyan for headings in dark mode */
-            --secondary-color: #695CFE; /* Dark blue for buttons and links */
-            --background-color: #121212; /* Dark background for dark mode */
-            --text-color: #f5fafa; /* Cyan text for dark mode */
-            --card-background: rgba(0, 0, 0, 0.649); /* Semi-transparent dark card background */
-            --navbar-text-color: #695CFE; /* Cyan text for navbar in dark mode */
-            --navbar-hover-color: rgba(255, 255, 255, 0.1); /* Light hover for navbar in dark mode */
-        }
-
-        body.dark-mode .dropdown-content {
-            background-color: var(--card-background);
-        }
-
-        body.dark-mode .dropdown-content a {
-            color: var(--text-color);
-        }
-
-        body.dark-mode .dropdown-content a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.dark-mode table tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        body.dark-mode table tr:hover {
-            background-color: rgba(60, 59, 59, 0.1);
-        }
-
-        body.dark-mode .news-item {
-            background-color: rgba(108, 106, 106, 0.05);
+            padding: 2px;
+            background: linear-gradient(135deg,  #2333df, #34495e);
+            color: white;
         }
 
         @media (max-width: 768px) {
@@ -313,34 +275,30 @@
 </head>
 <body>
  
- <!-- Left Vertical Navbar -->
- <nav class="navbar">
-    {% load static %}
-    <div class="logo"> <img src="{% static 'images/Website_logo.jpeg' %}" alt= "StockStats"> </div>
-    <h1><a href="{% url 'home1' %}">StockStats</a></h1>
-    <ul>
-        <li><a href="{% url 'profile' %}">
-            {% if user.is_authenticated %}
-                Hi, {{ user.first_name }} {{ user.last_name }}!
-            {% else %}
-                Guest
-            {% endif %}
-            </a>
-        </li>
-        <li><a href="{% url 'home2' %}">Home</a></li>
-        <li><a href="{% url 'calculators' %}">Calculators</a></li>
-        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-        <li> {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}" id="logout-btn">Logout</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-            {% endif %}
-        </li>
-        <li>
-            <button class="theme-toggle" id="theme-toggle">🌙 Dark Mode</button>
-        </li>
-    </ul>
-</nav>
+    <nav class="navbar">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static 'images/logo.png' %}" alt="StockStats">
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home2' %}">Home</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="{% url 'learningpg' %}">Learn Basics</a></li>
+            <li><a href="#feedback">Feedback</a></li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
+                    <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
+    <div class="warning">⚠️ All stock values may not be correct as the site is under construction.</div>
 
     <!-- Main Content -->
     <main class="container">
@@ -468,7 +426,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Indian Stock Analysis. All rights reserved.</p>
+        <p>&copy; 2025 Stock Learning. All rights reserved. | <a href="#">Privacy Policy</a></p>
     </footer>
 
     <script>
