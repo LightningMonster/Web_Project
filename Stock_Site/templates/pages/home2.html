@@ -351,7 +351,7 @@
                 {% for stock in stock_data %}
                 <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                     <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
+                    <p>Price: ₹{{ stock.last_price|floatformat:2 }}</p>
                     <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
                         {% if stock.change > 0 %}
                             +{{ stock.change }}%
@@ -369,9 +369,10 @@
             <h3>Top Gainers</h3>
             <div class="stock-grid">
                 {% for stock in top_gainers %}
-                <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
-                    <h4>{{ stock.symbol }}</h4>
-                    <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
+                <div class="stock-card">
+                    <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
+                        <h4>{{ stock.symbol }}</h4><br>
+                        <p>Price: ₹{{ stock.last_price|floatformat:2 }}</p>
                     <span class="change {% if stock.change > 0 %}positive{% else %}negative{% endif %}">
                         {% if stock.change > 0 %}
                             +{{ stock.change }}%
@@ -391,7 +392,7 @@
                 {% for stock in top_losers %}
                     <a href="{% url 'stock_detail' stock.symbol %}" class="stock-card">
                         <h4>{{ stock.symbol }}</h4>
-                        <p>Price: ₹{{ stock.live_price|floatformat:2 }}</p>
+                        <p>Price: ₹{{ stock.last_price|floatformat:2 }}</p>
                         <p>Change: <span class="negative">{{ stock.change }}%</span></p>
                     </a>
                 {% endfor %}
