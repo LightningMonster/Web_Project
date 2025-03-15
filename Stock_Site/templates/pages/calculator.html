@@ -5,20 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Calculators</title>
     <style>
-        /* General Styles */
-        body {
-            font-family: 'Times New Roman', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #695CFE;
-            min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s;
+         /* General Styles */
+         html {
+            scroll-behavior: smooth;
         }
 
-        body.light-mode {
-            background-color: #ffffff;
-            color: #695CFE;
+        body {
+            font-family: 'Times New Roman', sans-serif;
+            background-color: #f4f4f9;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            margin-top: 130px;
+        }
+
+        h1, h2, h3 {
+            color: #3947e3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar {
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(135deg, #3947e3, #34495e);
+            color: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: background 0.3s ease-in-out;
+            border-radius: 5px;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            border-radius: 15px;
+        }
+
+        .logo img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            margin-top:20px;
         }
 
         .container {
@@ -26,144 +92,113 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            text-align: center;
         }
 
-        h1 {
-            text-align: center;
-            color: inherit;
-            margin-bottom: 40px;
-        }
-        
-        h2 {
-            text-align:inline-start;
-            color: inherit;
-            margin-inline-start:-27%;
-            margin-top: auto;
-            margin-bottom: 80px;
-        }
+        .container h1 {
+            margin-top: 0;
+            color: #3947e3;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }   
 
         .calculators-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* Two columns per row */
             gap: 20px;
+            justify-content: center;
         }
 
         .calculator {
-            background-color: #1e1e1e;
+            background:white;
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid #6053ee(0, 255, 255, 0.2);
+            border: 2px solid #2333df;
             transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .light-mode .calculator {
-            background-color: #f0f0f0;
-            border-color: #695cfe9f(128, 0, 128, 0.2);
         }
 
         .calculator h3 {
             margin-top: 0;
-            color: inherit;
-            font-size: 1.2em;
+            color: #2333df;
+            font-size: 30px;
             margin-bottom: 15px;
         }
 
         .calculator input {
-            width: 100%;
+            width: 300px;
             padding: 8px;
             margin: 8px 0;
             background-color: #ece4e4;
-            border: 1px solid #695CFE(0, 255, 255, 0.3);
+            border: 1px solid #2333df;
             border-radius: 4px;
-            color: #000000;
-            font-size: 14px;
+            color: black;
+            font-size: 15px;
             transition: border-color 0.3s;
-        }
-
-        .light-mode .calculator input {
-            border-color: #04040553;
         }
 
         .calculator input::placeholder {
             color: #050505;
             opacity: 0.6;
+            font-size: 15px;
         }
 
         .calculator button {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
-            background-color: #695CFE;
+            background-color: #2333df;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 15px;
             transition: background-color 0.2s;
         }
 
-        .light-mode .calculator button {
-            background-color: #695CFE;
-        }
-
         .calculator button:hover {
-            background-color: #695CFE;
-        }
-
-        .light-mode .calculator button:hover {
-            background-color: #695CFE;
+            background-color: #2333df;
         }
 
         .result {
             margin-top: 15px;
             padding: 10px;
-            background-color: #695cfe6d;
+            background-color: #2333df;
+            color: white;
             border-radius: 4px;
             text-align: center;
-            font-size: 14px;
+            font-size: 20px;
             transition: background-color 0.3s;
         }
 
-        .light-mode .result {
-            background-color:#695cfe4a;
-        }
-
-        /* Toggle Button */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #695CFE;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-
-        .light-mode .theme-toggle {
-            background-color: #695CFE;
-        }
-
-        .theme-toggle:hover {
-            color:rgb(255, 255, 255);
-             background-color: #695CFE;
-        }
-
-        .light-mode .theme-toggle:hover {
-            color:#660066
-            background-color:black;
-        }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+    <nav class="navbar">
+        <div class="logo">
+            {% load static %}
+            <img src="{% static 'images/logo.jpeg' %}" alt="StockStats">
+            <h1><a href="{% url 'home1' %}">StockStats</a></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home2' %}">Home</a></li>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'calculators' %}">Calculators</a></li>
+            <li><a href="{% url 'learningpg' %}">Learn Basics</a></li>
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
+                    <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
     <div class="container">
-        <h2><a href="{% url 'home2' %}" style="text-decoration: none; color: inherit;">STOCKLENS</a></h2>
                
-        <h1>Stock Calculators</h1>
+        <h1>Stock Calculators</h1><br><br>
         
         <div class="calculators-grid">
             <!-- Profit/Loss Calculator -->
