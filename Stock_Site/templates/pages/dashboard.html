@@ -210,6 +210,29 @@ button[type="submit"]:hover {
     color: black;
 }
 
+        .profile {
+            max-width: 1400px;
+            margin-left: 200px;
+            padding: 20px;
+            text-align: center;
+            background-color: white;
+            border : 2px solid #3947e3;
+            border-radius: 15px;
+            margin-bottom: 100px;
+        }
+
+        .profile a {
+            font-size: 20px;
+            color: black;
+        }
+
+        #new_value {        
+            background-color: white;
+            color: black;
+            border: 2px solid #3947e3;
+            border-radius: 15px;
+        }
+
         /* Footer Styles */
         footer {
             text-align: center;
@@ -235,7 +258,7 @@ button[type="submit"]:hover {
             <li><a href="{% url 'learningpg' %}">Learn Basics</a></li>
             <li>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
+                    <a href="">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
                     <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
                 {% else %}
                     <a href="{% url 'login' %}">Login</a>
@@ -246,6 +269,39 @@ button[type="submit"]:hover {
 
         <!-- Main Content -->
         <div class="main-container">
+
+            <div class="profile">
+    
+                <h1>User Profile</h1>
+                <br><br>
+                
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>First Name:</strong> <span id="first_name">{{ user.first_name }}</span> <button class="edit-btn" onclick="openModal('first_name')">Edit</button></p>
+                <p><strong>Last Name:</strong> <span id="last_name">{{ user.last_name }}</span> <button class="edit-btn" onclick="openModal('last_name')">Edit</button></p>
+                <p><strong>Phone Number:</strong> <span id="phone_number">{{ user.phone_number }}</span> <button class="edit-btn" onclick="openModal('phone_number')">Edit</button></p>
+                <p><strong>Gender:</strong> {{ user.get_gender_display }}</p>
+                <p><strong>Birthdate:</strong> {{ user.birthdate }}</p>
+                <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+        
+                <a href="{% url 'logout' %}">Logout</a>
+        
+                <!-- Modal for editing user fields -->
+                <div id="editModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h2>Edit User Field</h2>
+                        <form id="editForm" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="field" id="field" value="">
+                            <label for="new_value">New Value:</label>
+                            <input type="text" name="new_value" id="new_value" required>
+                            <button type="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="content">
                 <!-- Watchlist Section -->
                 <div class="watchlist-section">
@@ -300,6 +356,50 @@ button[type="submit"]:hover {
     </div>
 
     <script>
+
+        // Open modal for editing
+        function openModal(field) {
+            // Set the field to be updated
+            document.getElementById("field").value = field;
+            // Pre-fill the input with the current value
+            document.getElementById("new_value").value = document.getElementById(field).innerText;
+            document.getElementById("editModal").style.display = "block";
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        // Handle form submission via AJAX
+        document.getElementById('editForm').onsubmit = function(event) {
+            event.preventDefault();  // Prevent page reload
+            const field = document.getElementById("field").value;
+            const newValue = document.getElementById("new_value").value;
+
+            // CSRF token for AJAX request
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("{% url 'profile' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken  // Add CSRF token in header
+                },
+                body: JSON.stringify({ field, new_value: newValue })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the field in the page
+                    document.getElementById(field).innerText = newValue;
+                    closeModal();
+                } else {
+                    alert('Failed to update field');
+                }
+            });
+        };
+
         // Function to add stock to watchlist
         function addStockToWatchlist(stockSymbol) {
             fetch("{% url 'add_to_watchlist' %}", {
@@ -343,13 +443,6 @@ button[type="submit"]:hover {
                 console.error('Error:', error);
             });
         }
-
-        // Dark/Light Mode Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            themeToggle.textContent = document.body.classList.contains('light-mode') ? '🌙 Dark Mode' : '🌞 Light Mode';
-        });
     </script>
 </body>
 </html>

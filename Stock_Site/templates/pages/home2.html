@@ -305,7 +305,7 @@
             <li><a href="#feedback">Feedback</a></li>
             <li>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
+                    <a href="">Hi, {{ user.first_name }} {{ user.last_name }}!</a>
                     <a href="{% url 'logout' %}" id="logout-btn">Logout</a>
                 {% else %}
                     <a href="{% url 'login' %}">Login</a>
