@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Details - {{ stock_symbol }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-                body {
-            font-family:'Times New Roman', sans-serif;
+        body {
+            font-family: 'Playfair Display', serif;
             background-color: white;
             color: black; 
             transition: background-color 0.3s, color 0.3s;
@@ -361,8 +362,8 @@
             </div>
         </div>
 
-        <!-- Interval Buttons and Date Range Selector -->
-        <div class="card">
+         <!-- Interval Buttons and Date Range Selector -->
+         <div class="card">
             <h2>Select Interval and Date Range</h2>
             <div class="interval-buttons">
                 <button id="daily-btn" class="interval-btn active">Daily</button>
@@ -370,8 +371,8 @@
                 <button id="monthly-btn" class="interval-btn">Monthly</button>
             </div>
             <div class="date-range-selector">
-                <label for="date-range" class="datarange">Show Data for:</label>
-                <select id="date-range" class="datarange">
+                <label for="date-range">Show Data for:</label>
+                <select id="date-range">
                     <option value="30">Last 30 Days</option>
                     <option value="90">Last 90 Days</option>
                     <option value="180">Last 6 Months</option>
@@ -466,29 +467,6 @@
     </footer>
 
     <script>
-        // DARK MODE TOGGLE FUNCTIONALITY
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        // Check localStorage for theme preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark-mode') {
-            body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️ Light Mode';
-        }
-
-        // Toggle dark mode
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark-mode');
-                themeToggle.textContent = '☀️ Light Mode';
-            } else {
-                localStorage.setItem('theme', 'light-mode');
-                themeToggle.textContent = '🌙 Dark Mode';
-            }
-        });
-
         // CHART.JS FUNCTIONALITY
         const historicalData = JSON.parse('{{ historical_data_json|escapejs }}');
 
