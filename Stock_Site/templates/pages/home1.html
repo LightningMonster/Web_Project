@@ -355,11 +355,11 @@
         }
 
         .feature-box img {
-            width:300px;
-            height: 100px;
+            width:700px;
+            height: 300px;
             border-radius: 10px;
             background-color: #d9d9d9;
-            padding: 20px;
+            padding: 2px;
         }
 
         .feature-content {
@@ -391,7 +391,7 @@
         {
             transform: scale(1.05);
         }
-        
+
         .creators {
             display: flex;
             justify-content: center;
@@ -590,36 +590,37 @@
     <div class="features">
         <h2>Features</h2>
         <div class="feature-container">
+            {% load static %}
             <div class="feature-box">
-                <img src="{% static 'images/Watchlist.jpeg' %}" alt="Watchlist">
+                <img src="{% static 'images/watchlist.png' %}" alt="Watchlist">
                 <div class="feature-content">
                     <h3>Personalized Watchlist</h3>
                     <p>Track your favorite stocks in one place.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="{% static 'images/news.jpeg' %}" alt="Latest News">
+                <img src="{% static 'images/letest-news.png' %}" alt="Latest News">
                 <div class="feature-content">
                     <h3>Latest News</h3>
                     <p>Stay updated with real-time stock market news.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="{% static 'images/calculators.jpeg' %}" alt="Calculators">
+                <img src="{% static 'images/calculators.png' %}" alt="Calculators">
                 <div class="feature-content">
                     <h3>Calculators</h3>
                     <p>Use financial calculators for investment decisions.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="{% static 'images/charts.jpeg' %}" alt="Charts and Graphs">
+                <img src="{% static 'images/chart.png' %}" alt="Charts and Graphs">
                 <div class="feature-content">
                     <h3>Charts and Graphs</h3>
                     <p>Analyze stock trends with detailed graphs.</p>
                 </div>
             </div>
             <div class="feature-box">
-                <img src="{% static 'images/Stock_info.jpeg' %}" alt="Stock Info">
+                <img src="{% static 'images/detail-stock-info.png' %}" alt="Stock Info">
                 <div class="feature-content">
                     <h3>Detailed Stock Info</h3>
                     <p>Access in-depth stock data and insights.</p>
