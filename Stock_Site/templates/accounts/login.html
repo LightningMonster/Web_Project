@@ -139,17 +139,7 @@
             padding: 8px;
             font-size: 14px;
         }
-
-        .tab-content.active .label {
-            font-size: 20px;
-            padding-left: 10px;
-            position: absolute;
-            top: 13px;
-            transition: 0.3s;
-            pointer-events: none;
-            color: Black;
-        }
-
+        
         .input {
             width: 375px;
             height: 30px;
@@ -292,13 +282,11 @@
                 {% csrf_token %}
                 <input type="hidden" name="action" value="login">
                 <div class="input-container">
-                    <input required="" type="email" name="email" id="login-email" class="input">
-                    <label class="label">Email</label>
+                    <input required="" type="email" name="email" id="login-email" class="input" placeholder="Email">
                 </div>
                 
                 <div class="input-container">
-                    <input required="" type="password" name="password" id="login-password" class="input">
-                    <label class="label">Password</label>
+                    <input required="" type="password" name="password" id="login-password" class="input" placeholder="Password">
                 </div>
 
                 <div class="input-container">
@@ -306,8 +294,7 @@
                 </div>
                 
                 <div class="input-container">
-                    <input required="" type="text" name="otp" id="otp-login" class="input">
-                    <label class="label">Enter OTP</label>
+                    <input required="" type="text" name="otp" id="otp-login" class="input" placeholder="Enter OTP">
                 </div>
                 
                 <button type="button" id="send-otp-login">Send OTP</button>
@@ -323,24 +310,19 @@
                 <input type="hidden" name="register" value="true">
 
                 <div class="input-container">
-                    <input required="" type="text" name="username" class="input">
-                    <label class="label">Username</label>
+                    <input required="" type="text" name="username" class="input" placeholder="Username">
                 </div>
                 <div class="input-container">
-                    <input required="" type="email" id="email-register" name="email" class="input">
-                    <label class="label">Email</label>
+                    <input required="" type="email" id="email-register" name="email" class="input" placeholder="Email">
                 </div>
                 <div class="input-container">
-                    <input required="" type="text" name="first_name" class="input">
-                    <label class="label">First Name</label>
+                    <input required="" type="text" name="first_name" class="input" placeholder="First Name">
                 </div>
                 <div class="input-container">
-                    <input required="" type="text" name="last_name" class="input">
-                    <label class="label">Last Name</label>
+                    <input required="" type="text" name="last_name" class="input" placeholder="Last Name">
                 </div>
                 <div class="input-container">
-                    <input required="" type="text" name="phone_number" class="input">
-                    <label class="label">Phone Number</label>
+                    <input required="" type="text" name="phone_number" class="input" placeholder="Phone Number">
                 </div>
                
                 <div class="input-container">
@@ -356,19 +338,15 @@
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
-                    <!--<label class="label">Gender</label>-->
                 </div>
                 <div class="input-container">
-                    <input required="" type="password" name="password" class="input">
-                    <label class="label">Password</label>
+                    <input required="" type="password" name="password" class="input" placeholder="Password">
                 </div>
                 <div class="input-container">
-                    <input required="" type="password" name="confirm_password" class="input">
-                    <label class="label">Confirm Password</label>
+                    <input required="" type="password" name="confirm_password" class="input" placeholder="Confirm Password">
                 </div>
                 <div class="input-container">
-                    <input required="" type="text" name="otp" id="otp-register" class="input">
-                    <label class="label">Enter OTP</label>
+                    <input required="" type="text" name="otp" id="otp-register" class="input" placeholder="Enter OTP">
                 </div>
                 
                 <!-- Send OTP and Verify OTP buttons -->
