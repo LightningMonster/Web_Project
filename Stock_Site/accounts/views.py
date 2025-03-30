@@ -1,10 +1,9 @@
 # accounts/views.py
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from accounts.models import StockData
+from accounts.models import StockData , CustomUser, Feedback
 from decimal import Decimal
 from django.core.paginator import Paginator
 from django.db.models import Max, Min
@@ -12,23 +11,13 @@ from .models import StockData, Watchlist
 import feedparser
 from urllib.parse import quote 
 import yfinance as yf
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from accounts.models import CustomUser, Feedback
 from django.core.mail import send_mail
 from django.conf import settings
 import random
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password
-
-
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
-from django.conf import settings
-import random
 import json
 
 @csrf_exempt  # Use CSRF protection in production
@@ -159,11 +148,6 @@ def forgot_password(request):
                 return redirect('forgot_password')
 
     return render(request, 'accounts/forgot_password.html')
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from .models import CustomUser  # Assuming your model is in the same app
 
 def login_user(request):
     if request.method == 'POST':
@@ -577,9 +561,6 @@ def remove_from_watchlist(request):
         return redirect('dashboard')
     return redirect('dashboard')
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def profile(request):
     user = request.user
@@ -600,8 +581,6 @@ def profile(request):
 
     return render(request, 'accounts/profile.html')
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def search_stocks(request):
@@ -621,11 +600,6 @@ def admin(request):
     feedbacks = Feedback.objects.all()
     return render(request, 'accounts/admin.html', {'users': users, 'feedbacks': feedbacks})
 
-
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Feedback
 
 @csrf_exempt  # (Use only for testing, prefer CSRF token in production)
 def submit_feedback(request):

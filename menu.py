@@ -1,8 +1,8 @@
-import subprocess
-import time
-import webbrowser
+import subprocess #teminal command handling
+import time #waiting time
+import webbrowser # To open browser
 
-# Change this to the absolute path of your Django project
+#path of your Django project
 manage_file = "Stock_Site/"
 
 def main():
