@@ -350,61 +350,10 @@ def learningpg(request):
     View for the learning page. This page provides educational content for beginners
     about the Indian stock market.
     """
-    # Example content for the learning page
-    learning_content = {
-        "sections": [
-            {
-                "title": "Introduction to Indian Stock Market",
-                "content": "The Indian stock market is one of the most dynamic and growing markets in the world. It provides a platform for investors to buy and sell shares of publicly listed companies.",
-                "key_points": [
-                    "BSE (Bombay Stock Exchange): Asia's oldest stock exchange.",
-                    "NSE (National Stock Exchange): The largest stock exchange in India."
-                ]
-            },
-            {
-                "title": "Basics of Stock Market",
-                "content": "Before investing, it's essential to understand the following concepts:",
-                "key_points": [
-                    "Stocks: Represent ownership in a company.",
-                    "Shares: Units of stock that can be bought or sold.",
-                    "IPO (Initial Public Offering): When a company first sells its shares to the public.",
-                    "Dividends: A portion of a company's profits distributed to shareholders.",
-                    "Market Capitalization: The total value of a company's shares."
-                ]
-            },
-            {
-                "title": "Technical & Fundamental Analysis",
-                "content": "To make informed investment decisions, you need to analyze stocks. There are two primary methods:",
-                "key_points": [
-                    "Fundamental Analysis: Evaluating a company's financial health, management, and industry position.",
-                    "Technical Analysis: Studying price charts and patterns to predict future movements."
-                ]
-            },
-            {
-                "title": "Tools for Analysis",
-                "content": "Here are some tools to help you analyze the stock market:",
-                "key_points": [
-                    "Screener: For filtering stocks based on financial metrics.",
-                    "Charting Tools: Like TradingView for technical analysis.",
-                    "News Platforms: Such as Moneycontrol and Economic Times for updates.",
-                    "Broker Platforms: Zerodha, Groww, and Upstox for trading."
-                ]
-            },
-            {
-                "title": "Investment Tips for Beginners",
-                "content": "Here are some tips to get started:",
-                "key_points": [
-                    "Start with small investments and gradually increase.",
-                    "Diversify your portfolio to reduce risk.",
-                    "Avoid emotional decisions; stick to your strategy.",
-                    "Stay updated with market news and trends.",
-                    "Invest for the long term to maximize returns."
-                ]
-            }
-        ]
-    }
 
-    return render(request, 'pages/learningpg.html', {'learning_content': learning_content})
+    return render(request, 'pages/learningpg.html')
+    
+    
 @login_required(login_url='login')
 def calculators(request):
     if not request.user.is_authenticated:
